@@ -1,49 +1,47 @@
 import React, { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'sonner';
 import axios from 'axios';
 import secureLocalStorage from 'react-secure-storage';
 
 function AddScholarshipType() {
+
     const [formData, setFormData] = useState({
-        scholarship_type_name: "",
+        scholarship_type: "",
     });
 
-    // Function to handle input change
-    function handleInputChange(e) {
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
             [name]: value
         });
-    }
+    };
 
     // Function to handle adding scholarship type
-    async function handleAdd() {
+    const handleAdd = async () => {
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
 
             const jsonData = {
-                scholarship_type_name: formData.scholarship_type_name,
+                type_name: formData.scholarship_type,
             };
 
             const formDataToSend = new FormData();
             formDataToSend.append("json", JSON.stringify(jsonData));
-            formDataToSend.append("operation", "addscholarshiptype");
+            formDataToSend.append("operation", "addScholarshipType");
 
             const res = await axios.post(url, formDataToSend);
 
             if (res.data !== 0) {
                 toast.success("Scholarship Type added successfully");
-                setFormData({ scholarship_type_name: "" });
             } else {
-                toast.error("Failed to add scholarship type");
+                toast.error("Failed to add Scholarship Type");
             }
         } catch (error) {
             console.log(error);
-            toast.error("An error occurred while adding the scholarship type");
+            toast.error("An error occurred while adding the Scholarship Type");
         }
-    }
+    };
 
     return (
         <div style={{
@@ -63,9 +61,9 @@ function AddScholarshipType() {
             }}>Add Scholarship Type</h2>
             <input
                 type="text"
-                name="scholarship_type_name"
-                placeholder="Enter scholarship type name"
-                value={formData.scholarship_type_name}
+                name="scholarship_type" // Corrected the name
+                placeholder="Enter Scholarship Type"
+                value={formData.scholarship_type}
                 onChange={handleInputChange}
                 style={{
                     padding: '10px',
@@ -88,8 +86,6 @@ function AddScholarshipType() {
             }}>
                 Add
             </button>
-
-            <ToastContainer />
         </div>
     );
 }

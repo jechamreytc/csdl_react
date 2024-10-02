@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'sonner';
 import axios from 'axios';
 import secureLocalStorage from 'react-secure-storage';
 
@@ -9,6 +8,7 @@ function AddDepartment() {
         department_name: "",
     });
 
+    const [loading, setLoading] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -18,30 +18,32 @@ function AddDepartment() {
         });
     };
 
-    // Function to handle adding department
     const handleAdd = async () => {
+        if (loading) return;  // Prevent multiple submissions
+        setLoading(true);
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
 
             const jsonData = {
-                department_name: formData.department_name,
+                dept_name: formData.department_name,
             };
 
             const formDataToSend = new FormData();
             formDataToSend.append("json", JSON.stringify(jsonData));
-            formDataToSend.append("operation", "adddepartment"); // Updated operation for department
+            formDataToSend.append("operation", "addDepartment");
 
             const res = await axios.post(url, formDataToSend);
 
             if (res.data !== 0) {
                 toast.success("Department added successfully");
-                setFormData({ department_name: "" }); // Reset the form after success
             } else {
                 toast.error("Failed to add department");
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             toast.error("An error occurred while adding the department");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -63,7 +65,7 @@ function AddDepartment() {
             }}>Add Department</h2>
             <input
                 type="text"
-                name="department_name" // Name matches the key in state
+                name="department_name"
                 placeholder="Enter department name"
                 value={formData.department_name}
                 onChange={handleInputChange}
@@ -79,17 +81,15 @@ function AddDepartment() {
             <button onClick={handleAdd} style={{
                 padding: '10px 20px',
                 fontSize: '16px',
-                backgroundColor: '#1e88e5',
+                backgroundColor: loading ? '#9e9e9e' : '#1e88e5',
                 color: 'white',
                 border: 'none',
                 borderRadius: '4px',
                 cursor: 'pointer',
                 transition: 'background-color 0.3s ease',
-            }}>
-                Add
+            }} disabled={loading}>
+                {loading ? 'Adding...' : 'Add'}
             </button>
-
-            <ToastContainer />
         </div>
     );
 }

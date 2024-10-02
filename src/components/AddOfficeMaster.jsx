@@ -1,98 +1,74 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import secureLocalStorage from 'react-secure-storage';
 import { toast } from 'sonner';
 
 const AddOfficeMaster = () => {
-    const [activeTab, setActiveTab] = useState('offices');
-
-
     const [formData, setFormData] = useState({
-        // offName: '',
-        offSubjectCode: '',
-        offDescriptivTitle: '',
-        offSection: '',
-        offRoom: '',
-        offTypeId: '',
-        offTimeIn: '',
-        offTimeOut: '',
-        offdayRemote: '',
-        remoteOffTimeIn: '',
-        remoteOffTimeOut: ''
+        offSubjectCode: "",
+        offDescriptivTitle: "",
+        offSection: "",
+        offRoom: "",
+        offTypeId: "",
+        offTimeIn: "",
+        offTimeOut: "",
+        offdayRemote: "",
+        remoteOffTimeIn: "",
+        remoteOffTimeOut: ""
     });
 
-    // const [offName, setOffName] = useState([]);
-    const [offSubjectCode, setOffSubjectCode] = useState([]);
-    const [offDescriptivTitle, setOffDescriptivTitle] = useState([]);
-    const [offSection, setOffSection] = useState([]);
-    const [offRoom, setOffRoom] = useState([]);
-    const [offTypeId, setOffTypeId] = useState([]);
-    const [offTimeIn, setoffTimeIn] = useState([]);
-    const [offTimeOut, setoffTimeOut] = useState([]);
-    const [offdayRemote, setoffdayRemote] = useState([]);
-    const [remoteOffTimeIn, setRemoteOffTimeIn] = useState([]);
-    const [remoteOffTimeOut, setRemoteOffTimeOut] = useState([]);
+    const [activeTab, setActiveTab] = useState('offices');
 
-    useEffect(() => {
-        const addOfficeMaster = async () => {
-            try {
-                const url = secureLocalStorage.getItem('url') + 'CSDL.php';
-
-                const formData = new FormData();
-                formData.append('operation', 'addOfficeMaster');
-                const res = await axios.post(url, formData);
-                // setOffName(res.data.yearLevel);
-                setOffSubjectCode(res.data.offSubjectCode);
-                setOffDescriptivTitle(res.data.offDescriptivTitle);
-                setOffSection(res.data.offSection);
-                setOffRoom(res.data.offRoom);
-                setOffTypeId(res.data.offTypeId);
-                setoffTimeIn(res.data.offTimeIn);
-                setoffTimeOut(res.data.offTimeOut);
-                setoffdayRemote(res.data.offdayRemote);
-                setRemoteOffTimeIn(res.data.remoteOffTimeIn);
-                setRemoteOffTimeOut(res.data.remoteOffTimeOut);
-
-                console.log("res.data ni fetch Data", res);
-
-            } catch (error) {
-                toast.error('Failed to load form data');
-            }
-        };
-
-        addOfficeMaster();
-    }, []);
-
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
     };
 
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value
-        }));
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
+    const handleAdd = async () => {
         try {
-            const response = await axios.post('url', formData);
-            // console.log('Response:', response.data);
-            toast.success('Form submitted successfully!');
+            const url = secureLocalStorage.getItem('url') + 'CSDL.php';
+
+            const jsonData = {
+                off_subject_code: formData.offSubjectCode,
+                off_descriptive_title: formData.offDescriptivTitle,
+                off_section: formData.offSection,
+                off_room: formData.offRoom,
+                off_type_id: formData.offTypeId,
+                off_timeIn: formData.offTimeIn,
+                off_timeOut: formData.offTimeOut,
+                off_dayRemote: formData.offdayRemote,
+                off_remoteTimeIn: formData.remoteOffTimeIn,
+                off_remoteTimeOut: formData.remoteOffTimeOut
+            };
+
+
+            const formDataToSend = new FormData();
+            formDataToSend.append("json", JSON.stringify(jsonData));
+            formDataToSend.append('operation', 'addOfficeMaster');
+
+            const res = await axios.post(url, formDataToSend);
+
+            if (res.data !== 0) {
+                toast.success("Office Master added successfully");
+                console.log("Office Master added successfully", res.data);
+            } else {
+                toast.error("Failed to add Office Master");
+                console.log("Failed to add Office Master", res.data);
+            }
         } catch (error) {
-            // console.error('Error submitting the form:', error);
-            toast.error('Failed to submit the form.');
+            toast.error("Failed to add Office Master");
+            console.log("Failed to add Office Master", error);
         }
     };
 
     return (
-
-
         <>
             <div className="bg-blue-600 p-6 rounded-lg">
                 <div className="flex items-center justify-between mb-4">
@@ -114,14 +90,13 @@ const AddOfficeMaster = () => {
                     </button>
                 </div>
 
-                <form className="space-y-4" onSubmit={handleSubmit}>
-
+                <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); handleAdd(); }}>
                     <div>
                         <input
                             type="text"
                             name="offSubjectCode"
                             value={formData.offSubjectCode}
-                            onChange={handleChange}
+                            onChange={handleInputChange}
                             placeholder="Subject Code:"
                             className="w-full p-2 mt-1 rounded-lg bg-blue-900 text-white placeholder-white border-none focus:ring focus:ring-green-500"
                         />
@@ -132,7 +107,7 @@ const AddOfficeMaster = () => {
                             type="text"
                             name="offDescriptivTitle"
                             value={formData.offDescriptivTitle}
-                            onChange={handleChange}
+                            onChange={handleInputChange}
                             placeholder="Descriptive Title:"
                             className="w-full p-2 mt-1 rounded-lg bg-blue-900 text-white placeholder-white border-none focus:ring focus:ring-green-500"
                         />
@@ -143,7 +118,7 @@ const AddOfficeMaster = () => {
                             type="text"
                             name="offSection"
                             value={formData.offSection}
-                            onChange={handleChange}
+                            onChange={handleInputChange}
                             placeholder="Section:"
                             className="w-full p-2 mt-1 rounded-lg bg-blue-900 text-white placeholder-white border-none focus:ring focus:ring-green-500"
                         />
@@ -154,7 +129,7 @@ const AddOfficeMaster = () => {
                             type="text"
                             name="offRoom"
                             value={formData.offRoom}
-                            onChange={handleChange}
+                            onChange={handleInputChange}
                             placeholder="Day Face-to-Face:"
                             className="w-full p-2 mt-1 rounded-lg bg-blue-900 text-white placeholder-white border-none focus:ring focus:ring-green-500"
                         />
@@ -166,7 +141,7 @@ const AddOfficeMaster = () => {
                                 type="time"
                                 name="offTimeIn"
                                 value={formData.offTimeIn}
-                                onChange={handleChange}
+                                onChange={handleInputChange}
                                 placeholder="Starting Time Face to Face:"
                                 className="w-full p-2 mt-1 rounded-lg bg-blue-900 text-white placeholder-white border-none focus:ring focus:ring-green-500"
                             />
@@ -176,7 +151,7 @@ const AddOfficeMaster = () => {
                                 type="time"
                                 name="offTimeOut"
                                 value={formData.offTimeOut}
-                                onChange={handleChange}
+                                onChange={handleInputChange}
                                 placeholder="Ending Time Face to Face:"
                                 className="w-full p-2 mt-1 rounded-lg bg-blue-900 text-white placeholder-white border-none focus:ring focus:ring-green-500"
                             />
@@ -188,7 +163,7 @@ const AddOfficeMaster = () => {
                             type="text"
                             name="offdayRemote"
                             value={formData.offdayRemote}
-                            onChange={handleChange}
+                            onChange={handleInputChange}
                             placeholder="Day Remote Coaching:"
                             className="w-full p-2 mt-1 rounded-lg bg-blue-900 text-white placeholder-white border-none focus:ring focus:ring-green-500"
                         />
@@ -200,7 +175,7 @@ const AddOfficeMaster = () => {
                                 type="time"
                                 name="remoteOffTimeIn"
                                 value={formData.remoteOffTimeIn}
-                                onChange={handleChange}
+                                onChange={handleInputChange}
                                 placeholder="Starting Time Remote Coaching:"
                                 className="w-full p-2 mt-1 rounded-lg bg-blue-900 text-white placeholder-white border-none focus:ring focus:ring-green-500"
                             />
@@ -210,7 +185,7 @@ const AddOfficeMaster = () => {
                                 type="time"
                                 name="remoteOffTimeOut"
                                 value={formData.remoteOffTimeOut}
-                                onChange={handleChange}
+                                onChange={handleInputChange}
                                 placeholder="Ending Time Remote Coaching:"
                                 className="w-full p-2 mt-1 rounded-lg bg-blue-900 text-white placeholder-white border-none focus:ring focus:ring-green-500"
                             />
@@ -222,7 +197,7 @@ const AddOfficeMaster = () => {
                             type="text"
                             name="offRoom"
                             value={formData.offRoom}
-                            onChange={handleChange}
+                            onChange={handleInputChange}
                             placeholder="Room:"
                             className="w-full p-2 mt-1 rounded-lg bg-blue-900 text-white placeholder-white border-none focus:ring focus:ring-green-500"
                         />
@@ -231,19 +206,23 @@ const AddOfficeMaster = () => {
                     <div className="flex justify-end">
                         <button
                             type="submit"
-                            className="bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600"
+                            style={{
+                                padding: '10px 20px',
+                                fontSize: '16px',
+                                backgroundColor: '#1e88e5',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '4px',
+                                cursor: 'pointer',
+                                transition: 'background-color 0.3s ease',
+                            }}
                         >
-                            Submit
+                            Add
                         </button>
                     </div>
                 </form>
             </div>
-
-
         </>
-
-
-
     );
 };
 

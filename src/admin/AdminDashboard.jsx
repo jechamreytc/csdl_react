@@ -3,11 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import AddCourse from '../modal/AddCourse';
 import AddAdministrator from '../components/AddAdmin';
 import AddScholar from '../components/AddScholar';
-import { ArrowLeftCircle, ArrowLeftIcon } from 'lucide-react';
+import { ArrowLeftCircle } from 'lucide-react';
 import AddDepartment from '../modal/AddDepartment';
 import AddSchoolYear from '../modal/AddSchoolYear';
 import AddScholarshipType from '../modal/AddScholarshipType';
 import AddOfficeMaster from '../components/AddOfficeMaster';
+import AddSupervisor from '../components/AddSupervisor';
+import GetOfficeMaster from '../modal/GetOfficeMaster';
+import GetCourse from '../modal/GetCourse';
+import GetDepartment from '../modal/GetDepartment';
+import GetScholar from '../modal/GetScholar';
+import GetSupervisor from '../modal/GetSupervisor';
+import GetAdminlist from '../modal/GetAdminList';
+import GetSchoolYear from '../modal/GetSchoolYear';
+import GetScholarshipSubType from '../modal/GetScholarshipSubType';
+import GetScholarType from '../modal/GetScholarType';
 import secureLocalStorage from 'react-secure-storage';
 import axios from 'axios';
 import { toast } from 'sonner';
@@ -17,7 +27,8 @@ const MasterFiles = () => {
     const navigate = useNavigate();
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [modalContent, setModalContent] = useState(null);
-    const [modalTitle, setModalTitle] = useState('');
+
+    const [modalTitle, setModalTitle] = useState();
     const [datalist, setDatalist] = useState();
     const [isOpenListModal, setIsOpenListModal] = useState(false);
 
@@ -37,8 +48,8 @@ const MasterFiles = () => {
         setModalTitle('');
     };
 
-    const openListModal = (content, title) => {
-        setModalContent(content);
+    const openListModal = (contentlist, title) => {
+        setModalContent(contentlist);
         setModalTitle(title);
         setIsOpenListModal(true);
     };
@@ -90,7 +101,7 @@ const MasterFiles = () => {
                     </div>
                 </nav>
                 <footer className="p-4">
-                    <p className="text-xs">Powered by PHINMA coc</p>
+                    <p className="text-xs">Powered by PHINMA COC</p>
                 </footer>
             </div>
 
@@ -108,16 +119,16 @@ const MasterFiles = () => {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {[
-                                { title: 'Admin', buttonText: 'Add Administrator', route: '/addAdministrator', content: <AddAdministrator />, },
-                                { title: 'Department', buttonText: 'Add Department', route: '/addDepartment', content: <AddDepartment /> },
-                                { title: 'School Year', buttonText: 'Add School Year', route: '/addSchoolYear', content: <AddSchoolYear /> },
-                                { title: 'Course', buttonText: 'Add Course', route: '/addCourse', content: <AddCourse /> },
-                                { title: 'Scholarship Type', buttonText: 'Add Scholarship Type', route: '/addScholarshipType', content: <AddScholarshipType /> },
-                                { title: 'Office Master', buttonText: 'Add Office Master', route: '/addOfficeMaster', content: <AddOfficeMaster /> },
-                                { title: 'Scholar', buttonText: 'Add Scholar', route: '/addScholar', content: <AddScholar /> },
-                                { title: 'Supervisor', buttonText: 'Add Supervisor', route: '/addSupervisor', content: <addSupervisor /> },
-                                { title: 'Scholarship Sub Type', buttonText: 'Add Scholarship Sub Type', route: '/addScholarshipSubType', content: <AddScholarshipSubType /> },
-                            ].map(({ title, buttonText, route, content }, index) => (
+                                { title: 'Admin', buttonText: 'Add Administrator', route: '/addAdministrator', content: <AddAdministrator />, buttonText2: 'Addministrator List', contentlist: <GetAdminlist /> },
+                                { title: 'Department', buttonText: 'Add Department', route: '/addDepartment', content: <AddDepartment />, buttonText2: 'Department List', contentlist: <GetDepartment /> },
+                                { title: 'School Year', buttonText: 'Add School Year', route: '/addSchoolYear', content: <AddSchoolYear />, buttonText2: 'School Year List', contentlist: <GetSchoolYear /> },
+                                { title: 'Course', buttonText: 'Add Course', route: '/addCourse', content: <AddCourse />, buttonText2: 'Course List', contentlist: <GetCourse /> },
+                                { title: 'Scholarship Type', buttonText: 'Add Scholarship Type', route: '/addScholarshipType', content: <AddScholarshipType />, buttonText2: 'Scholarship Type List', contentlist: <GetScholarType /> },
+                                { title: 'Office Master', buttonText: 'Add Office Master', route: '/addOfficeMaster', content: <AddOfficeMaster />, buttonText2: 'Office Master List', contentlist: <GetOfficeMaster /> },
+                                { title: 'Scholar', buttonText: 'Add Scholar', route: '/addScholar', content: <AddScholar />, buttonText: 'Scholar List', contentlist: <GetScholar /> },
+                                { title: 'Supervisor', buttonText: 'Add Supervisor', route: '/addSupervisor', content: <AddSupervisor />, buttonText2: 'Supervisor List', contentlist: <GetSupervisor /> },
+                                { title: 'Scholarship Sub Type', buttonText: 'Add Scholarship Sub Type', route: '/addScholarshipSubType', content: <AddScholarshipSubType />, buttonText2: 'Scholarship Sub Type List', contentlist: <GetScholarshipSubType /> },
+                            ].map(({ title, buttonText, route, content, contentlist, buttonText2 }, index) => (
                                 <div key={index} className="flex flex-col items-center">
                                     <h2 className="text-white text-lg font-semibold mb-2">{title}</h2>
                                     <div className="bg-blue-700 p-4 rounded-lg shadow-lg flex flex-col items-center">
@@ -129,7 +140,8 @@ const MasterFiles = () => {
                                             >
                                                 Add
                                             </button>
-                                            <button className="w-16 py-1 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200 ease-in-out text-xs">
+                                            <button className="w-16 py-1 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200 ease-in-out text-xs"
+                                                onClick={() => openListModal(contentlist, buttonText2)}>
                                                 Get List
                                             </button>
                                         </div>
@@ -158,12 +170,13 @@ const MasterFiles = () => {
                     </div>
                 </div>
             )}
+
             {isOpenListModal && (
                 <div className='fixed inset-0  bg-black bg-opacity-50 flex justify-center items-center w-full'>
                     <div className='bg-blue-800 p-8 rounded-lg shadow-lg relative max-w-md w-full'>
                         <div className='grid grid-cols-3 text-xl font-bold md-4 text-black'>
                             <div className=''>
-                                <ArrowLeftCircle className='cursor-pointer h-7 w-7 text-white' onClick={closeModal} />
+                                <ArrowLeftCircle className='cursor-pointer h-7 w-7 text-white' onClick={closeListModal} />
                             </div>
                             <p className='text-center text-white'>{modalTitle}</p>
                         </div>

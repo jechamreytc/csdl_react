@@ -27,7 +27,6 @@ const MasterFiles = () => {
     const navigate = useNavigate();
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [modalContent, setModalContent] = useState(null);
-
     const [modalTitle, setModalTitle] = useState();
     const [datalist, setDatalist] = useState();
     const [isOpenListModal, setIsOpenListModal] = useState(false);
@@ -74,18 +73,26 @@ const MasterFiles = () => {
             console.log(error);
         }
     }
+
     useEffect(() => {
         getAllList();
-    }, [])
-
+    }, []);
 
     return (
-        <div className="flex h-screen bg-blue-800">
+        <div className="flex min-h-screen bg-blue-800">
             <div className="w-64 bg-green-800 text-white flex flex-col justify-between">
-                <div className="p-4">
-                    <h1 className="text-xl font-bold">HK SMS</h1>
-                    <p className="text-sm">HK Scholars Management System</p>
+                <div className="p-4 flex items-center">
+                    <img
+                        src="images/csdl.jpg"
+                        alt="Logo"
+                        className="w-20 h-20 rounded-full mr-4"
+                    />
+                    <div>
+                        <h1 className="text-xl font-bold">HK SMS</h1>
+                        <p className="text-sm">HK Scholars Management System</p>
+                    </div>
                 </div>
+
                 <nav className="flex-grow mt-10">
                     {['Dashboard', 'Scholar List', 'QR Code', 'Assigned Student', 'Master Files'].map(item => (
                         <a key={item} href="#" className="block py-2 px-4 hover:bg-green-600 transition duration-200 ease-in-out">
@@ -153,6 +160,7 @@ const MasterFiles = () => {
                 </div>
             </div>
 
+            {/* Add Modal */}
             {isOpenModal && (
                 <div className='fixed inset-0  bg-black bg-opacity-50 flex justify-center items-center w-full'>
                     <div className='bg-blue-800 p-8 rounded-lg shadow-lg relative max-w-md w-full'>
@@ -163,14 +171,13 @@ const MasterFiles = () => {
                             <p className='text-center text-white'>{modalTitle}</p>
                         </div>
                         <div>
-
                             {modalContent}
                         </div>
-
                     </div>
                 </div>
             )}
 
+            {/* List Modal */}
             {isOpenListModal && (
                 <div className='fixed inset-0  bg-black bg-opacity-50 flex justify-center items-center w-full'>
                     <div className='bg-blue-800 p-8 rounded-lg shadow-lg relative max-w-md w-full'>
@@ -181,10 +188,8 @@ const MasterFiles = () => {
                             <p className='text-center text-white'>{modalTitle}</p>
                         </div>
                         <div>
-
                             {modalContent}
                         </div>
-
                     </div>
                 </div>
             )}

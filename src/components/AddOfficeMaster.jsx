@@ -72,7 +72,7 @@ const AddOfficeMaster = () => {
         <>
             <div className="bg-blue-600 p-6 rounded-lg">
                 <div className="flex items-center justify-between mb-4">
-                    {/* Add any content here */}
+
                 </div>
 
                 <div className="flex justify-center space-x-4 mb-6">
@@ -139,8 +139,8 @@ const AddOfficeMaster = () => {
                         <div className="flex-1">
                             <input
                                 type="time"
-                                name="offTimeIn"
-                                value={formData.offTimeIn}
+                                name="offTypeId"
+                                value={formData.offTypeId}
                                 onChange={handleInputChange}
                                 placeholder="Starting Time Face to Face:"
                                 className="w-full p-2 mt-1 rounded-lg bg-blue-900 text-white placeholder-white border-none focus:ring focus:ring-green-500"
@@ -149,8 +149,8 @@ const AddOfficeMaster = () => {
                         <div className="flex-1">
                             <input
                                 type="time"
-                                name="offTimeOut"
-                                value={formData.offTimeOut}
+                                name="offTimeIn"
+                                value={formData.offTimeIn}
                                 onChange={handleInputChange}
                                 placeholder="Ending Time Face to Face:"
                                 className="w-full p-2 mt-1 rounded-lg bg-blue-900 text-white placeholder-white border-none focus:ring focus:ring-green-500"
@@ -161,8 +161,8 @@ const AddOfficeMaster = () => {
                     <div className="flex justify-between items-center">
                         <input
                             type="text"
-                            name="offdayRemote"
-                            value={formData.offdayRemote}
+                            name="offTimeOut"
+                            value={formData.offTimeOut}
                             onChange={handleInputChange}
                             placeholder="Day Remote Coaching:"
                             className="w-full p-2 mt-1 rounded-lg bg-blue-900 text-white placeholder-white border-none focus:ring focus:ring-green-500"
@@ -173,8 +173,8 @@ const AddOfficeMaster = () => {
                         <div className="flex-1">
                             <input
                                 type="time"
-                                name="remoteOffTimeIn"
-                                value={formData.remoteOffTimeIn}
+                                name="offdayRemote"
+                                value={formData.offdayRemote}
                                 onChange={handleInputChange}
                                 placeholder="Starting Time Remote Coaching:"
                                 className="w-full p-2 mt-1 rounded-lg bg-blue-900 text-white placeholder-white border-none focus:ring focus:ring-green-500"
@@ -183,8 +183,8 @@ const AddOfficeMaster = () => {
                         <div className="flex-1">
                             <input
                                 type="time"
-                                name="remoteOffTimeOut"
-                                value={formData.remoteOffTimeOut}
+                                name="remoteOffTimeIn"
+                                value={formData.remoteOffTimeIn}
                                 onChange={handleInputChange}
                                 placeholder="Ending Time Remote Coaching:"
                                 className="w-full p-2 mt-1 rounded-lg bg-blue-900 text-white placeholder-white border-none focus:ring focus:ring-green-500"
@@ -195,8 +195,8 @@ const AddOfficeMaster = () => {
                     <div>
                         <input
                             type="text"
-                            name="offRoom"
-                            value={formData.offRoom}
+                            name="remoteOffTimeOut"
+                            value={formData.remoteOffTimeOut}
                             onChange={handleInputChange}
                             placeholder="Room:"
                             className="w-full p-2 mt-1 rounded-lg bg-blue-900 text-white placeholder-white border-none focus:ring focus:ring-green-500"

@@ -19,13 +19,21 @@ function AddDepartment() {
     };
 
     const handleAdd = async () => {
-        if (loading) return;  // Prevent multiple submissions
+        if (loading) return;
+
+        // Safeguard against undefined
+        const departmentName = formData.department_name || "";
+        if (departmentName.trim() === "") {
+            toast.error("Department name cannot be empty");
+            return;
+        }
+
         setLoading(true);
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
 
             const jsonData = {
-                dept_name: formData.department_name,
+                dept_name: departmentName,
             };
 
             const formDataToSend = new FormData();
@@ -34,8 +42,11 @@ function AddDepartment() {
 
             const res = await axios.post(url, formDataToSend);
 
-            if (res.data !== 0) {
+            if (res.data === 1) {
                 toast.success("Department added successfully");
+                setFormData({ department_name: "" }); // Reset form
+            } else if (res.data === -1) {
+                toast.error("Department already exists");
             } else {
                 toast.error("Failed to add department");
             }
@@ -48,46 +59,22 @@ function AddDepartment() {
     };
 
     return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            backgroundColor: '#e3f2fd',
-            padding: '20px',
-            borderRadius: '8px',
-            maxWidth: '400px',
-            margin: 'auto',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-        }}>
-            <h2 style={{
-                marginBottom: '20px',
-                color: '#0d47a1',
-            }}>Add Department</h2>
+        <div className="flex flex-col items-center bg-blue-100 p-6 rounded-lg max-w-md mx-auto shadow-lg">
+            <h2 className="mb-5 text-2xl text-blue-900 font-semibold">Add Department</h2>
             <input
                 type="text"
                 name="department_name"
                 placeholder="Enter department name"
                 value={formData.department_name}
                 onChange={handleInputChange}
-                style={{
-                    padding: '10px',
-                    fontSize: '16px',
-                    width: '100%',
-                    marginBottom: '10px',
-                    border: '1px solid #0d47a1',
-                    borderRadius: '4px',
-                }}
+                className="p-2 text-lg w-full mb-4 border border-blue-900 rounded-md"
             />
-            <button onClick={handleAdd} style={{
-                padding: '10px 20px',
-                fontSize: '16px',
-                backgroundColor: loading ? '#9e9e9e' : '#1e88e5',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                transition: 'background-color 0.3s ease',
-            }} disabled={loading}>
+            <button
+                onClick={handleAdd}
+                className={`px-4 py-2 text-lg text-white rounded-md transition-colors duration-300 ${loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'
+                    }`}
+                disabled={loading}
+            >
                 {loading ? 'Adding...' : 'Add'}
             </button>
         </div>

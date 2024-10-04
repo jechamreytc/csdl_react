@@ -46,7 +46,6 @@ function AddCourse() {
             const jsonData = {
                 crs_name: formData.course,
                 crs_dept_id: formData.department,
-
             };
 
             const formDataToSend = new FormData();
@@ -57,6 +56,11 @@ function AddCourse() {
 
             if (res.data !== 0) {
                 toast.success("Course added successfully");
+                // Reset form fields after adding the course
+                setFormData({
+                    course: "",
+                    department: ""
+                });
             } else {
                 toast.error("Failed to add Course");
             }
@@ -66,12 +70,9 @@ function AddCourse() {
         }
     };
 
-
-
-
     return (
-        <div style={styles.container}>
-            <h2 style={styles.heading}>Add Course</h2>
+        <div className="flex flex-col items-center bg-blue-100 p-6 rounded-lg max-w-md mx-auto shadow-md">
+            <h2 className="mb-4 text-2xl text-blue-900">Add Course</h2>
 
             <input
                 type="text"
@@ -79,72 +80,31 @@ function AddCourse() {
                 placeholder="Enter Course Name"
                 value={formData.course}
                 onChange={handleInputChange}
-                style={styles.input}
+                className="p-2 text-lg w-full mb-2 border border-blue-900 rounded"
             />
 
             <select
                 name="department"
                 value={formData.department}
                 onChange={handleInputChange}
-                style={styles.select}
+                className="p-2 text-lg w-full mb-2 border border-blue-900 rounded"
             >
                 <option value="">Select Department</option>
-                {departments.map((dept, index) => (
+                {departments.length > 0 ? departments.map((dept, index) => (
                     <option key={index} value={dept.dept_id}>
                         {dept.dept_name}
                     </option>
-                ))}
+                )) : (<option disabled>No department yet</option>)}
             </select>
 
-            <button onClick={handleAdd} style={styles.button}>
+            <button
+                onClick={handleAdd}
+                className="p-2 text-lg bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300"
+            >
                 Add
             </button>
         </div>
     );
 }
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        backgroundColor: '#e3f2fd',
-        padding: '20px',
-        borderRadius: '8px',
-        maxWidth: '400px',
-        margin: 'auto',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    },
-    heading: {
-        marginBottom: '20px',
-        color: '#0d47a1',
-    },
-    input: {
-        padding: '10px',
-        fontSize: '16px',
-        width: '100%',
-        marginBottom: '10px',
-        border: '1px solid #0d47a1',
-        borderRadius: '4px',
-    },
-    select: {
-        padding: '10px',
-        fontSize: '16px',
-        width: '100%',
-        marginBottom: '10px',
-        border: '1px solid #0d47a1',
-        borderRadius: '4px',
-    },
-    button: {
-        padding: '10px 20px',
-        fontSize: '16px',
-        backgroundColor: '#1e88e5',
-        color: 'white',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
-        transition: 'background-color 0.3s ease',
-    },
-};
 
 export default AddCourse;

@@ -35,8 +35,6 @@ const AddScholar = () => {
 
                 toast.success('Form data loaded successfully');
 
-                // console.log("res.data ni fetch Data", res);
-
             } catch (error) {
                 toast.error('Failed to load form data');
             }
@@ -145,13 +143,11 @@ const AddScholar = () => {
                         required
                     >
                         <option value="">Select Year Level</option>
-
-
-                        {yearLevels.map((level, index) => (
+                        {yearLevels.length > 0 ? yearLevels.map((level, index) => (
                             <option key={index} value={level.school_year_level}>
                                 {level.school_year_level}
                             </option>
-                        ))}
+                        )) : (<p>No School Year Yet</p>)}
                     </select>
                 </div>
 
@@ -166,11 +162,11 @@ const AddScholar = () => {
                         required
                     >
                         <option value="">Select Course</option>
-                        {courses.map((course, index) => (
+                        {courses.length > 0 ? courses.map((course, index) => (
                             <option key={index} value={course.crs_id}>
                                 {course.crs_name}
                             </option>
-                        ))}
+                        )) : (<p>No Course Yet</p>)}
                     </select>
                 </div>
 
@@ -185,11 +181,11 @@ const AddScholar = () => {
                         required
                     >
                         <option value="">Select Scholarship Type</option>
-                        {scholarshipTypes.map((type, index) => (
+                        {scholarshipTypes.length > 0 ? scholarshipTypes.map((type, index) => (
                             <option key={index} value={type.type_id}>
                                 {type.type_name}
                             </option>
-                        ))}
+                        )) : (<p>No Scholarship Yet</p>)}
                     </select>
                 </div>
                 <div className="w-full">
@@ -202,11 +198,11 @@ const AddScholar = () => {
                         required
                     >
                         <option value="">Select Scholarship Sub</option>
-                        {scholarshipSub.map((sub, index) => (
+                        {scholarshipSub.length > 0 ? scholarshipSub.map((sub, index) => (
                             <option key={index} value={sub.stype_id}>
                                 {sub.stype_name}
                             </option>
-                        ))}
+                        )) : (<p>No Scholarship Sub Type Yet</p>)}
                     </select>
                 </div>
 

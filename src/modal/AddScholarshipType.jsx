@@ -4,7 +4,6 @@ import axios from 'axios';
 import secureLocalStorage from 'react-secure-storage';
 
 function AddScholarshipType() {
-
     const [formData, setFormData] = useState({
         scholarship_type: "",
     });
@@ -34,6 +33,8 @@ function AddScholarshipType() {
 
             if (res.data !== 0) {
                 toast.success("Scholarship Type added successfully");
+                // Clear the input field
+                setFormData({ scholarship_type: "" });
             } else {
                 toast.error("Failed to add Scholarship Type");
             }
@@ -44,46 +45,20 @@ function AddScholarshipType() {
     };
 
     return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            backgroundColor: '#e3f2fd',
-            padding: '20px',
-            borderRadius: '8px',
-            maxWidth: '400px',
-            margin: 'auto',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-        }}>
-            <h2 style={{
-                marginBottom: '20px',
-                color: '#0d47a1',
-            }}>Add Scholarship Type</h2>
+        <div className="flex flex-col items-center bg-blue-100 p-6 rounded-lg max-w-md mx-auto shadow-lg">
+            <h2 className="text-2xl font-bold text-blue-900 mb-6">Add Scholarship Type</h2>
             <input
                 type="text"
-                name="scholarship_type" // Corrected the name
+                name="scholarship_type"
                 placeholder="Enter Scholarship Type"
                 value={formData.scholarship_type}
                 onChange={handleInputChange}
-                style={{
-                    padding: '10px',
-                    fontSize: '16px',
-                    width: '100%',
-                    marginBottom: '10px',
-                    border: '1px solid #0d47a1',
-                    borderRadius: '4px',
-                }}
+                className="p-3 text-lg w-full mb-4 border border-blue-700 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
             />
-            <button onClick={handleAdd} style={{
-                padding: '10px 20px',
-                fontSize: '16px',
-                backgroundColor: '#1e88e5',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                transition: 'background-color 0.3s ease',
-            }}>
+            <button
+                onClick={handleAdd}
+                className="px-5 py-3 text-lg bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 ease-in-out"
+            >
                 Add
             </button>
         </div>

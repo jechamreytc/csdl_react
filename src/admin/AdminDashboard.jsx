@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AddCourse from '../modal/AddCourse';
 import AddAdministrator from '../components/AddAdmin';
 import AddScholar from '../components/AddScholar';
-import { ArrowLeftCircle } from 'lucide-react';
+import { ArrowLeftCircle, BellIcon, CircleUser, FolderClosed, LogOutIcon, PanelsRightBottom, QrCodeIcon, User } from 'lucide-react';
 import AddDepartment from '../modal/AddDepartment';
 import AddSchoolYear from '../modal/AddSchoolYear';
 import AddScholarshipType from '../modal/AddScholarshipType';
@@ -22,8 +22,14 @@ import secureLocalStorage from 'react-secure-storage';
 import axios from 'axios';
 import { toast } from 'sonner';
 import AddScholarshipSubType from '../modal/AddScholarshipSubType';
+import {
+    Trash2, Edit, Gauge, List, QrCode, GraduationCap, Book,
+    Settings, Bell, Mail, LogOut, Calendar, Search,
+} from 'lucide-react';
+import { BsQrCode } from 'react-icons/bs';
 
 const MasterFiles = () => {
+    const navigateTo = useNavigate();
     const navigate = useNavigate();
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [modalContent, setModalContent] = useState(null);
@@ -79,38 +85,112 @@ const MasterFiles = () => {
     }, []);
 
     return (
+
+
         <div className="flex min-h-screen bg-blue-800">
-            <div className="w-64 bg-green-800 text-white flex flex-col justify-between">
-                <div className="p-4 flex items-center">
-                    <img
-                        src="images/csdl.jpg"
-                        alt="Logo"
-                        className="w-20 h-20 rounded-full mr-4"
-                    />
-                    <div>
-                        <h1 className="text-xl font-bold">HK SMS</h1>
-                        <p className="text-sm">HK Scholars Management System</p>
+            <aside className="w-1/4 bg-green-600 p-6 flex flex-col justify-between">
+                <div className="text-white mb-8">
+
+                    <div className="flex items-center mb-8">
+                        <img
+                            src="images/csdl.jpg"
+                            alt="Logo"
+                            className="w-20 h-20 rounded-full mr-4"
+                        />
+                        <div>
+                            <h1 className="text-2xl font-bold">HK SMS</h1>
+                            <p className="text-sm">HK Scholars Management System</p>
+                        </div>
                     </div>
+
+
+                    <nav>
+                        <ul className="text-white space-y-4">
+                            <li>
+                                <button
+                                    className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full transition-colors duration-200"
+                                    onClick={() => navigateTo("/MainDashboard")}
+                                >
+                                    <PanelsRightBottom className="mr-2" />
+                                    <span>Dashboard</span>
+                                </button>
+                            </li>
+
+                            <li>
+                                <button
+                                    className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full transition-colors duration-200"
+                                    onClick={() => navigateTo("/ScholarList")}
+                                >
+                                    <List className="mr-2" />
+                                    <span>Scholar List</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full transition-colors duration-200"
+                                    onClick={() => navigateTo("/qrcode")}
+                                >
+                                    <BsQrCode className="mr-2" />
+                                    <span>QR Code</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full transition-colors duration-200"
+                                >
+                                    <User className="mr-2" />
+                                    <span>Assigned Student</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full transition-colors duration-200"
+                                    onClick={() => navigateTo("/AdminDashboard")}
+                                >
+                                    <FolderClosed className="mr-2" />
+                                    <span>Master Files</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full transition-colors duration-200"
+                                >
+                                    <CircleUser className="mr-2" />
+                                    <span>Account</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full transition-colors duration-200"
+                                >
+                                    <BellIcon className="mr-2" />
+                                    <span>Notification</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full transition-colors duration-200"
+                                >
+                                    <Mail className="mr-2" />
+                                    <span>Messages</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-2 hover:bg-red-600 rounded-md w-full transition-colors duration-200"
+                                >
+                                    <LogOutIcon className="mr-2" />
+                                    <span>Logout</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
 
-                <nav className="flex-grow mt-10">
-                    {['Dashboard', 'Scholar List', 'QR Code', 'Assigned Student', 'Master Files'].map(item => (
-                        <a key={item} href="#" className="block py-2 px-4 hover:bg-green-600 transition duration-200 ease-in-out">
-                            {item}
-                        </a>
-                    ))}
-                    <div className="mt-6">
-                        {['Account', 'Notification', 'Messages', 'Logout'].map(item => (
-                            <a key={item} href="#" className="block py-2 px-4 hover:bg-green-600 transition duration-200 ease-in-out">
-                                {item}
-                            </a>
-                        ))}
-                    </div>
-                </nav>
-                <footer className="p-4">
-                    <p className="text-xs">Powered by PHINMA COC</p>
-                </footer>
-            </div>
+
+                <p className="text-white text-xs">Powered by PHINMA</p>
+            </aside>
+
 
             <div className="flex-grow p-10 bg-blue-500">
                 <div className="bg-white p-8 rounded-lg shadow-lg">
@@ -160,40 +240,44 @@ const MasterFiles = () => {
                 </div>
             </div>
 
-            {/* Add Modal */}
-            {isOpenModal && (
-                <div className='fixed inset-0  bg-black bg-opacity-50 flex justify-center items-center w-full'>
-                    <div className='bg-blue-800 p-8 rounded-lg shadow-lg relative max-w-md w-full'>
-                        <div className='grid grid-cols-3 text-xl font-bold md-4 text-black'>
-                            <div className=''>
-                                <ArrowLeftCircle className='cursor-pointer h-7 w-7 text-white' onClick={closeModal} />
-                            </div>
-                            <p className='text-center text-white'>{modalTitle}</p>
-                        </div>
-                        <div>
-                            {modalContent}
-                        </div>
-                    </div>
-                </div>
-            )}
 
-            {/* List Modal */}
-            {isOpenListModal && (
-                <div className='fixed inset-0  bg-black bg-opacity-50 flex justify-center items-center w-full'>
-                    <div className='bg-blue-800 p-8 rounded-lg shadow-lg relative max-w-md w-full'>
-                        <div className='grid grid-cols-3 text-xl font-bold md-4 text-black'>
-                            <div className=''>
-                                <ArrowLeftCircle className='cursor-pointer h-7 w-7 text-white' onClick={closeListModal} />
+            {
+                isOpenModal && (
+                    <div className='fixed inset-0  bg-black bg-opacity-50 flex justify-center items-center w-full'>
+                        <div className='bg-blue-800 p-8 rounded-lg shadow-lg relative max-w-md w-full'>
+                            <div className='grid grid-cols-3 text-xl font-bold md-4 text-black'>
+                                <div className=''>
+                                    <ArrowLeftCircle className='cursor-pointer h-7 w-7 text-white' onClick={closeModal} />
+                                </div>
+                                <p className='text-center text-white'>{modalTitle}</p>
                             </div>
-                            <p className='text-center text-white'>{modalTitle}</p>
-                        </div>
-                        <div>
-                            {modalContent}
+                            <div>
+                                {modalContent}
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )
+            }
+
+
+            {
+                isOpenListModal && (
+                    <div className='fixed inset-0  bg-black bg-opacity-50 flex justify-center items-center w-full'>
+                        <div className='bg-blue-800 p-8 rounded-lg shadow-lg relative max-w-md w-full'>
+                            <div className='grid grid-cols-3 text-xl font-bold md-4 text-black'>
+                                <div className=''>
+                                    <ArrowLeftCircle className='cursor-pointer h-7 w-7 text-white' onClick={closeListModal} />
+                                </div>
+                                <p className='text-center text-white'>{modalTitle}</p>
+                            </div>
+                            <div>
+                                {modalContent}
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+        </div >
     );
 };
 

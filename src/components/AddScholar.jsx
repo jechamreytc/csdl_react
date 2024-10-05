@@ -144,8 +144,8 @@ const AddScholar = () => {
                     >
                         <option value="">Select Year Level</option>
                         {yearLevels.length > 0 ? yearLevels.map((level, index) => (
-                            <option key={index} value={level.school_year_level}>
-                                {level.school_year_level}
+                            <option key={index} value={level.year_level_id}>
+                                {level.year_level_name}
                             </option>
                         )) : (<p>No School Year Yet</p>)}
                     </select>

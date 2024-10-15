@@ -75,109 +75,106 @@ const ScholarList = () => {
 
     return (
         <div className="flex min-h-screen bg-blue-800">
-            <aside className="w-1/4 bg-green-600 p-6 flex flex-col justify-between">
-                <div className="text-white mb-8">
-
-                    <div className="flex items-center mb-8">
+            <aside className="w-1/6 p-4 flex flex-col justify-between" style={{ backgroundColor: "#109315" }}>
+                <div className="text-white mb-6">
+                    <div className="flex items-center mb-6">
                         <img
                             src="images/csdl.jpg"
-                            alt="Logo"
-                            className="w-20 h-20 rounded-full mr-4"
+                            alt="CSDL Logo"
+                            className="w-16 h-16 rounded-full mr-3"
                         />
                         <div>
-                            <h1 className="text-2xl font-bold">HK SMS</h1>
-                            <p className="text-sm">HK Scholars Management System</p>
+                            <h1 className="text-xl font-bold">HK SMS</h1>
+                            <p className="text-xs opacity-80">HK Scholars Management System</p>
                         </div>
                     </div>
 
-
                     <nav>
-                        <ul className="text-white space-y-4">
+                        <ul className="space-y-4">
                             <li>
                                 <button
-                                    className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full transition-colors duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/MainDashboard")}
                                 >
                                     <PanelsRightBottom className="mr-2" />
-                                    <span>Dashboard</span>
+                                    <span className="text-sm">Dashboard</span>
                                 </button>
                             </li>
-
-
                             <li>
                                 <button
-                                    className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full transition-colors duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/ScholarList")}
                                 >
                                     <List className="mr-2" />
-                                    <span>Scholar List</span>
+                                    <span className="text-sm">Scholar List</span>
                                 </button>
                             </li>
                             <li>
                                 <button
-                                    className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full transition-colors duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/qrcode")}
                                 >
-                                    <BsQrCode className="mr-2" />
-                                    <span>QR Code</span>
+                                    <QrCodeIcon className="mr-2" />
+                                    <span className="text-sm">QR Code</span>
                                 </button>
                             </li>
+
                             <li>
                                 <button
-                                    className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full transition-colors duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                 >
                                     <User className="mr-2" />
-                                    <span>Assigned Student</span>
+                                    <span className="text-sm">Assigned Student</span>
                                 </button>
                             </li>
                             <li>
                                 <button
-                                    className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full transition-colors duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/AdminDashboard")}
                                 >
                                     <FolderClosed className="mr-2" />
-                                    <span>Master Files</span>
+                                    <span className="text-sm">Master Files</span>
                                 </button>
                             </li>
+                            <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
                             <li>
                                 <button
-                                    className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full transition-colors duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                 >
                                     <CircleUser className="mr-2" />
-                                    <span>Account</span>
+                                    <span className="text-sm">Account</span>
                                 </button>
                             </li>
                             <li>
                                 <button
-                                    className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full transition-colors duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                 >
                                     <BellIcon className="mr-2" />
-                                    <span>Notification</span>
+                                    <span className="text-sm">Notification</span>
                                 </button>
                             </li>
                             <li>
                                 <button
-                                    className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full transition-colors duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                 >
                                     <Mail className="mr-2" />
-                                    <span>Messages</span>
+                                    <span className="text-sm">Messages</span>
                                 </button>
                             </li>
-                            <li>
+                            <li className="mt-4">
                                 <button
-                                    className="flex items-center p-2 hover:bg-red-600 rounded-md w-full transition-colors duration-200"
+                                    className="flex items-center p-3 bg-red-600 hover:bg-red-700 rounded-md w-full transition-all duration-200"
                                 >
                                     <LogOutIcon className="mr-2" />
-                                    <span>Logout</span>
+                                    <span className="text-sm">Logout</span>
                                 </button>
                             </li>
                         </ul>
                     </nav>
                 </div>
-
-
-                <p className="text-white text-xs">Powered by PHINMA</p>
+                <p className="text-white text-xs opacity-70 mt-4">Powered by PHINMA</p>
             </aside>
+
 
             <div className="flex-1 p-10 bg-blue-600">
                 <div className="flex-1 p-10 bg-white border-spacing-2">

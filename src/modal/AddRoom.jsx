@@ -3,31 +3,31 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import secureLocalStorage from 'react-secure-storage';
 
-function AddCourse() {
+function AddRoom() {
     const [formData, setFormData] = useState({
-        course: "",
-        department: ""
+        room: "",
+        building: ""
     });
-    const [departments, setDepartments] = useState([]);
+    const [buildings, setBuildings] = useState([]);
 
     useEffect(() => {
-        const getDepartments = async () => {
+        const getBuildings = async () => {
             try {
                 const url = secureLocalStorage.getItem("url") + "CSDL.php";
                 const formData = new FormData();
-                formData.append("operation", "getDepartment");
+                formData.append("operation", "getBuildings");
                 const res = await axios.post(url, formData);
-                setDepartments(res.data);
-                toast.success("Departments loaded successfully");
+                setBuildings(res.data);
+                toast.success("Buildings loaded successfully");
 
-                console.log('Departments:', res.data);
+                console.log('Buildings:', res.data);
             } catch (error) {
-                console.log('Failed to load departments:', error);
-                toast.error("Failed to load departments");
+                console.log('Failed to load buildings:', error);
+                toast.error("Failed to load buildings");
             }
         };
 
-        getDepartments();
+        getBuildings();
     }, []);
 
     const handleInputChange = (e) => {
@@ -41,81 +41,81 @@ function AddCourse() {
     const handleAdd = async (e) => {
         e.preventDefault();
 
-        // Validation: Check if the course already exists
-        const courseExists = departments.some(
-            (dept) => dept.crs_name?.toLowerCase() === formData.course.toLowerCase()
+        // Validation: Check if the room already exists
+        const roomExists = buildings.some(
+            (building) => building.room_name?.toLowerCase() === formData.room.toLowerCase()
         );
 
-        if (courseExists) {
-            toast.error("Course with the same name already exists.");
-            return; // Prevent form submission if course exists
+        if (roomExists) {
+            toast.error("Room with the same name already exists.");
+            return; // Prevent form submission if room exists
         }
 
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
 
             const jsonData = {
-                crs_name: formData.course,
-                crs_dept_id: formData.department,
+                room_name: formData.room,
+                building_id: formData.building,
             };
 
             const formDataToSend = new FormData();
             formDataToSend.append("json", JSON.stringify(jsonData));
-            formDataToSend.append("operation", "addCourse");
+            formDataToSend.append("operation", "addRoom");
 
             const res = await axios.post(url, formDataToSend);
 
             if (res.data !== 0) {
-                toast.success("Course added successfully");
-                // Reset form fields after adding the course
+                toast.success("Room added successfully");
+                // Reset form fields after adding the room
                 setFormData({
-                    course: "",
-                    department: ""
+                    room: "",
+                    building: ""
                 });
             } else {
-                toast.error("Failed to add Course");
+                toast.error("Failed to add room");
             }
         } catch (error) {
             console.log(error);
-            toast.error("An error occurred while adding the Course");
+            toast.error("An error occurred while adding the room");
         }
     };
 
     return (
         <div className="flex flex-col items-center bg-blue-100 p-6 rounded-lg max-w-md mx-auto shadow-md">
-            <h2 className="mb-4 text-2xl text-blue-900">Add Course</h2>
+            <h2 className="mb-4 text-2xl text-blue-900">Add Room</h2>
 
             <input
                 type="text"
-                name="course"
-                placeholder="Enter Course Name"
-                value={formData.course}
+                name="room"
+                placeholder="Enter Room Name"
+                value={formData.room}
                 onChange={handleInputChange}
                 className="p-2 text-lg w-full mb-2 border border-blue-900 rounded"
             />
 
             <select
-                name="department"
-                value={formData.department}
+                name="building"
+                value={formData.building}
                 onChange={handleInputChange}
                 className="p-2 text-lg w-full mb-2 border border-blue-900 rounded"
             >
-                <option value="">Select Department</option>
-                {departments.length > 0 ? departments.map((dept, index) => (
-                    <option key={index} value={dept.dept_id}>
-                        {dept.dept_name}
+                <option value="">Select Building</option>
+                {buildings.length > 0 ? buildings.map((building, index) => (
+                    <option key={index} value={building.building_id}>
+                        {building.building_name}
                     </option>
-                )) : (<option disabled>No department yet</option>)}
+                )) : (<option disabled>No buildings yet</option>)}
             </select>
 
             <button
                 onClick={handleAdd}
                 className="p-2 text-lg bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300"
             >
-                Add
+                Add Room
             </button>
         </div>
     );
 }
 
-export default AddCourse;
+export default AddRoom;

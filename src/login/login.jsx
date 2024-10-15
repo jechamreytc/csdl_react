@@ -3,7 +3,13 @@ import React from 'react';
 const Login = () => {
     return (
         <div className="flex h-screen bg-gradient-to-r from-blue-800 to-green-500">
-            <div className="flex items-center justify-center w-1/2">
+            <div className="flex items-center justify-center w-1/2 relative">
+
+                <img
+                    src="images/topleft.png"
+                    alt="Logo"
+                    className="absolute top-5 left-5 w-16 h-16"
+                />
                 <div className="text-white text-center">
                     <h1 className="text-6xl font-bold">HK SMS</h1>
                     <p className="text-2xl mt-2">HK Scholars Management System</p>
@@ -42,7 +48,6 @@ const Login = () => {
                                 <input type="checkbox" className="text-blue-500 focus:ring-2 focus:ring-blue-600 h-4 w-4" />
                                 <label className="ml-2 text-gray-300">Remember me</label>
                             </div>
-                            {/* <a href="#" className="text-gray-400">Forgot password?</a> */}
                         </div>
                         <button
                             type="submit"

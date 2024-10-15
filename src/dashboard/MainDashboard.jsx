@@ -1,166 +1,232 @@
-import React from 'react';
-import { ArrowLeftCircle, BellIcon, CircleUser, FolderClosed, LogOutIcon, PanelsRightBottom, QrCodeIcon, User } from 'lucide-react';
-
-import {
-    FaTrash, FaEdit, FaTachometerAlt, FaList,
-    FaQrcode, FaUserGraduate, FaBook, FaCogs,
-    FaBell, FaEnvelope, FaSignOutAlt, FaCalendar,
-    FaSearch
-} from 'react-icons/fa';
-import {
-    Trash2, Edit, Gauge, List, QrCode, GraduationCap, Book,
-    Settings, Bell, Mail, LogOut, Calendar, Search,
-} from 'lucide-react';
-import { BsQrCode } from 'react-icons/bs';
-
+import React, { useState, useEffect } from 'react';
+import { BellIcon, CircleUser, FolderClosed, LogOutIcon, PanelsRightBottom, QrCodeIcon, User, List, Mail, Calendar, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import secureLocalStorage from 'react-secure-storage';
+import axios from 'axios';
+
 
 const Dashboard = () => {
+    const [formData, setFormData] = useState({
+        course: "",
+        yearLevel: "",
+
+    });
+    const [yearLevels, setYearLevels] = useState([]);
+    const [courses, setCourses] = useState([]);
     const navigateTo = useNavigate();
 
-    return (
-        <div className="flex h-screen bg-blue-900">
 
-            <aside className="w-1/4 bg-green-600 p-6 flex flex-col justify-between">
-                <div className="text-white mb-8">
-                    {/* Logo and Brand Section */}
-                    <div className="flex items-center mb-8">
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const url = secureLocalStorage.getItem('url') + 'CSDL.php';
+                const formData = new FormData();
+                formData.append('operation', 'getAddScholarDropDown');
+                const res = await axios.post(url, formData);
+                setCourses(res.data.course);
+                setYearLevels(res.data.yearLevel);
+                toast.success('Form data loaded successfully');
+            } catch (error) {
+                toast.error('Failed to load form data');
+            }
+        };
+        fetchData();
+    }, []);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
+
+    return (
+        <div className="flex h-screen" style={{ backgroundColor: "rgb(8, 54, 100)" }}>
+            <aside className="w-1/6 p-4 flex flex-col justify-between" style={{ backgroundColor: "#109315" }}>
+                <div className="text-white mb-6">
+                    <div className="flex items-center mb-6">
                         <img
                             src="images/csdl.jpg"
-                            alt="Logo"
-                            className="w-20 h-20 rounded-full mr-4"
+                            alt="CSDL Logo"
+                            className="w-16 h-16 rounded-full mr-3"
                         />
                         <div>
-                            <h1 className="text-2xl font-bold">HK SMS</h1>
-                            <p className="text-sm">HK Scholars Management System</p>
+                            <h1 className="text-xl font-bold">HK SMS</h1>
+                            <p className="text-xs opacity-80">HK Scholars Management System</p>
                         </div>
                     </div>
 
-                    {/* Navigation Section */}
                     <nav>
-                        <ul className="text-white space-y-4">
+                        <ul className="space-y-4">
                             <li>
                                 <button
-                                    className="flex items-center p-2 hover:bg-green-700 rounded-md w-full transition-colors duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/MainDashboard")}
                                 >
                                     <PanelsRightBottom className="mr-2" />
-                                    <span>Dashboard</span>
+                                    <span className="text-sm">Dashboard</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/ScholarList")}
+                                >
+                                    <List className="mr-2" />
+                                    <span className="text-sm">Scholar List</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/qrcode")}
+                                >
+                                    <QrCodeIcon className="mr-2" />
+                                    <span className="text-sm">QR Code</span>
                                 </button>
                             </li>
 
                             <li>
                                 <button
-                                    className="flex items-center p-2 hover:bg-green-700 rounded-md w-full transition-colors duration-200"
-                                    onClick={() => navigateTo("/ScholarList")}
-                                >
-                                    <List className="mr-2" />
-                                    <span>Scholar List</span>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="flex items-center p-2 hover:bg-green-700 rounded-md w-full transition-colors duration-200"
-                                    onClick={() => navigateTo("/qrcode")}
-                                >
-                                    <BsQrCode className="mr-2" />
-                                    <span>QR Code</span>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="flex items-center p-2 hover:bg-green-700 rounded-md w-full transition-colors duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/AssignStudent")}
                                 >
                                     <User className="mr-2" />
-                                    <span>Assigned Student</span>
+                                    <span className="text-sm">Assigned Student</span>
                                 </button>
                             </li>
                             <li>
                                 <button
-                                    className="flex items-center p-2 hover:bg-green-700 rounded-md w-full transition-colors duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/AdminDashboard")}
                                 >
                                     <FolderClosed className="mr-2" />
-                                    <span>Master Files</span>
+                                    <span className="text-sm">Master Files</span>
                                 </button>
                             </li>
+                            <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
                             <li>
                                 <button
-                                    className="flex items-center p-2 hover:bg-green-700 rounded-md w-full transition-colors duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                 >
                                     <CircleUser className="mr-2" />
-                                    <span>Account</span>
+                                    <span className="text-sm">Account</span>
                                 </button>
                             </li>
                             <li>
                                 <button
-                                    className="flex items-center p-2 hover:bg-green-700 rounded-md w-full transition-colors duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                 >
                                     <BellIcon className="mr-2" />
-                                    <span>Notification</span>
+                                    <span className="text-sm">Notification</span>
                                 </button>
                             </li>
                             <li>
                                 <button
-                                    className="flex items-center p-2 hover:bg-green-700 rounded-md w-full transition-colors duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                 >
                                     <Mail className="mr-2" />
-                                    <span>Messages</span>
+                                    <span className="text-sm">Messages</span>
                                 </button>
                             </li>
-                            <li>
+                            <li className="mt-4">
                                 <button
-                                    className="flex items-center p-2 hover:bg-red-600 rounded-md w-full transition-colors duration-200"
+                                    className="flex items-center p-3 bg-red-600 hover:bg-red-700 rounded-md w-full transition-all duration-200"
                                 >
                                     <LogOutIcon className="mr-2" />
-                                    <span>Logout</span>
+                                    <span className="text-sm">Logout</span>
                                 </button>
                             </li>
                         </ul>
                     </nav>
                 </div>
-
-
-                <p className="text-white text-xs">Powered by PHINMA</p>
+                <p className="text-white text-xs opacity-70 mt-4">Powered by PHINMA</p>
             </aside>
 
-            <main className="flex-1 bg-blue-600 p-8">
+            <main
+                className="flex-1 p-8 bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: `url('/path/to/your/background-image.jpg')` }}
+            >
+                <div
+                    className="absolute right-[-60px] bottom-0 bg-center opacity-40 rounded-full"
+                    style={{
+                        backgroundImage: `url('images/csdl.jpg')`,
+                        backgroundSize: 'cover',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'right bottom',
+                        width: '700px',
+                        height: '700px',
+                    }}
+                />
+                <h2 className="text-3xl text-white font-bold flex items-center">
+                    Time Sheets - October 2024
+                    <Calendar className="ml-2 text-5xl" />
+                </h2>
+                <br />
+
+                {/* Profile Section */}
+                <div className="flex items-center p-6">
+                    <img
+                        src="images/bea.jpg"
+                        alt="User Avatar of Mae Jabulan"
+                        className="w-24 h-24 mr-4 rounded-xl"
+                    />
+                    <div>
+                        <h3 className="text-2xl font-sans text-white">Mae Jabulan</h3>
+                        <p className="text-lg text-white">manu.jabulan.coc@phinmed.com</p>
+                        <p className="text-lg text-white">Administrator</p>
+                    </div>
+                    <div className="relative ml-auto"> {/* Added ml-auto to push it to the right */}
+                        <Search className="absolute left-2 top-3 text-gray-400" />
+                        <input
+                            type="text"
+                            placeholder="Search scholar"
+                            className="p-2 pl-8 rounded-md bg-white shadow-md"
+                        />
+                    </div>
+                </div>
+
+
                 <header className="flex justify-between items-center mb-6">
-                    <h2 className="text-3xl text-white font-bold">Time Sheets - December 2023</h2>
-                    <div className="flex items-center space-x-4">
-                        <div className="relative">
-                            <FaSearch className="absolute left-2 top-3 text-gray-400" />
-                            <input type="text" placeholder="Search scholar" className="p-2 pl-8 rounded-md bg-white" />
-                        </div>
-                        <button className="bg-blue-600 text-white p-2 rounded-md flex items-center">
-                            <FaUserGraduate className="mr-2" />
-                            Select Year Level
-                        </button>
-                        <button className="bg-blue-600 text-white p-2 rounded-md flex items-center">
-                            <FaBook className="mr-2" />
-                            Select Course
-                        </button>
-                        <button className="bg-blue-600 text-white p-2 rounded-md flex items-center">
-                            <FaCalendar className="mr-2" />
+                    <h1 className="text-2xl font-bold text-white mb-6">Mae Timeline</h1>
+                    <div className="flex items-center space-x-3">
+                        <select
+                            name="yearLevel"
+                            value={formData.yearLevel}
+                            onChange={handleInputChange}
+                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 z-10" // Added z-10
+                            required
+                        >
+                            <option value="">Select Year Level</option>
+                            {yearLevels.length > 0 ? yearLevels.map((level, index) => (
+                                <option key={index} value={level.year_level_id}>
+                                    {level.year_level_name}
+                                </option>
+                            )) : (<option>No School Year Yet</option>)}
+                        </select>
+                        <select
+                            name="course"
+                            value={formData.course}
+                            onChange={handleInputChange}
+                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 z-10" // Added z-10
+                            required
+                        >
+                            <option value="">Select Course</option>
+                            {courses.length > 0 ? courses.map((course, index) => (
+                                <option key={index} value={course.crs_id}>
+                                    {course.crs_name}
+                                </option>
+                            )) : (<option>No Course Yet</option>)}
+                        </select>
+                        <button className="bg-white text-blue-600 p-2 rounded-md flex items-center shadow-md">
+                            <Calendar className="mr-2" />
                             Select Date
                         </button>
                     </div>
                 </header>
 
-                <div className="flex items-center bg-white p-6 rounded-lg shadow-md mb-6">
-                    <img
-                        src="images/csdl.jpg"
-                        alt="User Avatar"
-                        className="w-20 h-20 rounded-full mr-4"
-                    />
-                    <div>
-                        <h3 className="text-xl font-bold">Grizon Russell Sacay</h3>
-                        <p className="text-sm text-gray-600">grbs.sacay.coc@phinmed.com</p>
-                        <p className="text-sm text-gray-600">Administrator</p>
-                    </div>
-                </div>
-
-                {/* Timeline Table */}
                 <div className="bg-white p-6 rounded-lg shadow-md">
                     <table className="w-full table-auto text-left">
                         <thead>
@@ -171,11 +237,9 @@ const Dashboard = () => {
                                 <th className="p-4">Duty Hours</th>
                                 <th className="p-4">Starting Time</th>
                                 <th className="p-4">End Time</th>
-                                <th className="p-4">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {/* Example row */}
                             <tr className="border-b">
                                 <td className="p-4">Dec. 15, 2023</td>
                                 <td className="p-4">Ralph Jan Gallegos</td>
@@ -183,21 +247,21 @@ const Dashboard = () => {
                                 <td className="p-4">180 Hours</td>
                                 <td className="p-4">9:30 AM</td>
                                 <td className="p-4">3:30 PM</td>
-                                <td className="p-4 flex space-x-2">
-                                    <button className="text-blue-500 hover:text-blue-700">
-                                        <FaEdit />
-                                    </button>
-                                    <button className="text-red-500 hover:text-red-700">
-                                        <FaTrash />
-                                    </button>
-                                </td>
                             </tr>
-
+                            <tr className="border-b">
+                                <td className="p-4">Dec. 15, 2023</td>
+                                <td className="p-4">Mel Angelo Macario</td>
+                                <td className="p-4">Mel Angelo Macario</td>
+                                <td className="p-4">180 Hours</td>
+                                <td className="p-4">10:30 AM</td>
+                                <td className="p-4">5:30 PM</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </main>
-        </div>
+
+        </div >
     );
 };
 

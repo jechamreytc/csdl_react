@@ -3,6 +3,8 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import secureLocalStorage from 'react-secure-storage';
 import { ArrowBigDownDash, ArrowLeftIcon } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { BsQrCode } from 'react-icons/bs';
 
 const AddScholar = () => {
     const [formData, setFormData] = useState({
@@ -18,6 +20,9 @@ const AddScholar = () => {
     const [courses, setCourses] = useState([]);
     const [scholarshipSub, setScholarshipSub] = useState([]);
     const [scholarshipTypes, setScholarshipTypes] = useState([]);
+    const navigateTo = useNavigate();
+
+
 
 
     useEffect(() => {
@@ -134,7 +139,7 @@ const AddScholar = () => {
                 </div>
 
                 <div className="w-full">
-                    <label className="block text-sm font-medium text-white">Select Year Level*</label>
+                    <label className="block text-sm font-medium text-white">Select Year Level</label>
                     <select
                         name="yearLevel"
                         value={formData.yearLevel}
@@ -208,10 +213,11 @@ const AddScholar = () => {
 
                 <div className="flex justify-between">
                     <button
-                        type="button"
+                        type="submit"
                         className="bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600"
+                        onClick={() => navigateTo("/AddBatchScholar")}
                     >
-                        Open Batch
+                        Add Batch
                     </button>
                     <button
                         type="submit"

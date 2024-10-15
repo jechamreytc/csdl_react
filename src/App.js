@@ -16,13 +16,15 @@ import ScholarList from './dashboard/ScholarList';
 import Login from './login/login';
 import MainDashboard from './dashboard/MainDashboard';
 import Qrcode from './Qrcode/qrcode';
-
+import AddBatchScholar from './modal/AddBatchScholar';
+import AssignStudent from './dashboard/AssignStudent';
 // import AddScholarshipSubType from './components/AddScholarshipSubType';
 
 
 
 
 function App() {
+
   if (secureLocalStorage.getItem("url") !== "http://localhost/csdl/") {
     secureLocalStorage.setItem("url", "http://localhost/csdl/");
   }
@@ -50,8 +52,13 @@ function App() {
           <Route path="/ScholarList" element={<ScholarList />} />
           <Route path='/qrcode' element={<Qrcode />} />
           <Route path="/MainDashboard" element={<MainDashboard />} />
+          <Route path="/AddBatchScholar" element={<AddBatchScholar />} />
+          <Route path="/AssignStudent" element={<AssignStudent />} />
+
         </Routes>
       </Router>
+
+
     </>
   );
 }

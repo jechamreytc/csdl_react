@@ -5,6 +5,7 @@ function AddBatchScholar() {
         fetch('https://sheetdb.io/api/v1/vfs4ivb1107z6')
             .then((response) => response.json())
             .then((data) => console.log(data));
+
     }
     return (
         <div className="flex justify-center items-center h-screen bg-blue-900">

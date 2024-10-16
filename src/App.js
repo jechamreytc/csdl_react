@@ -18,6 +18,7 @@ import MainDashboard from './dashboard/MainDashboard';
 import Qrcode from './Qrcode/qrcode';
 import AddBatchScholar from './modal/AddBatchScholar';
 import AssignStudent from './dashboard/AssignStudent';
+
 // import AddScholarshipSubType from './components/AddScholarshipSubType';
 
 
@@ -54,6 +55,7 @@ function App() {
           <Route path="/MainDashboard" element={<MainDashboard />} />
           <Route path="/AddBatchScholar" element={<AddBatchScholar />} />
           <Route path="/AssignStudent" element={<AssignStudent />} />
+
 
         </Routes>
       </Router>

@@ -15,7 +15,7 @@ function AddRoom() {
             try {
                 const url = secureLocalStorage.getItem("url") + "CSDL.php";
                 const formData = new FormData();
-                formData.append("operation", "getBuildings");
+                formData.append("operation", "getBuilding");
                 const res = await axios.post(url, formData);
                 setBuildings(res.data);
                 toast.success("Buildings loaded successfully");
@@ -55,13 +55,13 @@ function AddRoom() {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
 
             const jsonData = {
-                room_name: formData.room,
-                building_id: formData.building,
+                room_number: formData.room,
+                build_id: formData.building,
             };
 
             const formDataToSend = new FormData();
             formDataToSend.append("json", JSON.stringify(jsonData));
-            formDataToSend.append("operation", "addRoom");
+            formDataToSend.append("operation", "AddRoom");
 
             const res = await axios.post(url, formDataToSend);
 
@@ -102,8 +102,8 @@ function AddRoom() {
             >
                 <option value="">Select Building</option>
                 {buildings.length > 0 ? buildings.map((building, index) => (
-                    <option key={index} value={building.building_id}>
-                        {building.building_name}
+                    <option key={index} value={building.build_id}>
+                        {building.build_name}
                     </option>
                 )) : (<option disabled>No buildings yet</option>)}
             </select>

@@ -31,6 +31,8 @@ import AddBuilding from '../modal/AddBuilding';
 import GetBuilding from '../modal/GetBuilding';
 import AddRoom from '../modal/AddRoom';
 import GetRoom from '../modal/GetRoom';
+import AddModality from '../modal/AddModality';
+import GetModality from '../modal/GetModality';
 
 const MasterFiles = () => {
     const navigateTo = useNavigate();
@@ -138,7 +140,7 @@ const MasterFiles = () => {
                             <li>
                                 <button
                                     className="flex items-center p-2 sm:p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/AssignedStudent")}
+                                    onClick={() => navigateTo("/AssignStudent")}
                                 >
                                     <User className="mr-2" />
                                     <span className="text-xs sm:text-sm">Assigned Student</span>
@@ -218,6 +220,7 @@ const MasterFiles = () => {
                                 { title: 'Scholarship Sub Type', buttonText: 'Add Scholarship Sub Type', route: '/addScholarshipSubType', content: <AddScholarshipSubType />, buttonText2: 'Scholarship Sub Type List', contentlist: <GetScholarshipSubType /> },
                                 { title: 'Building', buttonText: 'Add Building', route: '/addBuilding', content: <AddBuilding />, buttonText2: 'Building List', contentlist: <GetBuilding /> },
                                 { title: 'Room', buttonText: 'Add Room', route: '/addRoom', content: <AddRoom />, buttonText2: 'Room List', contentlist: <GetRoom /> },
+                                { title: 'Modality', buttonText: 'Add Modality', route: '/addModality', content: <AddModality />, buttonText2: 'Modality List', contentlist: <GetModality /> },
                             ].map(({ title, buttonText, route, content, contentlist, buttonText2 }, index) => (
                                 <div key={index} className="flex flex-col items-center">
                                     <h2 className="text-white text-lg font-semibold mb-2">{title}</h2>

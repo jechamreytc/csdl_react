@@ -34,11 +34,9 @@ function AssignStudent() {
                 formData.append('operation', 'getDutyAssign');
                 const res = await axios.post(url, formData);
                 setBuildings(res.data);
-                console.log("res ni buildings", res.data);
                 setRooms(res.data);
-                console.log("res ni rooms", res.data);
+                console.log("res ni room", res.data);
                 setDays(res.data);
-                console.log("res ni days", res.data);
                 setsubjectcode(res.data.subjectcode);
                 setDutyHours(res.data.dutyHours);
                 toast.success('Form data loaded successfully');
@@ -57,6 +55,9 @@ function AssignStudent() {
             [name]: value
         });
     };
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    // }
 
     return (
         <div className="flex h-screen" style={{ backgroundColor: "rgb(8, 54, 100)" }}>
@@ -193,7 +194,7 @@ function AssignStudent() {
 
                             {/* Room Dropdown */}
                             <div className="flex-1">
-                                <label className="block text-white font-semibold mb-2">Room*</label>
+                                <label className="block text-white font-semibold mb-2">Room</label>
                                 <div className="flex items-center bg-blue-700 rounded-lg px-4 py-3">
                                     <select
                                         name="room"
@@ -202,15 +203,11 @@ function AssignStudent() {
                                         className="w-full bg-transparent text-white focus:outline-none"
                                     >
                                         <option value="">Select Room</option>
-                                        {rooms.length > 0 ? (
-                                            rooms.map((room, index) => (
-                                                <option key={index} value={room.room_id}>
-                                                    {room.room_number}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <option value="" disabled>No Room Available</option>
-                                        )}
+                                        {rooms.length > 0 ? rooms.map((room, index) => (
+                                            <option key={index} value={room.room_id}>
+                                                {room.room_number}
+                                            </option>
+                                        )) : (<p> No Room Available </p>)}
                                     </select>
                                     <span className="ml-2 text-white">&gt;</span>
                                 </div>

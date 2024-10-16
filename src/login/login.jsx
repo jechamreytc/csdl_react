@@ -1,65 +1,130 @@
-import React from 'react';
+// import { useState, useEffect } from 'react';
 
-const Login = () => {
-    return (
-        <div className="flex h-screen bg-gradient-to-r from-blue-800 to-green-500">
-            <div className="flex items-center justify-center w-1/2 relative">
+// import axios from 'axios';
+// import { toast } from 'sonner';
+// import SecureStorage from 'react-secure-storage';
+// import secureLocalStorage from 'react-secure-storage';
 
-                <img
-                    src="images/topleft.png"
-                    alt="Logo"
-                    className="absolute top-5 left-5 w-16 h-16"
-                />
-                <div className="text-white text-center">
-                    <h1 className="text-6xl font-bold">HK SMS</h1>
-                    <p className="text-2xl mt-2">HK Scholars Management System</p>
-                </div>
-            </div>
-            <div className="flex items-center justify-center w-1/2">
-                <div className="bg-black bg-opacity-80 p-8 rounded-lg shadow-lg">
-                    <h2 className="text-white text-4xl font-semibold mb-4">Sign in</h2>
-                    <p className="text-gray-300 mb-6">Sign in your account</p>
-                    <form>
-                        <div className="mb-4">
-                            <input
-                                type="text"
-                                placeholder="Login"
-                                className="w-full p-3 rounded-md bg-gray-800 text-white focus:outline-none"
-                            />
-                        </div>
-                        <div className="mb-4 relative">
-                            <input
-                                type="password"
-                                placeholder="Password"
-                                className="w-full p-3 rounded-md bg-gray-800 text-white focus:outline-none"
-                            />
-                            <button type="button" className="absolute right-3 top-3 text-gray-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M10 3a7 7 0 016.938 6H17a8 8 0 10-3.066 5.626l-1.04-1.03A6 6 0 114 10h-.938A7 7 0 0110 3zm1.707 7l1.415 1.414a1 1 0 11-1.414 1.415l-2-2a1 1 0 010-1.415l2-2a1 1 0 011.414 1.415L11.707 10z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center">
-                                <input type="checkbox" className="text-blue-500 focus:ring-2 focus:ring-blue-600 h-4 w-4" />
-                                <label className="ml-2 text-gray-300">Remember me</label>
-                            </div>
-                        </div>
-                        <button
-                            type="submit"
-                            className="w-full p-3 rounded-md bg-green-500 text-white hover:bg-green-600 transition-colors">
-                            Login
-                        </button>
-                    </form>
-                    <p className="text-gray-500 text-center mt-6">Powered by: PHINMA COC</p>
-                </div>
-            </div>
-        </div>
-    );
-};
+// const AuthPage = () => {
+//     const [username, setUsername] = useState("");
+//     const [password, setPassword] = useState("");
 
-export default Login;
+
+//     const handleLogin = async (e) => {
+//         e.preventDefault();
+
+//         if (!username || !password) {
+//             toast.error("Please enter username and password");
+//             return;
+//         }
+
+//         try {
+//             const url = secureLocalStorage.getItem("url") + "CSDL.php";
+//             const jsonData = { username, password };
+//             const formData = new FormData();
+//             formData.append("operation", "getAdmin");
+
+//             const res = await axios.post(url, formData);
+//             console.log("Login response:", res.data);
+
+//             if (res.data.error) {
+//                 toast.error(res.data.error);
+//             } else {
+//                 toast.success("Login successful");
+
+//                 // Securely store user_id and user_level using react-secure-storage
+//                 SecureStorage.setItem("adm_email", res.data.adm_email);
+//                 SecureStorage.setItem("user_level", res.data.user_level);
+
+//                 if (res.data.user_level === "admin") {
+//                     setTimeout(() => router.push("/admin"), 500);
+//                 } else if (res.data.user_level === "user") {
+//                     setTimeout(() => router.push("/dashboard"), 500);
+//                 } else {
+//                     toast.error("Unrecognized user level");
+//                 }
+//             }
+//         } catch (error) {
+//             if (error.response) {
+//                 toast.error(`Error: ${error.response.data}`);
+//             } else if (error.request) {
+//                 toast.error("No response from server");
+//             } else {
+//                 toast.error(`Error: ${error.message}`);
+//             }
+//         }
+//     };
+
+//     useEffect(() => {
+//         if (!SecureStorage.getItem("url")) {
+//             SecureStorage.setItem("url", "http://localhost/gabs/user.php");
+//         }
+//     }, []);
+
+//     return (
+//         <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-600 to-green-500">
+//             <div className="grid grid-cols-1 md:grid-cols-2 w-full max-w-6xl shadow-lg rounded-xl">
+//                 {/* Left Side - Branding */}
+//                 <div className="hidden md:flex flex-col justify-center items-center bg-blue-900 text-white rounded-l-xl">
+//                     <h1 className="text-5xl font-bold">HK SMS</h1>
+//                     <p className="text-lg mt-2">HK Scholars Management System</p>
+//                 </div>
+
+//                 {/* Right Side - Login Form */}
+//                 <div className="bg-white p-8 rounded-r-xl">
+//                     <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">Sign in</h2>
+//                     <form onSubmit={handleLogin} className="space-y-4">
+//                         <div>
+//                             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+//                                 Email
+//                             </label>
+//                             <input
+//                                 type="text"
+//                                 id="email"
+//                                 placeholder="email"
+//                                 value={username}
+//                                 onChange={(e) => setUsername(e.target.value)}
+//                                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+//                             />
+//                         </div>
+//                         <div>
+//                             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+//                                 Password
+//                             </label>
+//                             <input
+//                                 type="password"
+//                                 id="password"
+//                                 placeholder="Password"
+//                                 value={password}
+//                                 onChange={(e) => setPassword(e.target.value)}
+//                                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+//                             />
+//                         </div>
+//                         <div className="flex items-center justify-between">
+//                             <div className="flex items-center">
+//                                 <input
+//                                     type="checkbox"
+//                                     id="remember-me"
+//                                     className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+//                                 />
+//                                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+//                                     Remember me
+//                                 </label>
+//                             </div>
+//                             <a href="#" className="text-sm text-blue-600 hover:underline">
+//                                 Forgot password?
+//                             </a>
+//                         </div>
+//                         <button
+//                             type="submit"
+//                             className="w-full py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition">
+//                             Login
+//                         </button>
+//                     </form>
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// };
+
+// export default AuthPage;

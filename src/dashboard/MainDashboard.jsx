@@ -166,10 +166,10 @@ const Dashboard = () => {
                 </h2>
                 <br />
 
-                {/* Profile Section */}
+
                 <div className="flex items-center p-6">
                     <img
-                        src="images/bea.jpg"
+                        src="images/mae.jpg"
                         alt="User Avatar of Mae Jabulan"
                         className="w-24 h-24 mr-4 rounded-xl"
                     />
@@ -196,7 +196,7 @@ const Dashboard = () => {
                             name="yearLevel"
                             value={formData.yearLevel}
                             onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 z-10" // Added z-10
+                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 z-10"
                             required
                         >
                             <option value="">Select Year Level</option>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import axios from 'axios';
 import secureLocalStorage from 'react-secure-storage';
@@ -7,8 +7,25 @@ function AddBuilding() {
     const [formData, setFormData] = useState({
         building_name: "",
     });
-
+    const [buildings, setBuildings] = useState([]);
+    useEffect(() => {
+        const getBuildings = async () => {
+            try {
+                const url = secureLocalStorage.getItem("url") + "CSDL.php";
+                const formData = new FormData();
+                formData.append("operation", "getBuilding");
+                const res = await axios.post(url, formData);
+                setBuildings(res.data);
+                toast.success("Buildings loaded successfully");
+            } catch (error) {
+                console.log('Failed to load buildings:', error);
+                toast.error("Failed to load buildings");
+            }
+        };
+        getBuildings();
+    }, []);
     const [loading, setLoading] = useState(false);
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -18,6 +35,7 @@ function AddBuilding() {
         });
     };
 
+
     const handleAdd = async () => {
         if (loading) return;
 
@@ -25,6 +43,11 @@ function AddBuilding() {
         const buildingName = formData.building_name || "";
         if (buildingName.trim() === "") {
             toast.error("Building name cannot be empty");
+            return;
+        }
+        const existingBuilding = buildings.find((building) => building.build_name.toLowerCase() === buildingName.toLowerCase());
+        if (existingBuilding) {
+            toast.error("Building already exists");
             return;
         }
 

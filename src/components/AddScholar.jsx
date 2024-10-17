@@ -14,7 +14,7 @@ const AddScholar = () => {
         yearLevel: '',
         scholarshipType: '',
         scholarshipSub: '',
-        password: '',
+
         contactNumber: '',
         email: '',
         modality: '',
@@ -64,24 +64,27 @@ const AddScholar = () => {
             const url = secureLocalStorage.getItem('url') + 'CSDL.php';
             const jsonData = {
                 stud_school_id: formData.studId,
-                stud_firstname: formData.firstName,
-                stud_lastname: formData.lastName,
+
+                stud_first_name: formData.firstName,
+                stud_last_name: formData.lastName,
                 stud_middle_name: formData.middleName,
                 stud_year_level: formData.yearLevel,
                 stud_course_id: formData.course,
                 stud_scholarship_type_id: formData.scholarshipType,
                 stud_scholarship_sub_type_id: formData.scholarshipSub,
-                stud_password: formData.password,
+
                 stud_contact_number: formData.contactNumber,
                 stud_email: formData.email,
                 stud_typeScholar_id: formData.modality,
             };
+            console.log("HELLO JSONDATA", jsonData);
 
             const formDataToSend = new FormData();
             formDataToSend.append('json', JSON.stringify(jsonData));
-            formDataToSend.append('operation', '    ');
+            formDataToSend.append('operation', 'AddScholar');
 
             const res = await axios.post(url, formDataToSend);
+            console.log("HELLO RES DATA", res.data);
             if (res.data !== 0) {
                 toast.success('Scholar added successfully');
             } else {
@@ -150,7 +153,7 @@ const AddScholar = () => {
                         </div>
                     </div>
 
-                    {/* Course, Year Level */}
+
                     <div className="flex flex-wrap -mx-2">
                         <div className="w-full sm:w-1/2 px-2">
                             <label className="block text-sm font-medium">Select Course*</label>
@@ -245,20 +248,6 @@ const AddScholar = () => {
                                 </option>
                             ))}
                         </select>
-                    </div>
-
-                    {/* Password */}
-                    <div className="w-full">
-                        <label className="block text-sm font-medium">Password*</label>
-                        <input
-                            type="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                            placeholder="Password"
-                            required
-                        />
                     </div>
 
                     {/* Contact Number, Email */}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import axios from 'axios';
 import secureLocalStorage from 'react-secure-storage';
@@ -7,6 +7,25 @@ function AddDepartment() {
     const [formData, setFormData] = useState({
         department_name: "",
     });
+
+    const [departments, setDepartments] = useState([]);
+
+    useEffect(() => {
+        const getDepartments = async () => {
+            try {
+                const url = secureLocalStorage.getItem("url") + "CSDL.php";
+                const formData = new FormData();
+                formData.append("operation", "getDepartment");
+                const res = await axios.post(url, formData);
+                setDepartments(res.data);
+                toast.success("Departments loaded successfully");
+            } catch (error) {
+                console.log('Failed to load departments:', error);
+                toast.error("Failed to load departments");
+            }
+        };
+        getDepartments();
+    }, []);
 
     const [loading, setLoading] = useState(false);
 
@@ -25,6 +44,13 @@ function AddDepartment() {
         const departmentName = formData.department_name || "";
         if (departmentName.trim() === "") {
             toast.error("Department name cannot be empty");
+            return;
+        }
+
+        // para check duplicate
+        const existingDepartment = departments.find((department) => department.dept_name.toLowerCase() === departmentName.toLowerCase());
+        if (existingDepartment) {
+            toast.error("Department already exists");
             return;
         }
 

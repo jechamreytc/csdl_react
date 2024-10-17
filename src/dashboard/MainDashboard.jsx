@@ -54,7 +54,7 @@ const Dashboard = () => {
                         />
                         <div>
                             <h1 className="text-xl font-bold">HK SMS</h1>
-                            <p className="text-xs opacity-80">HK Scholars Management System</p>
+                            <p className="text-xs">HK Scholars Management System</p>
                         </div>
                     </div>
 
@@ -142,15 +142,15 @@ const Dashboard = () => {
                         </ul>
                     </nav>
                 </div>
-                <p className="text-white text-xs opacity-70 mt-4">Powered by PHINMA</p>
+                <p className="text-white text-xs mt-4">Powered by PHINMA</p>
             </aside>
 
             <main
-                className="flex-1 p-8 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url('/path/to/your/background-image.jpg')` }}
+                className="flex-1 p-8 relative"
+                style={{ backgroundImage: `url('/path/to/your/background-image.jpg')`, backgroundSize: 'cover' }}
             >
                 <div
-                    className="absolute right-[-60px] bottom-0 bg-center opacity-40 rounded-full"
+                    className="absolute right-[-60px] bg-center opacity-10 rounded-full"
                     style={{
                         backgroundImage: `url('images/csdl.jpg')`,
                         backgroundSize: 'cover',
@@ -158,6 +158,7 @@ const Dashboard = () => {
                         backgroundPosition: 'right bottom',
                         width: '700px',
                         height: '700px',
+                        zIndex: 0,
                     }}
                 />
                 <h2 className="text-3xl text-white font-bold flex items-center">
@@ -178,7 +179,7 @@ const Dashboard = () => {
                         <p className="text-lg text-white">manu.jabulan.coc@phinmed.com</p>
                         <p className="text-lg text-white">Administrator</p>
                     </div>
-                    <div className="relative ml-auto"> {/* Added ml-auto to push it to the right */}
+                    <div className="relative ml-auto">
                         <Search className="absolute left-2 top-3 text-gray-400" />
                         <input
                             type="text"
@@ -227,7 +228,7 @@ const Dashboard = () => {
                     </div>
                 </header>
 
-                <div className="bg-white p-6 rounded-lg shadow-md">
+                <div className="relative z-10 bg-white p-6 rounded-lg">
                     <table className="w-full table-auto text-left">
                         <thead>
                             <tr className="border-b">

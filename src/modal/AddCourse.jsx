@@ -9,6 +9,7 @@ function AddCourse() {
         department: ""
     });
     const [departments, setDepartments] = useState([]);
+    const [courses, setCourses] = useState([]);
 
     useEffect(() => {
         const getDepartments = async () => {
@@ -29,6 +30,31 @@ function AddCourse() {
 
         getDepartments();
     }, []);
+    useEffect(() => {
+        const getCourse = async () => {
+            try {
+                const url = secureLocalStorage.getItem("url") + "CSDL.php";
+                const formData = new FormData();
+                formData.append("operation", "getcourse");
+                const res = await axios.post(url, formData);
+
+                console.log(res.data);  // Log the response data to inspect its structure
+
+                // Ensure res.data is an array before setting it to state
+                if (Array.isArray(res.data)) {
+                    setCourses(res.data);
+                    toast.success("Course loaded successfully");
+                } else {
+                    console.log('Unexpected response format:', res.data);
+                    toast.error("Unexpected data format");
+                }
+            } catch (error) {
+                console.log('Failed to load Courses:', error);
+                toast.error("Failed to load Courses");
+            }
+        };
+        getCourse();
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -42,7 +68,7 @@ function AddCourse() {
         e.preventDefault();
 
         // Validation: Check if the course already exists
-        const courseExists = departments.some(
+        const courseExists = courses.find(
             (dept) => dept.crs_name?.toLowerCase() === formData.course.toLowerCase()
         );
 

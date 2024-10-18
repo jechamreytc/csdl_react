@@ -38,7 +38,7 @@ function App() {
       <AddOfficeMaster /> */}
         <Routes>
 
-          <Route path="/" element={<MainDashboard />} />
+          <Route path="/" element={<Login />} />
 
           {/* <Route path="/addAdministrator" element={<AddAdministrator />} /> */}
           {/* <Route path="/add-department" element={<AddDepartment />} /> */}

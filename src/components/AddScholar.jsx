@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import secureLocalStorage from 'react-secure-storage';
-import { useNavigate } from 'react-router-dom';
+
 
 const AddScholar = () => {
     const [formData, setFormData] = useState({
@@ -25,7 +25,6 @@ const AddScholar = () => {
     const [scholarshipSub, setScholarshipSub] = useState([]);
     const [scholarshipTypes, setScholarshipTypes] = useState([]);
     const [modalities, setModalities] = useState([]);
-    const navigateTo = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {

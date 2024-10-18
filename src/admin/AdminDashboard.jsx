@@ -89,22 +89,27 @@ const MasterFiles = () => {
     useEffect(() => {
         getAllList();
     }, []);
+    const handleLogOut = () => {
+        navigateTo("/");
+
+    }
 
     return (
 
 
         <div className="flex min-h-screen bg-blue-800">
-            <aside className="w-full sm:w-1/6 p-4 flex flex-col justify-between" style={{ backgroundColor: "#109315" }}>
+            <aside className="w-1/6 p-4 flex flex-col justify-between" style={{ backgroundColor: "#109315" }}>
                 <div className="text-white mb-6">
                     <div className="flex items-center mb-6">
                         <img
                             src="images/csdl.jpg"
                             alt="CSDL Logo"
-                            className="w-12 h-12 sm:w-16 sm:h-16 rounded-full mr-3"
+                            className="w-24 h-24 rounded-full mr-3"
                         />
                         <div>
-                            <h1 className="text-lg sm:text-xl font-bold">HK SMS</h1>
-                            <p className="text-xs opacity-80">HK Scholars Management System</p>
+                            <br />
+                            <h1 className="text-xl font-bold">HK SMS</h1>
+                            <p className="text-xl">HK Scholars Management System</p>
                         </div>
                     </div>
 
@@ -112,87 +117,89 @@ const MasterFiles = () => {
                         <ul className="space-y-4">
                             <li>
                                 <button
-                                    className="flex items-center p-2 sm:p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/MainDashboard")}
                                 >
                                     <PanelsRightBottom className="mr-2" />
-                                    <span className="text-xs sm:text-sm">Dashboard</span>
+                                    <span className="text-sm">Dashboard</span>
                                 </button>
                             </li>
                             <li>
                                 <button
-                                    className="flex items-center p-2 sm:p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/ScholarList")}
                                 >
                                     <List className="mr-2" />
-                                    <span className="text-xs sm:text-sm">Scholar List</span>
+                                    <span className="text-sm">Scholar List</span>
                                 </button>
                             </li>
                             <li>
                                 <button
-                                    className="flex items-center p-2 sm:p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/qrcode")}
                                 >
                                     <QrCodeIcon className="mr-2" />
-                                    <span className="text-xs sm:text-sm">QR Code</span>
+                                    <span className="text-sm">QR Code</span>
                                 </button>
                             </li>
+
                             <li>
                                 <button
-                                    className="flex items-center p-2 sm:p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/AssignStudent")}
                                 >
                                     <User className="mr-2" />
-                                    <span className="text-xs sm:text-sm">Assigned Student</span>
+                                    <span className="text-sm">Assigned Student</span>
                                 </button>
                             </li>
                             <li>
                                 <button
-                                    className="flex items-center p-2 sm:p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/AdminDashboard")}
                                 >
                                     <FolderClosed className="mr-2" />
-                                    <span className="text-xs sm:text-sm">Master Files</span>
+                                    <span className="text-sm">Master Files</span>
                                 </button>
                             </li>
-                            <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
+                            {/* <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
                             <li>
                                 <button
-                                    className="flex items-center p-2 sm:p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                 >
                                     <CircleUser className="mr-2" />
-                                    <span className="text-xs sm:text-sm">Account</span>
+                                    <span className="text-sm">Account</span>
                                 </button>
                             </li>
                             <li>
                                 <button
-                                    className="flex items-center p-2 sm:p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                 >
                                     <BellIcon className="mr-2" />
-                                    <span className="text-xs sm:text-sm">Notification</span>
+                                    <span className="text-sm">Notification</span>
                                 </button>
                             </li>
                             <li>
                                 <button
-                                    className="flex items-center p-2 sm:p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                 >
                                     <Mail className="mr-2" />
-                                    <span className="text-xs sm:text-sm">Messages</span>
+                                    <span className="text-sm">Messages</span>
                                 </button>
-                            </li>
+                            </li> */}
                             <li className="mt-4">
                                 <button
-                                    className="flex items-center p-2 sm:p-3 bg-red-600 hover:bg-red-700 rounded-md w-full transition-all duration-200"
+                                    className="flex items-center p-3 bg-red-600 hover:bg-red-700 rounded-md w-full transition-all duration-200"
+                                    onClick={handleLogOut}
                                 >
                                     <LogOutIcon className="mr-2" />
-                                    <span className="text-xs sm:text-sm">Logout</span>
+                                    <span className="text-sm">Logout</span>
                                 </button>
                             </li>
                         </ul>
                     </nav>
                 </div>
-                <p className="text-white text-xs opacity-70 mt-4">Powered by PHINMA</p>
-            </aside>
+                <p className="text-white text-xs mt-4">Powered by PHINMA</p>
+            </aside >
 
 
             <div className="flex-grow p-10 bg-blue-900">
@@ -213,7 +220,7 @@ const MasterFiles = () => {
                                 { title: 'Department', buttonText: 'Add Department', route: '/addDepartment', content: <AddDepartment />, buttonText2: 'Department List', contentlist: <GetDepartment /> },
                                 { title: 'School Year', buttonText: 'Add School Year', route: '/addSchoolYear', content: <AddSchoolYear />, buttonText2: 'School Year List', contentlist: <GetSchoolYear /> },
                                 { title: 'Course', buttonText: 'Add Course', route: '/addCourse', content: <AddCourse />, buttonText2: 'Course List', contentlist: <GetCourse /> },
-                                { title: 'Scholarship Type', buttonText: 'Add Scholarship Type', route: '/addScholarshipType', content: <AddScholarshipType />, buttonText2: 'Scholarship Type List', contentlist: <GetScholarType /> },
+                                { title: 'Scholarship Type', buttonText: 'Add Scholarship Type', route: '/addScholarshipType', content: <AddScholarshipType />, buttonText2: 'Scholarship Type   List', contentlist: <GetScholarType /> },
                                 { title: 'Office Master', buttonText: 'Add Office Master', route: '/addOfficeMaster', content: <AddOfficeMaster />, buttonText2: 'Office Master List', contentlist: <GetOfficeMaster /> },
                                 { title: 'Scholar', buttonText: 'Add Scholar', route: '/addScholar', content: <AddScholar />, buttonText: 'Scholar List', contentlist: <GetScholar /> },
                                 { title: 'Supervisor Master', buttonText: 'Add Supervisor Master', route: '/addSupervisor', content: <AddSupervisor />, buttonText2: 'Supervisor List', contentlist: <GetSupervisor /> },

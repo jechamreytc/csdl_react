@@ -21,31 +21,42 @@ const AuthPage = () => {
         }
 
         try {
-            const url = secureLocalStorage.getItem("url") + "CSDL.php";
+            const url = secureLocalStorage.getItem("url") + "user.php";
+            console.log("Hello Bear", url);
             const jsonData = { username: username, password: password };
+            console.log("Hello Bear", jsonData);
             const formData = new FormData();
-            formData.append("operation", "getAdmin");
+            formData.append("json", JSON.stringify(jsonData));
+            formData.append("operation", "adminLogin");
 
             const res = await axios.post(url, formData);
             console.log("Login response:", res.data);
 
-            if (res.data.error) {
-                toast.error(res.data.error);
-            } else {
+            if (res.data !== 0) {
+                secureLocalStorage.setItem("email", res.data.adm_email);
+                const fullName = res.data.adm_first_name + " " + res.data.adm_last_name;
+                secureLocalStorage.setItem("fullName", fullName);
+                secureLocalStorage.setItem("firstName", res.data.adm_first_name);
                 toast.success("Login successful");
-
-                // Securely store user_id and user_level using react-secure-storage
-                SecureStorage.setItem("adm_email", res.data.adm_email);
-                SecureStorage.setItem("user_level", res.data.user_level);
-
-                if (res.data.user_level === "admin") {
-                    setTimeout(() => router.push("/admin"), 500);
-                } else if (res.data.user_level === "user") {
-                    setTimeout(() => router.push("/dashboard"), 500);
-                } else {
-                    toast.error("Unrecognized user level");
-                }
+                setTimeout(() => router("/MainDashboard"), 500);
+                // // Securely store user_id and user_level using react-secure-storage
+                // SecureStorage.setItem("adm_email", res.data.adm_email);
+                // SecureStorage.setItem("user_level", res.data.user_level);
             }
+
+            // if (res.data.error) {
+            //     toast.error(res.data.error);
+            // } else {
+
+
+            //     if (res.data.user_level === "Admin") {
+            //         setTimeout(() => router.push("/MainDashboard"), 500);
+            //     } else if (res.data.user_level === "Scholar") {
+            //         setTimeout(() => router.push("/dashboard"), 500);
+            //     } else {
+            //         toast.error("Unrecognized user level");
+            //     }
+            // }
         } catch (error) {
             if (error.response) {
                 toast.error(`Error: ${error.response.data}`);
@@ -59,7 +70,7 @@ const AuthPage = () => {
 
     useEffect(() => {
         if (!SecureStorage.getItem("url")) {
-            SecureStorage.setItem("url", "http://localhost/gabs/user.php");
+            SecureStorage.setItem("url", "http://localhost/csdl/");
         }
     }, []);
 
@@ -78,12 +89,12 @@ const AuthPage = () => {
                     <form onSubmit={handleLogin} className="space-y-4">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                                Email
+                                Email or ID
                             </label>
                             <input
                                 type="text"
                                 id="email"
-                                placeholder="email"
+                                placeholder="Email or ID"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"

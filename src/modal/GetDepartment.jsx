@@ -32,9 +32,11 @@ const GetDepartment = () => {
             formData.append("operation", "deleteDepartment");
             formData.append("json", JSON.stringify(jsonData));
             const res = await axios.post(url, formData);
-            if (res.data === 1) {
-                setDepartments((prevDepartments) =>
-                    prevDepartments.filter(department => department.dept_id !== dept_id)
+            if (res.data === -1) {
+                toast.error("Failed to delete, there's a transaction using this department");
+            } else if (res.data === 1) {
+                setDepartments(
+                    departments.filter((department) => department.dept_id !== dept_id)
                 );
                 toast.success("Department deleted successfully");
             } else {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import axios from 'axios';
 import secureLocalStorage from 'react-secure-storage';
@@ -8,6 +8,25 @@ function AddScholarYear() {
         year_name: "",
     });
 
+    const [schoolYear, setSchoolYear] = useState([]);
+
+    useEffect(() => {
+        const GetSchoolYear = async () => {
+            try {
+                const url = secureLocalStorage.getItem("url") + "CSDL.php";
+                const formData = new FormData();
+                formData.append("operation", "getschoolyear");
+                const res = await axios.post(url, formData);
+                setSchoolYear(res.data);
+                toast.success("School Year loaded successfully");
+            } catch (error) {
+                console.log('Failed to load School Year:', error);
+                toast.error("Failed to load School Year");
+            }
+        };
+        GetSchoolYear();
+    }, []);
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -16,11 +35,18 @@ function AddScholarYear() {
         });
     };
 
+
+
     const handleAdd = async () => {
         // Basic validation
         if (!formData.year_name.trim()) {
             toast.error("Please enter a school year");
             return;
+        }
+        const existingSchoolYear = schoolYear.find((schoolYear) => schoolYear.sy_name === formData.year_name);
+        if (existingSchoolYear) {
+            toast.error("School Year already exists");
+            return
         }
 
         try {

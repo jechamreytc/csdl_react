@@ -58,6 +58,10 @@ function AssignStudent() {
     // const handleSubmit = async (e) => {
     //     e.preventDefault();
     // }
+    const handleLogOut = () => {
+        navigateTo("/");
+
+    }
 
     return (
         <div className="flex h-screen" style={{ backgroundColor: "rgb(8, 54, 100)" }}>
@@ -67,11 +71,12 @@ function AssignStudent() {
                         <img
                             src="images/csdl.jpg"
                             alt="CSDL Logo"
-                            className="w-16 h-16 rounded-full mr-3"
+                            className="w-24 h-24 rounded-full mr-3"
                         />
                         <div>
+                            <br />
                             <h1 className="text-xl font-bold">HK SMS</h1>
-                            <p className="text-xs opacity-80">HK Scholars Management System</p>
+                            <p className="text-xl">HK Scholars Management System</p>
                         </div>
                     </div>
 
@@ -123,7 +128,7 @@ function AssignStudent() {
                                     <span className="text-sm">Master Files</span>
                                 </button>
                             </li>
-                            <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
+                            {/* <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
                             <li>
                                 <button
                                     className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
@@ -147,10 +152,11 @@ function AssignStudent() {
                                     <Mail className="mr-2" />
                                     <span className="text-sm">Messages</span>
                                 </button>
-                            </li>
+                            </li> */}
                             <li className="mt-4">
                                 <button
                                     className="flex items-center p-3 bg-red-600 hover:bg-red-700 rounded-md w-full transition-all duration-200"
+                                    onClick={handleLogOut}
                                 >
                                     <LogOutIcon className="mr-2" />
                                     <span className="text-sm">Logout</span>
@@ -159,9 +165,8 @@ function AssignStudent() {
                         </ul>
                     </nav>
                 </div>
-                <p className="text-white text-xs opacity-70 mt-4">Powered by PHINMA</p>
-            </aside>
-
+                <p className="text-white text-xs mt-4">Powered by PHINMA</p>
+            </aside >
             <main className="bg-white p-8 rounded-lg shadow-lg relative">
 
                 <h1 className="text-3xl font-semibold text-blue-900 mb-6">Assigned Students</h1>

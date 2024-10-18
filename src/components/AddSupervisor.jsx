@@ -6,7 +6,7 @@ import secureLocalStorage from 'react-secure-storage';
 const AddSupervisor = () => {
     const [formData, setFormData] = useState({
         supM_employee_id: '',
-        supM_password: '',
+
         supM_first_name: '',
         supM_last_name: '',
         supM_middle_name: '',
@@ -24,15 +24,13 @@ const AddSupervisor = () => {
                 const formData = new FormData();
                 formData.append('operation', 'getDepartment');
                 const res = await axios.post(url, formData);
-
-                if (res.data && res.data.departments) {
-                    setDepartments(res.data.departments);
-                    toast.success('Departments loaded successfully');
-                } else {
-                    toast.error('No departments data found');
-                }
+                console.log('Departments:', res.data);
+                setDepartments(res.data);
+                toast.success('Departments loaded successfully');
             } catch (error) {
+                console.log('Failed to load departments:', error);
                 toast.error('Failed to load departments');
+
             }
         };
 
@@ -55,7 +53,7 @@ const AddSupervisor = () => {
 
             const jsonData = {
                 supM_employee_id: formData.supM_employee_id,
-                supM_password: formData.supM_password,
+
                 supM_first_name: formData.supM_first_name,
                 supM_last_name: formData.supM_last_name,
                 supM_middle_name: formData.supM_middle_name,

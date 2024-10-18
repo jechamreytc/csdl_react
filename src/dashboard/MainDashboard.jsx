@@ -40,7 +40,13 @@ const Dashboard = () => {
             ...formData,
             [name]: value
         });
+
     };
+    const handleLogOut = () => {
+        navigateTo("/");
+
+    }
+
 
     return (
         <div className="flex h-screen" style={{ backgroundColor: "rgb(8, 54, 100)" }}>
@@ -50,11 +56,12 @@ const Dashboard = () => {
                         <img
                             src="images/csdl.jpg"
                             alt="CSDL Logo"
-                            className="w-16 h-16 rounded-full mr-3"
+                            className="w-24 h-24 rounded-full mr-3"
                         />
                         <div>
+                            <br />
                             <h1 className="text-xl font-bold">HK SMS</h1>
-                            <p className="text-xs">HK Scholars Management System</p>
+                            <p className="text-xl">HK Scholars Management System</p>
                         </div>
                     </div>
 
@@ -106,7 +113,7 @@ const Dashboard = () => {
                                     <span className="text-sm">Master Files</span>
                                 </button>
                             </li>
-                            <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
+                            {/* <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
                             <li>
                                 <button
                                     className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
@@ -130,10 +137,11 @@ const Dashboard = () => {
                                     <Mail className="mr-2" />
                                     <span className="text-sm">Messages</span>
                                 </button>
-                            </li>
+                            </li> */}
                             <li className="mt-4">
                                 <button
                                     className="flex items-center p-3 bg-red-600 hover:bg-red-700 rounded-md w-full transition-all duration-200"
+                                    onClick={handleLogOut}
                                 >
                                     <LogOutIcon className="mr-2" />
                                     <span className="text-sm">Logout</span>
@@ -143,7 +151,7 @@ const Dashboard = () => {
                     </nav>
                 </div>
                 <p className="text-white text-xs mt-4">Powered by PHINMA</p>
-            </aside>
+            </aside >
 
             <main
                 className="flex-1 p-8 relative"
@@ -170,13 +178,13 @@ const Dashboard = () => {
 
                 <div className="flex items-center p-6">
                     <img
-                        src="images/mae.jpg"
+                        src="images/sakana.jpg"
                         alt="User Avatar of Mae Jabulan"
                         className="w-24 h-24 mr-4 rounded-xl"
                     />
                     <div>
-                        <h3 className="text-2xl font-sans text-white">Mae Jabulan</h3>
-                        <p className="text-lg text-white">manu.jabulan.coc@phinmed.com</p>
+                        <h3 className="text-2xl font-sans text-white">{secureLocalStorage.getItem("fullName")}</h3>
+                        <p className="text-lg text-white">{secureLocalStorage.getItem("email")} </p>
                         <p className="text-lg text-white">Administrator</p>
                     </div>
                     <div className="relative ml-auto">
@@ -191,7 +199,7 @@ const Dashboard = () => {
 
 
                 <header className="flex justify-between items-center mb-6">
-                    <h1 className="text-2xl font-bold text-white mb-6">Mae Timeline</h1>
+                    <h1 className="text-2xl font-bold text-white mb-6">{secureLocalStorage.getItem("firstName") + "'s"} Timeline</h1>
                     <div className="flex items-center space-x-3">
                         <select
                             name="yearLevel"

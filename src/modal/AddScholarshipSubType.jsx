@@ -130,4 +130,4 @@ function AddScholarshipSubType() {
     );
 }
 
-export default AddScholarshipSubType;
+export default AddScholarshipSubType;   

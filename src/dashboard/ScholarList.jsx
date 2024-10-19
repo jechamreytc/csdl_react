@@ -24,7 +24,7 @@ const ScholarList = () => {
         const getAllList = async () => {
             try {
                 const url = secureLocalStorage.getItem("url") + "CSDL.php";
-                const postData = new FormData(); // renamed to avoid conflicts with state
+                const postData = new FormData();
                 postData.append("operation", "getAllScholarList");
                 const res = await axios.post(url, postData);
 
@@ -213,8 +213,8 @@ const ScholarList = () => {
                             <tr className="bg-blue-600 text-white">
                                 <th className="px-4 py-2 text-left">Name</th>
                                 <th className="px-4 py-2 text-left">Scholarship</th>
-                                <th className="px-4 py-2 text-left">Year Level</th>
-                                <th className="px-4 py-2 text-left">Course</th>
+                                <th className="px-4 py-2 text-left">Status</th>
+
                             </tr>
                         </thead>
                         <tbody>

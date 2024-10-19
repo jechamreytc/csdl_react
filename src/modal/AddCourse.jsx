@@ -38,9 +38,7 @@ function AddCourse() {
                 formData.append("operation", "getcourse");
                 const res = await axios.post(url, formData);
 
-                console.log(res.data);  // Log the response data to inspect its structure
-
-                // Ensure res.data is an array before setting it to state
+                console.log(res.data);
                 if (Array.isArray(res.data)) {
                     setCourses(res.data);
                     toast.success("Course loaded successfully");

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import axios from 'axios';
 import secureLocalStorage from 'react-secure-storage';
@@ -7,6 +7,23 @@ function AddScholarshipType() {
     const [formData, setFormData] = useState({
         scholarship_type: "",
     });
+    const [scholarshipTypes, setScholarshipTypes] = useState([]);
+    useEffect(() => {
+        const getScholarshipTypes = async () => {
+            try {
+                const url = secureLocalStorage.getItem("url") + "CSDL.php";
+                const formData = new FormData();
+                formData.append("operation", "getscholarship_type");
+                const res = await axios.post(url, formData);
+                setScholarshipTypes(res.data);
+                toast.success("Scholarship types loaded successfully");
+            } catch (error) {
+                console.log('Failed to load scholarship types:', error);
+                toast.error("Failed to load scholarship types");
+            }
+        };
+        getScholarshipTypes();
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -17,7 +34,17 @@ function AddScholarshipType() {
     };
 
     // Function to handle adding scholarship type
-    const handleAdd = async () => {
+    const handleAdd = async (e) => {
+        e.preventDefault();
+
+        const scholarshiptypeExits = scholarshipTypes.some(
+            (scholarshiptype) => scholarshiptype.type_name?.toLowerCase() === formData.scholarship_type.toLocaleLowerCase()
+        );
+        if (scholarshiptypeExits) {
+            toast.error("Scholarship type already exists");
+            return;
+        }
+
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
 

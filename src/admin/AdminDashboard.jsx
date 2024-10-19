@@ -33,6 +33,8 @@ import AddRoom from '../modal/AddRoom';
 import GetRoom from '../modal/GetRoom';
 import AddModality from '../modal/AddModality';
 import GetModality from '../modal/GetModality';
+import AddSubject from '../modal/AddSubject';
+import GetSubject from '../modal/GetSubject';
 
 const MasterFiles = () => {
     const navigateTo = useNavigate();
@@ -228,6 +230,7 @@ const MasterFiles = () => {
                                 { title: 'Building', buttonText: 'Add Building', route: '/addBuilding', content: <AddBuilding />, buttonText2: 'Building List', contentlist: <GetBuilding /> },
                                 { title: 'Room', buttonText: 'Add Room', route: '/addRoom', content: <AddRoom />, buttonText2: 'Room List', contentlist: <GetRoom /> },
                                 { title: 'Modality', buttonText: 'Add Modality', route: '/addModality', content: <AddModality />, buttonText2: 'Modality List', contentlist: <GetModality /> },
+                                { title: 'Subject', buttonText: 'Add Subject', route: '/addSubject', content: <AddSubject />, buttonText2: 'Subject List', contentlist: <GetSubject /> },
                             ].map(({ title, buttonText, route, content, contentlist, buttonText2 }, index) => (
                                 <div key={index} className="flex flex-col items-center">
                                     <h2 className="text-white text-lg font-semibold mb-2">{title}</h2>

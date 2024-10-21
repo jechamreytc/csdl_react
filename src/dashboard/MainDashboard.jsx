@@ -113,16 +113,17 @@ const Dashboard = () => {
                                     <span className="text-sm">Master Files</span>
                                 </button>
                             </li>
-                            {/* <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
+                            <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
                             <li>
                                 <button
                                     className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/Account")}
                                 >
                                     <CircleUser className="mr-2" />
                                     <span className="text-sm">Account</span>
                                 </button>
                             </li>
-                            <li>
+                            {/* <li>
                                 <button
                                     className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                 >

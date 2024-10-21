@@ -277,7 +277,6 @@ const AddScholar = () => {
                         </div>
                     </div>
 
-                    {/* Submit Button */}
                     <div className="flex justify-end">
                         <button
                             type="submit"

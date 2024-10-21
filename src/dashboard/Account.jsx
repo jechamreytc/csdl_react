@@ -1,40 +1,26 @@
-import { QRCodeCanvas } from 'qrcode.react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-    ArrowLeftCircle, BellIcon, CircleUser, FolderClosed, LogOutIcon, PanelsRightBottom, QrCodeIcon, User,
-    Trash2, Edit, Gauge, List, QrCode, GraduationCap, Book, Settings, Bell, Mail, LogOut, Calendar, Search,
-} from 'lucide-react';
-import { useState } from 'react';
+import { BellIcon, CircleUser, FolderClosed, LogOutIcon, PanelsRightBottom, QrCodeIcon, User, List, Mail, Calendar, Search } from 'lucide-react';
+import secureLocalStorage from 'react-secure-storage';
+import axios from 'axios';
 
-function Qrcode() {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [studentId, setStudentId] = useState('');
-    const [course, setCourse] = useState('');
-    const [qrData, setQrData] = useState('');
-
-    const handleGenerateQR = () => {
-        if (firstName && lastName && studentId && course) {
-            const data = `${firstName} ${lastName}, ${studentId}, ${course}`;
-            setQrData(data);
-        } else {
-            alert("Please fill in all required fields.");
-        }
-    };
-
-    const handleClearQR = () => {
-        setQrData('');
-        setFirstName('');
-        setLastName('');
-        setStudentId('');
-        setCourse('');
-    };
-
+const Account = () => {
+    const [file, setFile] = useState(null);
     const navigateTo = useNavigate();
-    const handleLogOut = () => {
-        navigateTo("/");
 
-    }
+    const handleLogOut = () => {
+        secureLocalStorage.clear();
+        navigateTo("/");
+    };
+
+    const handleFileChange = (e) => {
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);
+    };
+
+    const handlePhotoUpload = () => {
+        document.getElementById('photo-upload').click(); // Trigger file input click
+    };
 
     return (
         <div className="flex h-screen" style={{ backgroundColor: "rgb(8, 54, 100)" }}>
@@ -141,88 +127,113 @@ function Qrcode() {
                 </div>
                 <p className="text-white text-xs mt-4">Powered by PHINMA</p>
             </aside >
-            <div className="flex-grow p-10 bg-blue-500">
+            <div className="flex-1 p-10">
                 <div className="bg-white p-8 rounded-lg shadow-lg">
-                    <div className="text-left mb-8">
-                        <h1 className="text-5xl font-mono text-blue-500 mb-2">QR Code</h1>
-                    </div>
+                    <h2 className="text-3xl font-normal mb-6 text-blue-900">General Info</h2>
+                    <p className="mb-4 text-blue-800">Setup your profile account and edit profile details.</p>
 
-                    <div className="bg-blue-600 p-6 rounded-lg shadow-lg">
-                        <div className="text-left mb-8">
-                            <h1 className="text-3xl font-normal text-white mb-2">Generate QR Code</h1>
-                            <p className="text-white text-lg">Generate a QR code quickly: Enter the student info and get a shareable code for easy scanning.</p>
-                        </div>
-
-                        <div className="flex flex-col md:flex-row gap-4">
-                            <div className="w-full md:w-1/2">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block mb-2 text-sm text-white">First Name*</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-2 rounded bg-white text-black"
-                                            value={firstName}
-                                            onChange={(e) => setFirstName(e.target.value)}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block mb-2 text-sm text-white">Last Name*</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-2 rounded bg-white text-black"
-                                            value={lastName}
-                                            onChange={(e) => setLastName(e.target.value)}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block mb-2 text-sm text-white">Student ID*</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-2 rounded bg-white text-black"
-                                            value={studentId}
-                                            onChange={(e) => setStudentId(e.target.value)}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block mb-2 text-sm text-white">Course*</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-2 rounded bg-white text-black"
-                                            value={course}
-                                            onChange={(e) => setCourse(e.target.value)}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="flex justify-between mt-4">
-                                    <button
-                                        onClick={handleGenerateQR}
-                                        className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-                                        aria-label="Generate QR Code"
-                                    >
-                                        Generate QR Code
-                                    </button>
-                                    <button
-                                        onClick={handleClearQR}
-                                        className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded"
-                                        aria-label="Clear Fields"
-                                    >
-                                        Clear
-                                    </button>
-                                </div>
-                            </div>
-
-                            {qrData && (
-                                <div className="w-full md:w-1/2 flex justify-center items-center mt-6 md:mt-0">
-                                    <QRCodeCanvas value={qrData} />
-                                </div>
+                    {/* Profile Image Section */}
+                    <div className="flex items-center mb-8 bg-blue-900 rounded-md p-8 w-full h-20">
+                        <div className="w-20 h-20 bg-gray-200 rounded-full mr-4 overflow-hidden">
+                            {file ? (
+                                <img src={URL.createObjectURL(file)} alt="Profile" className="object-cover w-full h-full" />
+                            ) : (
+                                <img src="images/mae.jpg" alt="Profile" className="object-cover w-full h-full" />
                             )}
                         </div>
+                        <input
+                            type="file"
+                            id="photo-upload"
+                            style={{ display: 'none' }}
+                            onChange={handleFileChange}
+                        />
+                        <button
+                            className="bg-green-600 text-white text-lg px-6 py-3 rounded hover:bg-green-700 ml-auto"
+                            onClick={handlePhotoUpload}
+                        >
+                            Update Photo
+                        </button>
+                    </div>
+
+                    {/* Account Info Form */}
+                    <div className="bg-blue-900 text-white p-6 rounded-lg">
+                        <h3 className="text-xl mb-4">Account Info</h3>
+                        <form>
+                            <div className="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block mb-2">Full Name*</label>
+                                    <input
+                                        type="text"
+                                        value={secureLocalStorage.getItem("fullName")}
+                                        className="w-full p-2 rounded bg-blue-600 text-white"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block mb-2">Username*</label>
+                                    <input
+                                        type="text"
+                                        value="admin123"
+                                        className="w-full p-2 rounded bg-blue-600 text-white"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block mb-2">Password*</label>
+                                    <div className="relative">
+                                        <input
+                                            type="password"
+                                            value="admin123"
+                                            className="w-full p-2 rounded bg-blue-600 text-white"
+                                        />
+                                        <button
+                                            type="button"
+                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white">
+                                            <i className="fas fa-eye-slash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block mb-2">Confirm Password*</label>
+                                    <div className="relative">
+                                        <input
+                                            type="password"
+                                            value="admin123"
+                                            className="w-full p-2 rounded bg-blue-600 text-white"
+                                        />
+                                        <button
+                                            type="button"
+                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white">
+                                            <i className="fas fa-eye-slash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block mb-2">Email Address*</label>
+                                    <input
+                                        type="email"
+                                        value="grba.sacay.coc@phinmaed.com"
+                                        className="w-full p-2 rounded bg-blue-600 text-white"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block mb-2">Confirm Email Address*</label>
+                                    <input
+                                        type="email"
+                                        value="grba.sacay.coc@phinmaed.com"
+                                        className="w-full p-2 rounded bg-blue-600 text-white"
+                                    />
+                                </div>
+                            </div>
+                            <button
+                                type="submit"
+                                className="mt-6 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
+                                Update Info
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     );
-}
+};
 
-export default Qrcode;
+export default Account;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { BellIcon, CircleUser, FolderClosed, LogOutIcon, PanelsRightBottom, QrCodeIcon, User, List, Mail, Calendar, Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import secureLocalStorage from 'react-secure-storage';
 import { toast } from 'sonner';
@@ -41,7 +41,7 @@ function AssignStudent() {
             formData.append('operation', 'getDutyAssign');
             const res = await axios.post(url, formData);
 
-            // Set data for various dropdowns
+
             setBuildings(res.data.getBuilding);
             setRooms(res.data.getRoom);
             setDays(res.data.getDays);
@@ -62,12 +62,6 @@ function AssignStudent() {
         fetchData();
     }, []);
 
-    const convertSecondsToHours = (seconds) => {
-        const hours = Math.floor(seconds / 3600);
-        const minutes = Math.floor((seconds % 3600) / 60);
-        return `${hours}h ${minutes}m`;
-    };
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevFormData) => ({
@@ -76,14 +70,14 @@ function AssignStudent() {
         }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleAdd = async (e) => {
         e.preventDefault();
 
         try {
             const url = secureLocalStorage.getItem('url') + 'CSDL.php';
             const jsonData = {
-                subjectcode: formData.subjectcode,
-                section: formData.section,
+                // ubjectcode: formData.subjectcode,
+                // section: formData.section,s
                 assign_time_schedule_in: formData.timeIn,
                 assign_time_schedule_out: formData.timeOut,
                 assign_day_id: formData.day,
@@ -93,6 +87,8 @@ function AssignStudent() {
                 assign_dutyH_Id: formData.dutyHours,
                 assign_supM_id: formData.supervisor,
             };
+
+            console.log('JSON DATA', jsonData);
 
             const formDataToSend = new FormData();
             formDataToSend.append('json', JSON.stringify(jsonData));
@@ -117,6 +113,7 @@ function AssignStudent() {
     return (
         <div className="flex h-screen" style={{ backgroundColor: "rgb(8, 54, 100)" }}>
             <aside className="w-1/6 p-4 flex flex-col justify-between" style={{ backgroundColor: "#109315" }}>
+
                 <div className="text-white mb-6">
                     <div className="flex items-center mb-6">
                         <img
@@ -179,16 +176,17 @@ function AssignStudent() {
                                     <span className="text-sm">Master Files</span>
                                 </button>
                             </li>
-                            {/* <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
+                            <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
                             <li>
                                 <button
                                     className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/Account")}
                                 >
                                     <CircleUser className="mr-2" />
                                     <span className="text-sm">Account</span>
                                 </button>
                             </li>
-                            <li>
+                            {/* <li>
                                 <button
                                     className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                 >
@@ -218,223 +216,225 @@ function AssignStudent() {
                 </div>
                 <p className="text-white text-xs mt-4">Powered by PHINMA</p>
             </aside >
-            <main className="bg-white p-8 rounded-lg shadow-lg relative max-w-4xl mx-auto">
-                <h1 className="text-3xl font-semibold text-blue-900 mb-6">Assigned Students</h1>
 
-                <div className="bg-blue-800 p-6 rounded-lg">
-                    <h2 className="text-2xl font-semibold text-white mb-3">Duty Assigned</h2>
-                    <p className="text-gray-300 mb-6">
-                        Generate a student duty: Input the necessary details with a unique identifier for easy reference.
-                    </p>
+            <div className="flex-1 p-10">
+                <main className="bg-gray-50 p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h1 className="text-3xl font-bold text-blue-900 mb-8 text-center">Assign Duty to Students</h1>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="sm:flex sm:space-x-4">
-                            {/* Student Dropdown */}
-                            <div className="flex-1">
-                                <label className="block text-white font-semibold mb-2">Student*</label>
-                                <div className="flex items-center bg-blue-700 rounded-lg px-4 py-3">
-                                    <select
-                                        name="student"
-                                        value={formData.student}
-                                        onChange={handleInputChange}
-                                        className="w-full bg-blue-700 text-white border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    >
-                                        <option value="">Select Student</option>
-                                        {student.length > 0 ? (
-                                            student.map((student, index) => (
-                                                <option key={index} value={student.stud_id}>
-                                                    {student.stud_first_name + " " + student.stud_last_name}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <option disabled>No Student Available</option>
-                                        )}
-                                    </select>
-                                    <span className="ml-2 text-white">&gt;</span>
+                    <div className="bg-blue-800 p-8 rounded-lg">
+                        <h2 className="text-2xl font-semibold text-white mb-4 text-center">Duty Assignment</h2>
+                        <p className="text-gray-300 mb-8 text-center">
+                            Please fill out the form below to assign duty details to the selected student and supervisor.
+                        </p>
+
+                        <form onSubmit={handleAdd}>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                                <div>
+                                    <label className="block text-white font-medium mb-2">Student*</label>
+                                    <div className="relative">
+                                        <select
+                                            name="student"
+                                            value={formData.student}
+                                            onChange={handleInputChange}
+                                            className="w-full bg-blue-700 text-white py-3 pl-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                                        >
+                                            <option value="">Select Student</option>
+                                            {student.length > 0 ? (
+                                                student.map((student, index) => (
+                                                    <option key={index} value={student.stud_id}>
+                                                        {student.stud_first_name + " " + student.stud_last_name}
+                                                    </option>
+                                                ))
+                                            ) : (
+                                                <option disabled>No Students Available</option>
+                                            )}
+                                        </select>
+                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block text-white font-medium mb-2">Supervisor*</label>
+                                    <div className="relative">
+                                        <select
+                                            name="supervisor"
+                                            value={formData.supervisor}
+                                            onChange={handleInputChange}
+                                            className="w-full bg-blue-700 text-white py-3 pl-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                                        >
+                                            <option value="">Select Supervisor</option>
+                                            {supervisor.length > 0 ? (
+                                                supervisor.map((sup, index) => (
+                                                    <option key={index} value={sup.supM_id}>
+                                                        {sup.supM_first_name + " " + sup.supM_last_name}
+                                                    </option>
+                                                ))
+                                            ) : (
+                                                <option disabled>No Supervisors Available</option>
+                                            )}
+                                        </select>
+                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+                                    </div>
                                 </div>
                             </div>
 
-                            {/* Supervisor Dropdown */}
-                            <div className="flex-1">
-                                <label className="block text-white font-semibold mb-2">Supervisor*</label>
-                                <div className="flex items-center bg-blue-700 rounded-lg px-4 py-3">
-                                    <select
-                                        name="supervisor"
-                                        value={formData.supervisor}
-                                        onChange={handleInputChange}
-                                        className="w-full bg-blue-700 text-white border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    >
-                                        <option value="">Select Supervisor</option>
-                                        {supervisor.length > 0 ? (
-                                            supervisor.map((sup, index) => (
-                                                <option key={index} value={sup.supM_id}>
-                                                    {sup.supM_first_name + " " + sup.supM_last_name}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <option disabled>No Supervisor Available</option>
-                                        )}
-                                    </select>
-                                    <span className="ml-2 text-white">&gt;</span>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {/* Building and Room Dropdowns */}
+                                <div>
+                                    <label className="block text-white font-medium mb-2">Building</label>
+                                    <div className="relative mb-4">
+                                        <select
+                                            name="building"
+                                            value={formData.building}
+                                            onChange={handleInputChange}
+                                            className="w-full bg-blue-700 text-white py-3 pl-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                                        >
+                                            <option value="">Select Building</option>
+                                            {buildings.length > 0 ? (
+                                                buildings.map((build, index) => (
+                                                    <option key={index} value={build.build_id}>
+                                                        {build.build_name}
+                                                    </option>
+                                                ))
+                                            ) : (
+                                                <option disabled>No Buildings Available</option>
+                                            )}
+                                        </select>
+                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+                                    </div>
+
+                                    <label className="block text-white font-medium mb-2">Room</label>
+                                    <div className="relative">
+                                        <select
+                                            name="room"
+                                            value={formData.room}
+                                            onChange={handleInputChange}
+                                            className="w-full bg-blue-700 text-white py-3 pl-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                                        >
+                                            <option value="">Select Room</option>
+                                            {rooms.length > 0 ? (
+                                                rooms.map((room, index) => (
+                                                    <option key={index} value={room.room_id}>
+                                                        {room.room_number}
+                                                    </option>
+                                                ))
+                                            ) : (
+                                                <option disabled>No Rooms Available</option>
+                                            )}
+                                        </select>
+                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+                                    </div>
+                                </div>
+
+                                {/* Day and Hours Dropdowns */}
+                                <div>
+                                    <label className="block text-white font-medium mb-2">Day</label>
+                                    <div className="relative mb-4">
+                                        <select
+                                            name="day"
+                                            value={formData.day}
+                                            onChange={handleInputChange}
+                                            className="w-full bg-blue-700 text-white py-3 pl-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                                        >
+                                            <option value="">Select Day</option>
+                                            {days.length > 0 ? (
+                                                days.map((day, index) => (
+                                                    <option key={index} value={day.day_id}>
+                                                        {day.day_name}
+                                                    </option>
+                                                ))
+                                            ) : (
+                                                <option disabled>No Days Available</option>
+                                            )}
+                                        </select>
+                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+                                    </div>
+
+                                    <label className="block text-white font-medium mb-2">Duty Hours</label>
+                                    <div className="relative">
+                                        <select
+                                            name="dutyHours"
+                                            value={formData.dutyHours}
+                                            onChange={handleInputChange}
+                                            className="w-full bg-blue-700 text-white py-3 pl-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                                        >
+                                            <option value="">Select Duty Hours</option>
+                                            {dutyHours.length > 0 ? (
+                                                dutyHours.map((hour, index) => (
+                                                    <option key={index} value={hour.dutyH_Id}>
+                                                        {hour.dutyH_hours}
+                                                    </option>
+                                                ))
+                                            ) : (
+                                                <option disabled>No Duty Hours Available</option>
+                                            )}
+                                        </select>
+                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="sm:flex sm:space-x-4">
-                            {/* Building Dropdown */}
-                            <div className="flex-1">
-                                <label className="block text-white font-semibold mb-2">Building</label>
-                                <div className="flex items-center bg-blue-700 rounded-lg px-4 py-3">
-                                    <select
-                                        name="building"
-                                        value={formData.building}
-                                        onChange={handleInputChange}
-                                        className="w-full bg-blue-700 text-white border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    >
-                                        <option value="">Select Building</option>
-                                        {buildings.length > 0 ? (
-                                            buildings.map((build, index) => (
-                                                <option key={index} value={build.build_id}>
-                                                    {build.build_name}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <option value="" disabled>No Buildings Available</option>
-                                        )}
-                                    </select>
-                                    <span className="ml-2 text-white">&gt;</span>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-white font-medium mb-2">Time In</label>
+                                    <div className="relative mb-4">
+                                        <select
+                                            name="timeIn"
+                                            value={formData.timeIn}
+                                            onChange={handleInputChange}
+                                            className="w-full bg-blue-700 text-white py-3 pl-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                                        >
+                                            <option value="">Select Time In</option>
+                                            {time.length > 0 ? (
+                                                time.map((time, index) => (
+                                                    <option key={index} value={time.timeSched_id}>
+                                                        {time.timeShed_name}
+                                                    </option>
+                                                ))
+                                            ) : (
+                                                <option disabled>No Time In Available</option>
+                                            )}
+                                        </select>
+                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+                                    </div>
                                 </div>
 
-                                {/* Room Dropdown */}
-                                <label className="block text-white font-semibold mb-2 mt-4">Room</label>
-                                <div className="flex items-center bg-blue-700 rounded-lg px-4 py-3">
-                                    <select
-                                        name="room"
-                                        value={formData.room}
-                                        onChange={handleInputChange}
-                                        className="w-full bg-blue-700 text-white border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    >
-                                        <option value="">Select Room</option>
-                                        {rooms.length > 0 ? (
-                                            rooms.map((room, index) => (
-                                                <option key={index} value={room.room_id}>
-                                                    {room.room_number}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <option value="" disabled>No Room Available</option>
-                                        )}
-                                    </select>
-                                    <span className="ml-2 text-white">&gt;</span>
-                                </div>
-
-                                {/* Hours Dropdown */}
-                                <label className="block text-white font-semibold mb-2 mt-4">Hours</label>
-                                <div className="flex items-center bg-blue-700 rounded-lg px-4 py-3">
-                                    <select
-                                        name="hours"
-                                        value={formData.hours}
-                                        onChange={handleInputChange}
-                                        className="w-full bg-blue-700 text-white border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    >
-                                        <option value="">Select Hours</option>
-                                        {dutyHours.length > 0 ? (
-                                            dutyHours.map((hours, index) => (
-                                                <option key={index} value={hours.dutyH_id}>
-                                                    {hours.dutyH_name}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <option value="" disabled>No Hours Available</option>
-                                        )}
-                                    </select>
-                                    <span className="ml-2 text-white">&gt;</span>
+                                <div>
+                                    <label className="block text-white font-medium mb-2">Time Out</label>
+                                    <div className="relative mb-4">
+                                        <select
+                                            name="timeOut"
+                                            value={formData.timeOut}
+                                            onChange={handleInputChange}
+                                            className="w-full bg-blue-700 text-white py-3 pl-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                                        >
+                                            <option value="">Select Time Out</option>
+                                            {timeOuts.length > 0 ? (
+                                                timeOuts.map((timeOut, index) => (
+                                                    <option key={index} value={timeOut.time_out_id}>
+                                                        {timeOut.time_out_name}
+                                                    </option>
+                                                ))
+                                            ) : (
+                                                <option disabled>No Time Out Available</option>
+                                            )}
+                                        </select>
+                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+                                    </div>
                                 </div>
                             </div>
 
-                            {/* Day Dropdown */}
-                            <div className="flex-1">
-                                <label className="block text-white font-semibold mb-2">Day</label>
-                                <div className="flex items-center bg-blue-700 rounded-lg px-4 py-3">
-                                    <select
-                                        name="day"
-                                        value={formData.day}
-                                        onChange={handleInputChange}
-                                        className="w-full bg-blue-700 text-white border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    >
-                                        <option value="">Select Day</option>
-                                        {days.length > 0 ? (
-                                            days.map((day, index) => (
-                                                <option key={index} value={day.days_id}>
-                                                    {day.days_desc}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <option value="" disabled>No Day Available</option>
-                                        )}
-                                    </select>
-                                    <span className="ml-2 text-white">&gt;</span>
-                                </div>
-
-                                {/* Time In Dropdown */}
-                                <label className="block text-white font-semibold mb-2 mt-4">Time In</label>
-                                <div className="flex items-center bg-blue-700 rounded-lg px-4 py-3">
-                                    <select
-                                        name="timeIn"
-                                        value={formData.timeIn}
-                                        onChange={handleInputChange}
-                                        className="w-full bg-blue-700 text-white border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    >
-                                        <option value="">Select Time In</option>
-                                        {time.length > 0 ? (
-                                            time.map((time, index) => (
-                                                <option key={index} value={time.time_id}>
-                                                    {time.time_desc}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <option value="" disabled>No Time In Available</option>
-                                        )}
-                                    </select>
-                                    <span className="ml-2 text-white">&gt;</span>
-                                </div>
-
-                                {/* Time Out Dropdown */}
-                                <label className="block text-white font-semibold mb-2 mt-4">Time Out</label>
-                                <div className="flex items-center bg-blue-700 rounded-lg px-4 py-3">
-                                    <select
-                                        name="timeOut"
-                                        value={formData.timeOut}
-                                        onChange={handleInputChange}
-                                        className="w-full bg-blue-700 text-white border border-transparent rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    >
-                                        <option value="">Select Time Out</option>
-                                        {timeOuts.length > 0 ? (
-                                            timeOuts.map((time, index) => (
-                                                <option key={index} value={time.time_id}>
-                                                    {time.time_desc}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <option value="" disabled>No Time Out Available</option>
-                                        )}
-                                    </select>
-                                    <span className="ml-2 text-white">&gt;</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="flex justify-between mt-6">
-                            <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">
-                                Submit
+                            <button
+                                onClick={handleAdd}
+                                className="p-2 text-lg bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300"
+                            >
+                                Add
                             </button>
-                            <button onClick={handleLogOut} className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">
-                                Log Out
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </main>
+                        </form>
+                    </div>
+                </main>
+            </div>
         </div>
     );
 }

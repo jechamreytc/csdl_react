@@ -6,6 +6,8 @@ import { FaTrash, FaEdit } from 'react-icons/fa';
 
 const GetSupervisorMaster = () => {
     const [supervisors, setSupervisors] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedSupervisor, setSelectedSupervisor] = useState(null); // Selected supervisor data
 
     useEffect(() => {
         const getSupervisors = async () => {
@@ -54,8 +56,14 @@ const GetSupervisorMaster = () => {
         }
     };
 
-    const handleUpdate = (supervisorId) => {
-        toast.success(`Supervisor ${supervisorId} updated successfully`);
+    const handleUpdate = (supervisor) => {
+        setSelectedSupervisor(supervisor);
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+        setSelectedSupervisor(null);
     };
 
     return (
@@ -65,7 +73,7 @@ const GetSupervisorMaster = () => {
                     <h1 className="text-4xl font-bold text-gray-800 text-center">Supervisor Management</h1>
                 </div>
 
-                <div className="flex flex-wrap justify-center gap-8 overflow-y-auto max-h-[80vh]"> {/* Set max height and overflow */}
+                <div className="flex flex-wrap justify-center gap-8 overflow-y-auto max-h-[80vh] max-w-[1200px]">
                     {supervisors.length > 0 ? (
                         supervisors.map((supervisor) => (
                             <div
@@ -89,7 +97,7 @@ const GetSupervisorMaster = () => {
                                     <div className="flex space-x-4 w-full justify-end mt-6">
                                         <button
                                             className="bg-blue-500 text-white py-2 px-4 rounded-lg flex items-center space-x-2 hover:bg-blue-600 transition-colors"
-                                            onClick={() => handleUpdate(supervisor.supervisor_id)}
+                                            onClick={() => handleUpdate(supervisor)}
                                         >
                                             <FaEdit />
                                             <span>Edit</span>
@@ -110,6 +118,24 @@ const GetSupervisorMaster = () => {
                     )}
                 </div>
             </div>
+
+            {/* Full-Screen Modal */}
+            {showModal && selectedSupervisor && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white rounded-lg w-full max-w-4xl p-8 relative">
+                        <button
+                            onClick={closeModal}
+                            className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
+                        >
+                            Close
+                        </button>
+                        <h2 className="text-2xl font-bold mb-6">Edit Supervisor</h2>
+                        <p><strong>Employee ID:</strong> {selectedSupervisor.supM_employee_id}</p>
+                        <p><strong>Name:</strong> {selectedSupervisor.supM_first_name} {selectedSupervisor.supM_last_name}</p>
+                        {/* Add your edit form fields here */}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

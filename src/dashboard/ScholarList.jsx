@@ -28,7 +28,7 @@ const ScholarList = () => {
                 postData.append("operation", "getAllScholarList");
                 const res = await axios.post(url, postData);
 
-                // Safely accessing the response data
+
                 setScholarshipType(res.data.scholarshiptypelist || []);
                 setYearLevel(res.data.SchoolYearLevel || []);
                 setCourses(res.data.courselist || []);

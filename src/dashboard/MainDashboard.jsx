@@ -179,7 +179,7 @@ const Dashboard = () => {
 
                 <div className="flex items-center p-6">
                     <img
-                        src="images/sakana.jpg"
+                        src={`http://localhost/csdl/images/${secureLocalStorage.getItem("userImage")}`}
                         alt="User Avatar of Mae Jabulan"
                         className="w-24 h-24 mr-4 rounded-xl"
                     />

@@ -34,9 +34,11 @@ const AuthPage = () => {
 
             if (res.data !== 0) {
                 secureLocalStorage.setItem("email", res.data.adm_email);
+                secureLocalStorage.setItem("userId", res.data.adm_id);
                 const fullName = res.data.adm_first_name + " " + res.data.adm_last_name;
                 secureLocalStorage.setItem("fullName", fullName);
                 secureLocalStorage.setItem("firstName", res.data.adm_first_name);
+                secureLocalStorage.setItem("userImage", res.data.adm_image);
                 toast.success("Login successful");
                 setTimeout(() => router("/MainDashboard"), 500);
                 // // Securely store user_id and user_level using react-secure-storage

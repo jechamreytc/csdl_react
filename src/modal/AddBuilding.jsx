@@ -26,24 +26,7 @@ function AddBuilding() {
         };
         getBuildings();
     }, []);
-    useEffect(() => {
-        const getBuildings = async () => {
-            try {
-                const url = secureLocalStorage.getItem("url") + "CSDL.php";
-                const formData = new FormData();
-                formData.append("operation", "getBuilding");
-                const res = await axios.post(url, formData);
-                setBuildings(res.data);
-                toast.success("Buildings loaded successfully");
-            } catch (error) {
-                console.log('Failed to load buildings:', error);
-                toast.error("Failed to load buildings");
-            }
-        };
-        getBuildings();
-    }, []);
     const [loading, setLoading] = useState(false);
-
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -63,7 +46,8 @@ function AddBuilding() {
             toast.error("Building name cannot be empty");
             return;
         }
-        const existingBuilding = buildings.find((building) => building.build_name.toLowerCase() === buildingName.toLowerCase());
+        const existingBuilding = buildings.find(
+            (building) => building.build_name.toLowerCase() === buildingName.toLowerCase());
         if (existingBuilding) {
             toast.error("Building already exists");
             return;

@@ -239,12 +239,12 @@ const MasterFiles = () => {
                                         <h3 className="text-white text-base font-semibold mb-2">{buttonText}</h3>
                                         <div className="flex gap-2">
                                             <button
-                                                className="w-16 py-1 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200 ease-in-out text-xs"
+                                                className="w-24 py-1 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200 ease-in-out text-xs"
                                                 onClick={() => openModal(content, buttonText)}
                                             >
                                                 Add
                                             </button>
-                                            <button className="w-16 py-1 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200 ease-in-out text-xs"
+                                            <button className="w-24 py-1 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200 ease-in-out text-xs"
                                                 onClick={() => openListModal(contentlist, buttonText2)}>
                                                 Get List
                                             </button>

@@ -47,7 +47,7 @@ function AddScholarshipSubType() {
 
             const jsonData = {
                 sub_type_name: formData.sub_type_name,
-                dutyH_name: formData.dutyHours,
+                dutyH_hours: formData.dutyHours,
                 type_name: formData.HKType,
             };
 
@@ -92,7 +92,7 @@ function AddScholarshipSubType() {
                 {dutyHour?.length > 0 ? (
                     dutyHour.map((dutyHour, index) => (
                         <option key={index} value={dutyHour.dutyH_id}>
-                            {dutyHour.dutyH_name}
+                            {dutyHour.dutyH_hours}
                         </option>
                     ))
                 ) : (

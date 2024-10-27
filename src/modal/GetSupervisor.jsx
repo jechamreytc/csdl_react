@@ -7,7 +7,7 @@ import { FaTrash, FaEdit } from 'react-icons/fa';
 const GetSupervisorMaster = () => {
     const [supervisors, setSupervisors] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [selectedSupervisor, setSelectedSupervisor] = useState(null); // Selected supervisor data
+    const [selectedSupervisor, setSelectedSupervisor] = useState(null);
 
     useEffect(() => {
         const getSupervisors = async () => {
@@ -119,20 +119,26 @@ const GetSupervisorMaster = () => {
                 </div>
             </div>
 
-            {/* Full-Screen Modal */}
+            {/* Landscape Modal */}
             {showModal && selectedSupervisor && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white rounded-lg w-full max-w-4xl p-8 relative">
+                    <div className="bg-white rounded-lg w-full max-w-[80vw] max-h-[50vh] p-8 relative flex flex-col md:flex-row">
                         <button
                             onClick={closeModal}
                             className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
                         >
                             Close
                         </button>
-                        <h2 className="text-2xl font-bold mb-6">Edit Supervisor</h2>
-                        <p><strong>Employee ID:</strong> {selectedSupervisor.supM_employee_id}</p>
-                        <p><strong>Name:</strong> {selectedSupervisor.supM_first_name} {selectedSupervisor.supM_last_name}</p>
-                        {/* Add your edit form fields here */}
+                        <div className="flex-1 p-4">
+                            <h2 className="text-2xl font-bold mb-4">Edit Supervisor</h2>
+                            <p><strong>Employee ID:</strong> {selectedSupervisor.supM_employee_id}</p>
+                            <p><strong>Name:</strong> {selectedSupervisor.supM_first_name} {selectedSupervisor.supM_last_name}</p>
+                            {/* Add your edit form fields here */}
+                        </div>
+
+                        <div className="flex-1 p-4 border-l border-gray-200">
+                            {/* Additional content or form fields for horizontal layout */}
+                        </div>
                     </div>
                 </div>
             )}

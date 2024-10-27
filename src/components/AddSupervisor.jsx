@@ -3,10 +3,9 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import secureLocalStorage from 'react-secure-storage';
 
-const AddSupervisor = () => {
+const AddSupervisorMaster = () => {
     const [formData, setFormData] = useState({
         supM_employee_id: '',
-
         supM_first_name: '',
         supM_last_name: '',
         supM_middle_name: '',
@@ -24,13 +23,11 @@ const AddSupervisor = () => {
                 const formData = new FormData();
                 formData.append('operation', 'getDepartment');
                 const res = await axios.post(url, formData);
-                console.log('Departments:', res.data);
                 setDepartments(res.data);
                 toast.success('Departments loaded successfully');
             } catch (error) {
                 console.log('Failed to load departments:', error);
                 toast.error('Failed to load departments');
-
             }
         };
 
@@ -41,7 +38,7 @@ const AddSupervisor = () => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
-            [name]: value
+            [name]: value,
         });
     };
 
@@ -50,10 +47,8 @@ const AddSupervisor = () => {
 
         try {
             const url = secureLocalStorage.getItem('url') + 'CSDL.php';
-
             const jsonData = {
                 supM_employee_id: formData.supM_employee_id,
-
                 supM_first_name: formData.supM_first_name,
                 supM_last_name: formData.supM_last_name,
                 supM_middle_name: formData.supM_middle_name,
@@ -61,16 +56,23 @@ const AddSupervisor = () => {
                 supM_email: formData.supM_email,
                 supM_contact_number: formData.supM_contact_number,
             };
-            console.log("HELLO JSON DATA", jsonData);
 
             const formDataToSend = new FormData();
             formDataToSend.append('json', JSON.stringify(jsonData));
             formDataToSend.append('operation', 'AddSupervisorMaster');
 
             const res = await axios.post(url, formDataToSend);
-            console.log("HELLO RES DATA", res);
             if (res.data !== 0) {
                 toast.success('Supervisor added successfully');
+                setFormData({
+                    supM_employee_id: '',
+                    supM_first_name: '',
+                    supM_last_name: '',
+                    supM_middle_name: '',
+                    supM_department_id: '',
+                    supM_email: '',
+                    supM_contact_number: '',
+                });
             } else {
                 toast.error('Failed to add supervisor');
             }
@@ -80,123 +82,120 @@ const AddSupervisor = () => {
     };
 
     return (
-        <div className="flex">
+        <div className="bg-white p-10 rounded-lg max-w-5xl mx-auto shadow-xl mt-12">
+
+
             <form className="space-y-6" onSubmit={handleSubmit}>
-                <div className="flex space-x-4">
-                    <div className="w-1/2">
-                        <label className="block text-sm font-medium text-white">Employee ID*</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Employee ID */}
+                    <div className="flex flex-col">
+                        <label className="mb-2 text-gray-700 font-semibold">Employee ID</label>
                         <input
                             type="text"
                             name="supM_employee_id"
                             value={formData.supM_employee_id}
                             onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="Employee ID"
+                            placeholder="Enter Employee ID"
                             required
+                            className="p-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
                         />
                     </div>
 
-                </div>
-
-                <div className="flex space-x-4">
-                    <div className="w-1/2">
-                        <label className="block text-sm font-medium text-white">First Name*</label>
+                    {/* First Name */}
+                    <div className="flex flex-col">
+                        <label className="mb-2 text-gray-700 font-semibold">First Name</label>
                         <input
                             type="text"
                             name="supM_first_name"
                             value={formData.supM_first_name}
                             onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="First Name"
+                            placeholder="Enter First Name"
                             required
+                            className="p-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
                         />
                     </div>
-
-                    <div className="w-1/2">
-                        <label className="block text-sm font-medium text-white">Last Name*</label>
-                        <input
-                            type="text"
-                            name="supM_last_name"
-                            value={formData.supM_last_name}
-                            onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="Last Name"
-                            required
-                        />
-                    </div>
-                </div>
-
-                <div className="flex space-x-4">
-                    <div className="w-1/2">
-                        <label className="block text-sm font-medium text-white">Middle Name</label>
+                    <div className="flex flex-col">
+                        <label className="mb-2 text-gray-700 font-semibold">Middle Name</label>
                         <input
                             type="text"
                             name="supM_middle_name"
                             value={formData.supM_middle_name}
                             onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="Middle Name"
+                            placeholder="Enter Middle Name"
+                            className="p-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
+                        />
+                    </div>
+                    {/* Last Name */}
+                    <div className="flex flex-col">
+                        <label className="mb-2 text-gray-700 font-semibold">Last Name</label>
+                        <input
+                            type="text"
+                            name="supM_last_name"
+                            value={formData.supM_last_name}
+                            onChange={handleInputChange}
+                            placeholder="Enter Last Name"
+                            required
+                            className="p-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
                         />
                     </div>
 
-                    <div className="w-1/2">
-                        <label className="block text-sm font-medium text-white">Department*</label>
+                    {/* Department */}
+                    <div className="flex flex-col">
+                        <label className="mb-2 text-gray-700 font-semibold">Department</label>
                         <select
                             name="supM_department_id"
                             value={formData.supM_department_id}
                             onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                             required
+                            className="p-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
                         >
                             <option value="">Select Department</option>
-                            {departments.length > 0 && departments.map((dept, index) => (
+                            {departments.map((dept, index) => (
                                 <option key={index} value={dept.dept_id}>
                                     {dept.dept_name}
                                 </option>
                             ))}
                         </select>
                     </div>
-                </div>
 
-                <div className="flex space-x-4">
-                    <div className="w-1/2">
-                        <label className="block text-sm font-medium text-white">Email*</label>
+                    {/* Email */}
+                    <div className="flex flex-col">
+                        <label className="mb-2 text-gray-700 font-semibold">Email</label>
                         <input
                             type="email"
                             name="supM_email"
                             value={formData.supM_email}
                             onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="Email"
+                            placeholder="Enter Email"
                             required
+                            className="p-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
                         />
                     </div>
 
-                    <div className="w-1/2">
-                        <label className="block text-sm font-medium text-white">Contact Number*</label>
+                    {/* Contact Number */}
+                    <div className="flex flex-col">
+                        <label className="mb-2 text-gray-700 font-semibold">Contact Number</label>
                         <input
                             type="text"
                             name="supM_contact_number"
                             value={formData.supM_contact_number}
                             onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="Contact Number"
+                            placeholder="Enter Contact Number"
                             required
+                            className="p-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
                         />
                     </div>
                 </div>
 
-                <div className="flex justify-between">
-                    <button
-                        type="submit"
-                        className="bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600"
-                    >
-                        Add Supervisor
-                    </button>
-                </div>
+                <button
+                    type="submit"
+                    className="w-full p-4 bg-indigo-600 text-white text-lg font-semibold rounded-lg hover:bg-indigo-700 transition duration-300 mt-6"
+                >
+                    Add Supervisor
+                </button>
             </form>
         </div>
     );
 };
 
-export default AddSupervisor;
+export default AddSupervisorMaster;

@@ -9,6 +9,7 @@ function AddRoom() {
         building: ""
     });
     const [buildings, setBuildings] = useState([]);
+    const [rooms, setRooms] = useState([]);
 
     useEffect(() => {
         const getBuildings = async () => {
@@ -19,7 +20,6 @@ function AddRoom() {
                 const res = await axios.post(url, formData);
                 setBuildings(res.data);
                 toast.success("Buildings loaded successfully");
-
                 console.log('Buildings:', res.data);
             } catch (error) {
                 console.log('Failed to load buildings:', error);
@@ -28,6 +28,29 @@ function AddRoom() {
         };
 
         getBuildings();
+    }, []);
+
+    const getRooms = async () => {
+        try {
+            const url = secureLocalStorage.getItem("url") + "CSDL.php";
+            const formData = new FormData();
+            formData.append("operation", "getRoom");
+            const res = await axios.post(url, formData);
+            if (Array.isArray(res.data)) {
+                setRooms(res.data);
+                toast.success("Rooms loaded successfully");
+            } else {
+                console.log('Unexpected response format:', res.data);
+                toast.error("Unexpected data format");
+            }
+        } catch (error) {
+            console.log('Failed to load Rooms:', error);
+            toast.error("Failed to load Rooms");
+        }
+    };
+
+    useEffect(() => {
+        getRooms();
     }, []);
 
     const handleInputChange = (e) => {
@@ -41,42 +64,44 @@ function AddRoom() {
     const handleAdd = async (e) => {
         e.preventDefault();
 
-        // Validation: Check if the room already exists
-        const roomExists = buildings.some(
-            (building) => building.room_name?.toLowerCase() === formData.room.toLowerCase()
+        const roomExists = rooms.some(
+            (room) => room.room_number === formData.room
         );
 
         if (roomExists) {
-            toast.error("Room with the same name already exists.");
-            return; // Prevent form submission if room exists
+            toast.error("Room with the same number already exists.");
+            return;
         }
 
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
-
             const jsonData = {
                 room_number: formData.room,
-                build_id: formData.building,
+                room_building_id: formData.building, // Ensure this matches the backend expected field
             };
 
             const formDataToSend = new FormData();
             formDataToSend.append("json", JSON.stringify(jsonData));
             formDataToSend.append("operation", "AddRoom");
 
+            console.log('Sending data:', jsonData); // Log the data being sent
             const res = await axios.post(url, formDataToSend);
+            console.log('Response from server:', res.data); // Log the server response
 
             if (res.data !== 0) {
                 toast.success("Room added successfully");
-                // Reset form fields after adding the room
+
                 setFormData({
                     room: "",
                     building: ""
                 });
+
+                await getRooms();
             } else {
                 toast.error("Failed to add room");
             }
         } catch (error) {
-            console.log(error);
+            console.log('Error while adding room:', error); // Log the error
             toast.error("An error occurred while adding the room");
         }
     };
@@ -88,7 +113,7 @@ function AddRoom() {
             <input
                 type="text"
                 name="room"
-                placeholder="Enter Room Name"
+                placeholder="Enter Room Number"
                 value={formData.room}
                 onChange={handleInputChange}
                 className="p-2 text-lg w-full mb-2 border border-blue-900 rounded"

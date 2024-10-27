@@ -130,47 +130,109 @@ function AssignStudent() {
 
     return (
         <div className="flex h-screen" style={{ backgroundColor: "rgb(8, 54, 100)" }}>
-            <div className="w-64 bg-blue-900 text-white p-6">
-                <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
-                <ul>
-                    <li className="mb-4">
-                        <button className="flex items-center text-lg" onClick={() => navigateTo('/MainDashboard')}>
-                            <PanelsRightBottom className="mr-2" />
-                            Dashboard
-                        </button>
-                    </li>
-                    <li className="mb-4">
-                        <button className="flex items-center text-lg" onClick={() => navigateTo('/ScholarList')}>
-                            <List className="mr-2" />
-                            Scholar List
-                        </button>
-                    </li>
-                    <li className="mb-4">
-                        <button className="flex items-center text-lg" onClick={() => navigateTo('/AssignStudent')}>
-                            <User className="mr-2" />
-                            Assign Student
-                        </button>
-                    </li>
-                    <li className="mb-4">
-                        <button className="flex items-center text-lg" onClick={() => navigateTo('/qrcode')}>
-                            <QrCodeIcon className="mr-2" />
-                            QR Code
-                        </button>
-                    </li>
-                    <li className="mb-4">
-                        <button className="flex items-center text-lg" onClick={() => navigateTo('/Account')}>
-                            <CircleUser className="mr-2" />
-                            Account
-                        </button>
-                    </li>
-                    <li className="mt-auto">
-                        <button className="flex items-center text-lg" onClick={handleLogOut}>
-                            <LogOutIcon className="mr-2" />
-                            Logout
-                        </button>
-                    </li>
-                </ul>
-            </div>
+            <aside className="w-1/6 p-4 flex flex-col justify-between" style={{ backgroundColor: "#109315" }}>
+                <div className="text-white mb-6">
+                    <div className="flex items-center mb-6">
+                        <img
+                            src="images/csdl.jpg"
+                            alt="CSDL Logo"
+                            className="w-24 h-24 rounded-full mr-3"
+                        />
+                        <div>
+                            <br />
+                            <h1 className="text-xl font-bold">HK SMS</h1>
+                            <p className="text-xl">HK Scholars Management System</p>
+                        </div>
+                    </div>
+
+                    <nav>
+                        <ul className="space-y-4">
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/MainDashboard")}
+                                >
+                                    <PanelsRightBottom className="mr-2" />
+                                    <span className="text-sm">Dashboard</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/ScholarList")}
+                                >
+                                    <List className="mr-2" />
+                                    <span className="text-sm">Scholar List</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/qrcode")}
+                                >
+                                    <QrCodeIcon className="mr-2" />
+                                    <span className="text-sm">QR Code</span>
+                                </button>
+                            </li>
+
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/AssignStudent")}
+                                >
+                                    <User className="mr-2" />
+                                    <span className="text-sm">Assigned Student</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/AdminDashboard")}
+                                >
+                                    <FolderClosed className="mr-2" />
+                                    <span className="text-sm">Master Files</span>
+                                </button>
+                            </li>
+                            <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/Account")}
+                                >
+                                    <CircleUser className="mr-2" />
+                                    <span className="text-sm">Account</span>
+                                </button>
+                            </li>
+                            {/* <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                >
+                                    <BellIcon className="mr-2" />
+                                    <span className="text-sm">Notification</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                >
+                                    <Mail className="mr-2" />
+                                    <span className="text-sm">Messages</span>
+                                </button>
+                            </li> */}
+                            <li className="mt-4">
+                                <button
+                                    className="flex items-center p-3 bg-red-600 hover:bg-red-700 rounded-md w-full transition-all duration-200"
+                                    onClick={handleLogOut}
+                                >
+                                    <LogOutIcon className="mr-2" />
+                                    <span className="text-sm">Logout</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <p className="text-white text-xs mt-4">Powered by PHINMA</p>
+            </aside >
             <div className="flex-1 p-10">
                 <main className="bg-gray-50 p-8 rounded-lg shadow-md max-w-4xl mx-auto">
                     <h1 className="text-3xl font-bold text-blue-900 mb-8 text-center">Assign Duty to Students</h1>
@@ -182,7 +244,7 @@ function AssignStudent() {
                         </p>
 
                         <form onSubmit={handleAdd}>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6"> {/* Changed to 3 columns */}
                                 <div>
                                     <label className="block text-white font-medium mb-2">Student</label>
                                     <div className="relative mb-4">
@@ -203,7 +265,7 @@ function AssignStudent() {
                                                 <option disabled>No Students Available</option>
                                             )}
                                         </select>
-                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+
                                     </div>
                                 </div>
 
@@ -227,7 +289,7 @@ function AssignStudent() {
                                                 <option disabled>No Supervisors Available</option>
                                             )}
                                         </select>
-                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+
                                     </div>
                                 </div>
 
@@ -251,7 +313,7 @@ function AssignStudent() {
                                                 <option disabled>No Time In Available</option>
                                             )}
                                         </select>
-                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+
                                     </div>
                                 </div>
 
@@ -275,7 +337,7 @@ function AssignStudent() {
                                                 <option disabled>No Time Out Available</option>
                                             )}
                                         </select>
-                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+
                                     </div>
                                 </div>
 
@@ -299,7 +361,7 @@ function AssignStudent() {
                                                 <option disabled>No Days Available</option>
                                             )}
                                         </select>
-                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+
                                     </div>
                                 </div>
 
@@ -323,7 +385,7 @@ function AssignStudent() {
                                                 <option disabled>No Rooms Available</option>
                                             )}
                                         </select>
-                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+
                                     </div>
                                 </div>
 
@@ -347,7 +409,7 @@ function AssignStudent() {
                                                 <option disabled>No Buildings Available</option>
                                             )}
                                         </select>
-                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+
                                     </div>
                                 </div>
 
@@ -362,18 +424,27 @@ function AssignStudent() {
                                         >
                                             <option value="">Select Duty Hours</option>
                                             {dutyHours.length > 0 ? (
-                                                dutyHours.map((hour, index) => (
-                                                    <option key={index} value={hour.dutyH_hours}>
-                                                        {hour.dutyH_hours}
-                                                    </option>
-                                                ))
+                                                dutyHours.map((hour, index) => {
+
+                                                    const hours = hour.dutyH_hours / 3600;
+
+                                                    if (hours === 90 || hours === 180) {
+                                                        return (
+                                                            <option key={index} value={hour.dutyH_hours}>
+                                                                {`${hours} hours`}
+                                                            </option>
+                                                        );
+                                                    }
+                                                    return null;
+                                                })
                                             ) : (
                                                 <option disabled>No Duty Hours Available</option>
                                             )}
                                         </select>
-                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+
                                     </div>
                                 </div>
+
 
                                 <div>
                                     <label className="block text-white font-medium mb-2">Subject</label>
@@ -395,21 +466,24 @@ function AssignStudent() {
                                                 <option disabled>No Subjects Available</option>
                                             )}
                                         </select>
-                                        <span className="absolute right-3 top-3 text-white pointer-events-none">▼</span>
+
                                     </div>
                                 </div>
                             </div>
 
-                            <button
-                                type="submit"
-                                className="p-2 text-lg bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300"
-                            >
-                                Add
-                            </button>
+                            <div className="flex justify-center mt-6">
+                                <button
+                                    type="submit"
+                                    className="bg-white text-blue-700 font-semibold py-3 px-8 rounded-lg hover:bg-gray-100 transition"
+                                >
+                                    Assign Duty
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </main>
             </div>
+
         </div>
     );
 }

@@ -1,21 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { BellIcon, CircleUser, FolderClosed, LogOutIcon, PanelsRightBottom, QrCodeIcon, User, List, Mail, Calendar, Search } from 'lucide-react';
+import { BellIcon, CircleUser, FolderClosed, LogOutIcon, PanelsRightBottom, QrCodeIcon, User, List, Mail, Calendar, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import secureLocalStorage from 'react-secure-storage';
 import axios from 'axios';
 
-
 const Dashboard = () => {
     const [formData, setFormData] = useState({
         course: "",
         yearLevel: "",
-
     });
     const [yearLevels, setYearLevels] = useState([]);
     const [courses, setCourses] = useState([]);
+    const [assignments, setAssignments] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 4;
     const navigateTo = useNavigate();
 
+    // Calculate pagination values
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = assignments.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(assignments.length / itemsPerPage);
+
+    // Navigation functions
+    const nextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,19 +53,33 @@ const Dashboard = () => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        const getAssignmentList = async () => {
+            try {
+                const url = secureLocalStorage.getItem('url') + 'assign.php';
+                const formData = new FormData();
+                formData.append('operation', 'getAssignmentList');
+                const res = await axios.post(url, formData);
+                setAssignments(res.data);
+            } catch (error) {
+                console.error('Failed to fetch data:', error);
+                toast.error('Failed to fetch data');
+            }
+        };
+        getAssignmentList();
+    }, []);
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
             [name]: value
         });
-
     };
+
     const handleLogOut = () => {
         navigateTo("/");
-
-    }
-
+    };
 
     return (
         <div className="flex h-screen" style={{ backgroundColor: "rgb(8, 54, 100)" }}>
@@ -94,7 +127,6 @@ const Dashboard = () => {
                                     <span className="text-sm">QR Code</span>
                                 </button>
                             </li>
-
                             <li>
                                 <button
                                     className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
@@ -123,22 +155,6 @@ const Dashboard = () => {
                                     <span className="text-sm">Account</span>
                                 </button>
                             </li>
-                            {/* <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                >
-                                    <BellIcon className="mr-2" />
-                                    <span className="text-sm">Notification</span>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                >
-                                    <Mail className="mr-2" />
-                                    <span className="text-sm">Messages</span>
-                                </button>
-                            </li> */}
                             <li className="mt-4">
                                 <button
                                     className="flex items-center p-3 bg-red-600 hover:bg-red-700 rounded-md w-full transition-all duration-200"
@@ -152,12 +168,9 @@ const Dashboard = () => {
                     </nav>
                 </div>
                 <p className="text-white text-xs mt-4">Powered by PHINMA</p>
-            </aside >
+            </aside>
 
-            <main
-                className="flex-1 p-8 relative"
-                style={{ backgroundImage: `url('/path/to/your/background-image.jpg')`, backgroundSize: 'cover' }}
-            >
+            <main className="flex-1 p-8 relative">
                 <div
                     className="absolute right-[-60px] bg-center opacity-10 rounded-full"
                     style={{
@@ -176,11 +189,10 @@ const Dashboard = () => {
                 </h2>
                 <br />
 
-
                 <div className="flex items-center p-6">
                     <img
                         src={`http://localhost/csdl/images/${secureLocalStorage.getItem("userImage")}`}
-                        alt="User Avatar of Mae Jabulan"
+                        alt="User Avatar"
                         className="w-24 h-24 mr-4 rounded-xl"
                     />
                     <div>
@@ -197,7 +209,6 @@ const Dashboard = () => {
                         />
                     </div>
                 </div>
-
 
                 <header className="flex justify-between items-center mb-6">
                     <h1 className="text-2xl font-bold text-white mb-6">{secureLocalStorage.getItem("firstName") + "'s"} Timeline</h1>
@@ -220,7 +231,7 @@ const Dashboard = () => {
                             name="course"
                             value={formData.course}
                             onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 z-10" // Added z-10
+                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 z-10"
                             required
                         >
                             <option value="">Select Course</option>
@@ -250,28 +261,79 @@ const Dashboard = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr className="border-b">
-                                <td className="p-4">Dec. 15, 2023</td>
-                                <td className="p-4">Ralph Jan Gallegos</td>
-                                <td className="p-4">Ralph Jan Gallegos</td>
-                                <td className="p-4">180 Hours</td>
-                                <td className="p-4">9:30 AM</td>
-                                <td className="p-4">3:30 PM</td>
-                            </tr>
-                            <tr className="border-b">
-                                <td className="p-4">Dec. 15, 2023</td>
-                                <td className="p-4">Mel Angelo Macario</td>
-                                <td className="p-4">Mel Angelo Macario</td>
-                                <td className="p-4">180 Hours</td>
-                                <td className="p-4">10:30 AM</td>
-                                <td className="p-4">5:30 PM</td>
-                            </tr>
+                            {currentItems.length > 0 ? (
+                                currentItems.map((assignment, index) => (
+                                    <tr className="border-b hover:bg-gray-50" key={index}>
+                                        <td className="p-4"></td>
+                                        <td className="p-4">{assignment.Fullname}</td>
+                                        <td className="p-4">{assignment.SupervisorFullname}</td>
+                                        <td className="p-4">{Math.round(assignment.assign_duty_hours / 3600)} Hours</td>
+                                        <td className="p-4">{assignment.timeShed_name}</td>
+                                        <td className="p-4">{assignment.time_out_name}</td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="6" className="p-4 text-center">
+                                        No assignments found
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
+
+                    {/* Pagination Controls */}
+                    <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 mt-4">
+                        <div className="flex flex-1 justify-between sm:hidden">
+                            <button
+                                onClick={prevPage}
+                                disabled={currentPage === 1}
+                                className={`relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium ${currentPage === 1 ? 'text-gray-300' : 'text-gray-700 hover:bg-gray-50'}`}
+                            >
+                                Previous
+                            </button>
+                            <button
+                                onClick={nextPage}
+                                disabled={currentPage === totalPages}
+                                className={`relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium ${currentPage === totalPages ? 'text-gray-300' : 'text-gray-700 hover:bg-gray-50'}`}
+                            >
+                                Next
+                            </button>
+                        </div>
+                        <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                            <div>
+                                <p className="text-sm text-gray-700">
+                                    Showing <span className="font-medium">{indexOfFirstItem + 1}</span> to{' '}
+                                    <span className="font-medium">
+                                        {Math.min(indexOfLastItem, assignments.length)}
+                                    </span>{' '}
+                                    of <span className="font-medium">{assignments.length}</span> results
+                                </p>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <button
+                                    onClick={prevPage}
+                                    disabled={currentPage === 1}
+                                    className={`p-2 rounded-full ${currentPage === 1 ? 'text-gray-300' : 'text-gray-700 hover:bg-gray-100'}`}
+                                >
+                                    <ChevronLeft size={20} />
+                                </button>
+                                <span className="text-sm text-gray-700">
+                                    Page {currentPage} of {totalPages}
+                                </span>
+                                <button
+                                    onClick={nextPage}
+                                    disabled={currentPage === totalPages}
+                                    className={`p-2 rounded-full ${currentPage === totalPages ? 'text-gray-300' : 'text-gray-700 hover:bg-gray-100'}`}
+                                >
+                                    <ChevronRight size={20} />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </main>
-
-        </div >
+        </div>
     );
 };
 

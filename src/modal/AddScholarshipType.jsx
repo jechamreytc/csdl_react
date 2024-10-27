@@ -7,7 +7,10 @@ function AddScholarshipType() {
     const [formData, setFormData] = useState({
         scholarship_type: "",
     });
+
     const [scholarshipTypes, setScholarshipTypes] = useState([]);
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         const getScholarshipTypes = async () => {
             try {
@@ -33,23 +36,32 @@ function AddScholarshipType() {
         });
     };
 
-    // Function to handle adding scholarship type
     const handleAdd = async (e) => {
         e.preventDefault();
+        if (loading) return;
 
-        const scholarshiptypeExits = scholarshipTypes.some(
-            (scholarshiptype) => scholarshiptype.type_name?.toLowerCase() === formData.scholarship_type.toLocaleLowerCase()
+        // Safeguard against empty input
+        const scholarshipType = formData.scholarship_type || "";
+        if (scholarshipType.trim() === "") {
+            toast.error("Scholarship type cannot be empty");
+            return;
+        }
+
+        // Check for duplicate
+        const scholarshipTypeExists = scholarshipTypes.some(
+            (scholarshipTypeItem) => scholarshipTypeItem.type_name?.toLowerCase() === scholarshipType.toLowerCase()
         );
-        if (scholarshiptypeExits) {
+        if (scholarshipTypeExists) {
             toast.error("Scholarship type already exists");
             return;
         }
 
+        setLoading(true);
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
 
             const jsonData = {
-                type_name: formData.scholarship_type,
+                type_name: scholarshipType,
             };
 
             const formDataToSend = new FormData();
@@ -60,14 +72,15 @@ function AddScholarshipType() {
 
             if (res.data !== 0) {
                 toast.success("Scholarship Type added successfully");
-                // Clear the input field
-                setFormData({ scholarship_type: "" });
+                setFormData({ scholarship_type: "" }); // Reset form
             } else {
                 toast.error("Failed to add Scholarship Type");
             }
         } catch (error) {
             console.log(error);
             toast.error("An error occurred while adding the Scholarship Type");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -84,9 +97,11 @@ function AddScholarshipType() {
             />
             <button
                 onClick={handleAdd}
-                className="px-5 py-3 text-lg bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 ease-in-out"
+                className={`px-5 py-3 text-lg text-white rounded-md transition-colors duration-300 ${loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'
+                    }`}
+                disabled={loading}
             >
-                Add
+                {loading ? 'Adding...' : 'Add'}
             </button>
         </div>
     );

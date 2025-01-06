@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import secureLocalStorage from 'react-secure-storage';
+import Select from 'react-select';
 
 function AddCourse() {
     const [formData, setFormData] = useState({
@@ -18,10 +19,12 @@ function AddCourse() {
                 const formData = new FormData();
                 formData.append("operation", "getDepartment");
                 const res = await axios.post(url, formData);
-                setDepartments(res.data);
+                console.log("API Response:", res.data); // Check this
+                setDepartments(res.data.map(dept => ({
+                    value: dept.dept_id,
+                    label: dept.dept_name
+                })));
                 toast.success("Departments loaded successfully");
-
-                console.log('Departments:', res.data);
             } catch (error) {
                 console.log('Failed to load departments:', error);
                 toast.error("Failed to load departments");
@@ -30,6 +33,7 @@ function AddCourse() {
 
         getDepartments();
     }, []);
+
     useEffect(() => {
         const getCourse = async () => {
             try {
@@ -37,11 +41,9 @@ function AddCourse() {
                 const formData = new FormData();
                 formData.append("operation", "getcourse");
                 const res = await axios.post(url, formData);
-
-                console.log(res.data);
                 if (Array.isArray(res.data)) {
                     setCourses(res.data);
-                    toast.success("Course loaded successfully");
+                    toast.success("Courses loaded successfully");
                 } else {
                     console.log('Unexpected response format:', res.data);
                     toast.error("Unexpected data format");
@@ -62,36 +64,38 @@ function AddCourse() {
         });
     };
 
+    const handleDepartmentChange = (selectedOption) => {
+        setFormData({
+            ...formData,
+            department: selectedOption ? selectedOption.value : ""
+        });
+    };
+
     const handleAdd = async (e) => {
         e.preventDefault();
 
-        // Validation: Check if the course already exists
         const courseExists = courses.find(
-            (dept) => dept.crs_name?.toLowerCase() === formData.course.toLowerCase()
+            (dept) => dept.course_name?.toLowerCase() === formData.course.toLowerCase()
         );
 
         if (courseExists) {
             toast.error("Course with the same name already exists.");
-            return; // Prevent form submission if course exists
+            return;
         }
 
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
-
             const jsonData = {
-                crs_name: formData.course,
-                crs_dept_id: formData.department,
+                course_name: formData.course,
+                course_dept_id: formData.department,
             };
-
             const formDataToSend = new FormData();
             formDataToSend.append("json", JSON.stringify(jsonData));
             formDataToSend.append("operation", "addCourse");
-
             const res = await axios.post(url, formDataToSend);
 
             if (res.data !== 0) {
                 toast.success("Course added successfully");
-                // Reset form fields after adding the course
                 setFormData({
                     course: "",
                     department: ""
@@ -118,19 +122,13 @@ function AddCourse() {
                 className="p-2 text-lg w-full mb-2 border border-blue-900 rounded"
             />
 
-            <select
-                name="department"
-                value={formData.department}
-                onChange={handleInputChange}
-                className="p-2 text-lg w-full mb-2 border border-blue-900 rounded"
-            >
-                <option value="">Select Department</option>
-                {departments.length > 0 ? departments.map((dept, index) => (
-                    <option key={index} value={dept.dept_id}>
-                        {dept.dept_name}
-                    </option>
-                )) : (<option disabled>No department yet</option>)}
-            </select>
+            <Select
+                options={departments}
+                onChange={handleDepartmentChange}
+                placeholder="Select Department"
+                isClearable
+                className="w-full mb-2 text-lg"
+            />
 
             <button
                 onClick={handleAdd}

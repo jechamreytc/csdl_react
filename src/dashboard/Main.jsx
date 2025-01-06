@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon, CircleUser, FolderClosed, LogOutIcon, PanelsRightBottom, QrCodeIcon, User, List, Mail, Calendar, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { BellIcon, CircleUser, FolderClosed, LogOutIcon, PanelsRightBottom, QrCodeIcon, User, List, Mail, Calendar, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import secureLocalStorage from 'react-secure-storage';
@@ -87,7 +87,7 @@ const Dashboard = () => {
 
     return (
         <div
-            className={`flex h-screen ${darkMode ? 'bg-gray-950' : ''}`}
+            className={`flex h-screen ${darkMode ? 'bg-gray-800' : ''}`}
             style={!darkMode ? { backgroundColor: "rgb(8, 54, 100)" } : {}}
         >
             <aside
@@ -117,6 +117,15 @@ const Dashboard = () => {
                                 >
                                     <PanelsRightBottom className="mr-2" />
                                     <span className="text-sm">Dashboard</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/Main")}
+                                >
+                                    <PanelsRightBottom className="mr-2" />
+                                    <span className="text-sm">Main</span>
                                 </button>
                             </li>
                             <li>
@@ -165,15 +174,7 @@ const Dashboard = () => {
                                     <span className="text-sm">Account</span>
                                 </button>
                             </li>
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/Batch")}
-                                >
-                                    <CircleUser className="mr-2" />
-                                    <span className="text-sm">Batch</span>
-                                </button>
-                            </li>
+
                             <li className="mt-4">
                                 <button
                                     className="flex items-center p-3 bg-red-600 hover:bg-red-700 rounded-md w-full transition-all duration-200"
@@ -191,7 +192,7 @@ const Dashboard = () => {
 
             <main className="flex-1 p-8 relative">
                 <div
-                    className="absolute right-[-60px] bg-center opacity-10 rounded-full ${darkMode ? 'bg-gray-950' : 'bg-blue-900}"
+                    className="absolute right-[-60px] bg-center opacity-10 rounded-full ${darkMode ? 'bg-gray-900' : 'bg-blue-900}"
                     style={{
                         backgroundImage: `url('images/csdl.jpg')`,
                         backgroundSize: 'cover',
@@ -203,9 +204,9 @@ const Dashboard = () => {
                     }}
                 />
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-white'}`}>Time Sheets - October 2024</h2>
-                    <button onClick={toggleDarkMode} className="p-2 rounded-full bg-white text-white shadow-md">
-                        {darkMode ? <Sun className="text-yellow-400" /> : <Moon className="text-black" />}
+                    <h2 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>Time Sheets - October 2024</h2>
+                    <button onClick={toggleDarkMode} className="p-2 rounded-full bg-gray-700 text-white shadow-md">
+                        {darkMode ? <Sun className="text-yellow-400" /> : <Moon className="text-gray-400" />}
                     </button>
                 </div>
 
@@ -268,7 +269,7 @@ const Dashboard = () => {
                     </div>
                 </header>
 
-                <div className="relative z-10 bg-white p-6 rounded-lg ${darkMode ? 'bg-gray-950' : 'bg-white'}">
+                <div className="relative z-10 bg-white p-6 rounded-lg">
                     <table className="w-full table-auto text-left">
                         <thead>
                             <tr className="border-b">
@@ -303,8 +304,7 @@ const Dashboard = () => {
                     </table>
 
                     {/* Pagination Controls */}
-                    <div className={`flex items-center justify-between border-t ${darkMode ? 'bg-gray-950' : 'bg-white'} px-4 py-3 sm:px-6 mt-4`}>
-
+                    <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 mt-4">
                         <div className="flex flex-1 justify-between sm:hidden">
                             <button
                                 onClick={prevPage}

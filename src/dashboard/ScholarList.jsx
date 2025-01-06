@@ -19,6 +19,7 @@ const ScholarList = () => {
     const [courses, setCourses] = useState([]);
     const [filteredScholars, setFilteredScholars] = useState([]);
     const [allScholars, setAllScholars] = useState([]);
+    const [ScholarList, setScholarList] = useState([]);
 
     useEffect(() => {
         const getAllList = async () => {
@@ -40,6 +41,21 @@ const ScholarList = () => {
             }
         };
         getAllList();
+    }, []);
+    useEffect(() => {
+        const getSchoalrList = async () => {
+            try {
+                const url = secureLocalStorage.getItem('url') + 'assign.php';
+                const formData = new FormData();
+                formData.append('operation', 'getListScholar');
+                const res = await axios.post(url, formData);
+                setScholarList(res.data);
+            } catch (error) {
+                console.error('Failed to fetch data:', error);
+                toast.error('Failed to fetch data');
+            }
+        };
+        getSchoalrList();
     }, []);
 
     const handleFilter = () => {
@@ -246,11 +262,11 @@ const ScholarList = () => {
                         <tbody>
                             {filteredScholars.length > 0 ? (
                                 filteredScholars.map(scholar => (
-                                    <tr key={scholar.scholar_id} className="hover:bg-blue-200 border-b border-gray-300">
-                                        <td className="px-4 py-2">{scholar.name}</td>
-                                        <td className="px-4 py-2">{scholar.scholarshipType}</td>
+                                    <tr key={scholar.stud_id} className="hover:bg-blue-200 border-b border-gray-300">
+                                        <td className="px-4 py-2">{scholar.Fullname}</td>
+                                        <td className="px-4 py-2">{scholar.type_name}</td>
                                         <td className="px-4 py-2">{scholar.yearLevels}</td>
-                                        <td className="px-4 py-2">{scholar.course}</td>
+
                                     </tr>
                                 ))
                             ) : (

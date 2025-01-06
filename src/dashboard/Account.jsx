@@ -16,6 +16,7 @@ const Account = () => {
         confirmEmail: ''
     });
     const navigateTo = useNavigate();
+    const [darkMode, setDarkMode] = useState(false);
 
     useEffect(() => {
         // Fetch user data from the backend when the component mounts
@@ -39,6 +40,9 @@ const Account = () => {
         secureLocalStorage.clear();
         navigateTo("/");
     };
+    const toggleDarkMode = () => {
+        setDarkMode(!darkMode);
+    }
 
     const handleFileChange = async (e) => {
         const selectedFile = e.target.files[0];
@@ -125,7 +129,12 @@ const Account = () => {
     };
 
     return (
-        <div className="flex h-screen" style={{ backgroundColor: "rgb(8, 54, 100)" }}>
+        <div
+            className={`flex h-screen ${darkMode ? 'bg-gray-950' : ''}`}
+            style={!darkMode ? { backgroundColor: "rgb(8, 54, 100)" } : {}}
+        >
+
+
             <aside className="w-1/6 p-4 flex flex-col justify-between" style={{ backgroundColor: "#109315" }}>
                 <div className="text-white mb-6">
                     <div className="flex items-center mb-6">

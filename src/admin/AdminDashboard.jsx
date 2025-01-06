@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AddCourse from '../modal/AddCourse';
 import AddAdministrator from '../components/AddAdmin';
 import AddScholar from '../components/AddScholar';
-import { ArrowLeftCircle, BellIcon, CircleUser, FolderClosed, LogOutIcon, PanelsRightBottom, QrCodeIcon, User } from 'lucide-react';
+import { ArrowLeftCircle, BellIcon, CircleUser, FolderClosed, LogOutIcon, LucideLayoutDashboard, PanelsRightBottom, QrCodeIcon, User } from 'lucide-react';
 import AddDepartment from '../modal/AddDepartment';
 import AddSchoolYear from '../modal/AddSchoolYear';
 import AddScholarshipType from '../modal/AddScholarshipType';
@@ -38,21 +38,22 @@ import GetSubject from '../modal/GetSubject';
 
 const MasterFiles = () => {
     const navigateTo = useNavigate();
-    const navigate = useNavigate();
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [modalContent, setModalContent] = useState(null);
     const [modalTitle, setModalTitle] = useState();
     const [datalist, setDatalist] = useState();
     const [isOpenListModal, setIsOpenListModal] = useState(false);
 
+
     const handleAddClick = (route) => {
-        navigate(route);
+        navigateTo(route);
     };
 
     const openModal = (content, title) => {
         setModalContent(content);
         setModalTitle(title);
         setIsOpenModal(true);
+
     };
 
     const closeModal = () => {
@@ -61,10 +62,11 @@ const MasterFiles = () => {
         setModalTitle('');
     };
 
-    const openListModal = (contentlist, title) => {
-        setModalContent(contentlist);
-        setModalTitle(title);
-        setIsOpenListModal(true);
+    const openListModal = (path, title) => {
+        // setModalContent(contentlist);
+        // setModalTitle(title);
+        // setIsOpenListModal(true);
+        navigateTo(path)
     };
 
     const closeListModal = () => {
@@ -100,109 +102,7 @@ const MasterFiles = () => {
 
 
         <div className="flex min-h-screen bg-blue-800">
-            <aside className="w-1/6 p-4 flex flex-col justify-between" style={{ backgroundColor: "#109315" }}>
-                <div className="text-white mb-6">
-                    <div className="flex items-center mb-6">
-                        <img
-                            src="images/csdl.jpg"
-                            alt="CSDL Logo"
-                            className="w-24 h-24 rounded-full mr-3"
-                        />
-                        <div>
-                            <br />
-                            <h1 className="text-xl font-bold">HK SMS</h1>
-                            <p className="text-xl">HK Scholars Management System</p>
-                        </div>
-                    </div>
 
-                    <nav>
-                        <ul className="space-y-4">
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/MainDashboard")}
-                                >
-                                    <PanelsRightBottom className="mr-2" />
-                                    <span className="text-sm">Dashboard</span>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/ScholarList")}
-                                >
-                                    <List className="mr-2" />
-                                    <span className="text-sm">Scholar List</span>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/qrcode")}
-                                >
-                                    <QrCodeIcon className="mr-2" />
-                                    <span className="text-sm">QR Code</span>
-                                </button>
-                            </li>
-
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/AssignStudent")}
-                                >
-                                    <User className="mr-2" />
-                                    <span className="text-sm">Assigned Student</span>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/AdminDashboard")}
-                                >
-                                    <FolderClosed className="mr-2" />
-                                    <span className="text-sm">Master Files</span>
-                                </button>
-                            </li>
-                            <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/Account")}
-                                >
-                                    <CircleUser className="mr-2" />
-                                    <span className="text-sm">Account</span>
-                                </button>
-                            </li>
-                            {/* <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                >
-                                    <BellIcon className="mr-2" />
-                                    <span className="text-sm">Notification</span>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                >
-                                    <Mail className="mr-2" />
-                                    <span className="text-sm">Messages</span>
-                                </button>
-                            </li> */}
-                            <li className="mt-4">
-                                <button
-                                    className="flex items-center p-3 bg-red-600 hover:bg-red-700 rounded-md w-full transition-all duration-200"
-                                    onClick={handleLogOut}
-                                >
-                                    <LogOutIcon className="mr-2" />
-                                    <span className="text-sm">Logout</span>
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-                <p className="text-white text-xs mt-4">Powered by PHINMA</p>
-            </aside >
 
 
             <div className="flex-grow p-10 bg-blue-900">
@@ -219,16 +119,16 @@ const MasterFiles = () => {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {[
-                                { title: 'Admin', buttonText: 'Add Administrator', route: '/addAdministrator', content: <AddAdministrator />, buttonText2: 'Addministrator List', contentlist: <GetAdminlist /> },
-                                { title: 'Department', buttonText: 'Add Department', route: '/addDepartment', content: <AddDepartment />, buttonText2: 'Department List', contentlist: <GetDepartment /> },
+                                { title: 'Admin', buttonText: 'Add Administrator', route: '/addAdministrator', content: "/addAdministrator", buttonText2: 'Addministrator List', contentlist: "/adminlist" },
+                                { title: 'Department', buttonText: 'Add Department', route: '/addDepartment', content: <AddDepartment />, buttonText2: 'Department List', contentlist: "/DepartmentList" },
                                 { title: 'School Year', buttonText: 'Add School Year', route: '/addSchoolYear', content: <AddSchoolYear />, buttonText2: 'School Year List', contentlist: <GetSchoolYear /> },
                                 { title: 'Course', buttonText: 'Add Course', route: '/addCourse', content: <AddCourse />, buttonText2: 'Course List', contentlist: <GetCourse /> },
                                 { title: 'Scholarship Type', buttonText: 'Add Scholarship Type', route: '/addScholarshipType', content: <AddScholarshipType />, buttonText2: 'Scholarship Type   List', contentlist: <GetScholarType /> },
-                                { title: 'Office Master', buttonText: 'Add Office Master', route: '/addOfficeMaster', content: <AddOfficeMaster />, buttonText2: 'Office Master List', contentlist: <GetOfficeMaster /> },
-                                { title: 'Scholar', buttonText: 'Add Scholar', route: '/addScholar', content: <AddScholar />, buttonText: 'Scholar List', contentlist: <GetScholar /> },
+                                { title: 'Office Master', buttonText: 'Add Office Master', route: '/addOfficeMaster', content: <AddOfficeMaster />, buttonText2: 'Office Master List', contentlist: "/OfficeMasterList" },
+                                { title: 'Scholar', buttonText: 'Add Scholar', route: "/AddScholar", content: '/Add Scholar', buttonText: 'Scholar List', contentlist: <GetScholar /> },
                                 { title: 'Supervisor Master', buttonText: 'Add Supervisor Master', route: '/addSupervisor', content: <AddSupervisor />, buttonText2: 'Supervisor List', contentlist: <GetSupervisor /> },
                                 { title: 'Scholarship Sub Type', buttonText: 'Add Scholarship Sub Type', route: '/addScholarshipSubType', content: <AddScholarshipSubType />, buttonText2: 'Scholarship Sub Type List', contentlist: <GetScholarshipSubType /> },
-                                { title: 'Building', buttonText: 'Add Building', route: '/addBuilding', content: <AddBuilding />, buttonText2: 'Building List', contentlist: <GetBuilding /> },
+                                { title: 'Building', buttonText: 'Add Building', route: '/addBuilding', content: <AddBuilding />, buttonText2: 'Building List', contentlist: "/BuildingList" },
                                 { title: 'Room', buttonText: 'Add Room', route: '/addRoom', content: <AddRoom />, buttonText2: 'Room List', contentlist: <GetRoom /> },
                                 { title: 'Modality', buttonText: 'Add Modality', route: '/addModality', content: <AddModality />, buttonText2: 'Modality List', contentlist: <GetModality /> },
                                 { title: 'Subject', buttonText: 'Add Subject', route: '/addSubject', content: <AddSubject />, buttonText2: 'Subject List', contentlist: <GetSubject /> },

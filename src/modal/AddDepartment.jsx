@@ -3,12 +3,13 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import secureLocalStorage from 'react-secure-storage';
 
-function AddDepartment() {
+function AddDepartmentModal() {
+    const [isModalOpen, setIsModalOpen] = useState(true); // Modal opens automatically
     const [formData, setFormData] = useState({
         department_name: "",
     });
-
     const [departments, setDepartments] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const getDepartments = async () => {
@@ -27,8 +28,6 @@ function AddDepartment() {
         getDepartments();
     }, []);
 
-    const [loading, setLoading] = useState(false);
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -40,14 +39,12 @@ function AddDepartment() {
     const handleAdd = async () => {
         if (loading) return;
 
-        // Safeguard against undefined
-        const departmentName = formData.department_name || "";
+        const departmentName = formData.dept_name || "";
         if (departmentName.trim() === "") {
             toast.error("Department name cannot be empty");
             return;
         }
 
-        // para check duplicate
         const existingDepartment = departments.find((department) => department.dept_name.toLowerCase() === departmentName.toLowerCase());
         if (existingDepartment) {
             toast.error("Department already exists");
@@ -57,11 +54,7 @@ function AddDepartment() {
         setLoading(true);
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
-
-            const jsonData = {
-                dept_name: departmentName,
-            };
-
+            const jsonData = { dept_name: departmentName };
             const formDataToSend = new FormData();
             formDataToSend.append("json", JSON.stringify(jsonData));
             formDataToSend.append("operation", "addDepartment");
@@ -70,7 +63,8 @@ function AddDepartment() {
 
             if (res.data === 1) {
                 toast.success("Department added successfully");
-                setFormData({ department_name: "" }); // Reset form
+                setFormData({ department_name: "" });
+                setIsModalOpen(false); // Close modal on success
             } else if (res.data === -1) {
                 toast.error("Department already exists");
             } else {
@@ -85,26 +79,34 @@ function AddDepartment() {
     };
 
     return (
-        <div className="flex flex-col items-center bg-blue-100 p-6 rounded-lg max-w-md mx-auto shadow-lg">
-            <h2 className="mb-5 text-2xl text-blue-900 font-semibold">Add Department</h2>
-            <input
-                type="text"
-                name="department_name"
-                placeholder="Enter department name"
-                value={formData.department_name}
-                onChange={handleInputChange}
-                className="p-2 text-lg w-full mb-4 border border-blue-900 rounded-md"
-            />
-            <button
-                onClick={handleAdd}
-                className={`px-4 py-2 text-lg text-white rounded-md transition-colors duration-300 ${loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'
-                    }`}
-                disabled={loading}
-            >
-                {loading ? 'Adding...' : 'Add'}
-            </button>
+        <div>
+            {isModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+                        <div className="flex flex-col items-center bg-blue-100 p-6 rounded-lg">
+                            <h2 className="mb-5 text-2xl text-blue-900 font-semibold">Add Department</h2>
+                            <input
+                                type="text"
+                                name="department_name"
+                                placeholder="Enter department name"
+                                value={formData.dept_name}
+                                onChange={handleInputChange}
+                                className="p-2 text-lg w-full mb-4 border border-blue-900 rounded-md"
+                            />
+                            <button
+                                onClick={handleAdd}
+                                className={`px-4 py-2 text-lg text-white rounded-md transition-colors duration-300 ${loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'
+                                    }`}
+                                disabled={loading}
+                            >
+                                {loading ? 'Adding...' : 'Add'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
 
-export default AddDepartment;
+export default AddDepartmentModal;

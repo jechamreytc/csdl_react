@@ -30,7 +30,7 @@ const AddAdministrator = () => {
 
     const signup = async () => {
         try {
-            setLoading(true); // Set loading to true
+            setLoading(true);
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
 
             const jsonData = {
@@ -50,7 +50,6 @@ const AddAdministrator = () => {
 
             if (res.data !== 0) {
                 toast.success("Administrator added successfully");
-                console.log("Successfully added administrator");
                 setFormData({
                     employeeId: "",
                     firstName: "",
@@ -61,10 +60,8 @@ const AddAdministrator = () => {
                 });
             } else {
                 toast.error("Failed to add administrator");
-                console.log("Failed to add administrator");
             }
         } catch (error) {
-            console.log(error);
             toast.error("An error occurred during signup");
         } finally {
             setLoading(false);
@@ -83,92 +80,100 @@ const AddAdministrator = () => {
     };
 
     return (
-        <div className="">
-            <form className="space-y-6" onSubmit={handleSubmit}>
-                <div className="w-full">
-                    <label className="block text-sm font-medium text-white">Employee ID*</label>
-                    <input
-                        type="text"
-                        name="employeeId"
-                        value={formData.employeeId}
-                        onChange={handleInputChange}
-                        className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        placeholder="Enter Employee ID"
-                        required
-                    />
-                </div>
-
-                <div className="flex space-x-4">
-                    <div className="w-full">
-                        <label className="block text-sm font-medium text-white">First Name*</label>
+        <div className="min-h-screen flex items-center justify-center bg-gray-100 py-10">
+            <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
+                <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Add Administrator</h2>
+                <form className="space-y-6" onSubmit={handleSubmit}>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-600">Employee ID*</label>
                         <input
                             type="text"
-                            name="firstName"
-                            value={formData.firstName}
+                            name="employeeId"
+                            value={formData.employeeId}
                             onChange={handleInputChange}
                             className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="Enter First Name"
+                            placeholder="Enter Employee ID"
                             required
                         />
                     </div>
-                    <div className="w-full">
-                        <label className="block text-sm font-medium text-white">Middle Name*</label>
+
+                    <div className="flex space-x-4">
+                        <div className="w-1/2">
+                            <label className="block text-sm font-medium text-gray-600">First Name*</label>
+                            <input
+                                type="text"
+                                name="firstName"
+                                value={formData.firstName}
+                                onChange={handleInputChange}
+                                className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                placeholder="Enter First Name"
+                                required
+                            />
+                        </div>
+                        <div className="w-1/2">
+                            <label className="block text-sm font-medium text-gray-600">Middle Name*</label>
+                            <input
+                                type="text"
+                                name="middleName"
+                                value={formData.middleName}
+                                onChange={handleInputChange}
+                                className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                placeholder="Enter Middle Name"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-600">Last Name*</label>
                         <input
                             type="text"
-                            name="middleName"
-                            value={formData.middleName}
+                            name="lastName"
+                            value={formData.lastName}
                             onChange={handleInputChange}
                             className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="Enter Middle Name"
+                            placeholder="Enter Last Name"
                             required
                         />
                     </div>
-                </div>
 
-                <div className="w-full">
-                    <label className="block text-sm font-medium text-white">Last Name*</label>
-                    <input
-                        type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleInputChange}
-                        className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        placeholder="Enter Last Name"
-                        required
-                    />
-                </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-600">Email Address*</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                            placeholder="Enter Email Address"
+                            required
+                        />
+                    </div>
 
-                <div className="w-full">
-                    <label className="block text-sm font-medium text-white">Email Address*</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        placeholder="Enter Email Address"
-                        required
-                    />
-                </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-600">Contact Number*</label>
+                        <input
+                            type="text"
+                            name="contactNumber"
+                            value={formData.contactNumber}
+                            onChange={handleInputChange}
+                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                            placeholder="Enter Contact Number"
+                            required
+                        />
+                    </div>
 
-                <div className="w-full">
-                    <label className="block text-sm font-medium text-white">Contact Number*</label>
-                    <input
-                        type="text"
-                        name="contactNumber"
-                        value={formData.contactNumber}
-                        onChange={handleInputChange}
-                        className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        placeholder="Enter Contact Number"
-                        required
-                    />
-                </div>
-                <div className="flex justify-between">
-                    <button type="submit" className="bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600">
-                        Add Administrator
-                    </button>
-                </div>
-            </form>
+                    <div className="text-center">
+                        <button
+                            type="submit"
+                            className="bg-indigo-500 text-white py-2 px-6 rounded-md hover:bg-indigo-600 transition duration-300"
+                            disabled={loading}
+                        >
+                            {loading ? "Adding..." : "Add Administrator"}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };

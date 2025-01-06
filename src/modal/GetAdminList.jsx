@@ -3,11 +3,14 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import secureLocalStorage from 'react-secure-storage';
 import { FaTrash, FaEdit } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeftCircle } from 'lucide-react';
 
 const GetAdminList = () => {
     const [admins, setAdmins] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedAdmin, setSelectedAdmin] = useState(null);
+    const navigateTo = useNavigate();
 
     useEffect(() => {
         const getAdmins = async () => {
@@ -69,6 +72,8 @@ const GetAdminList = () => {
     return (
         <div className="bg-gray-100 min-h-screen w-full p-8">
             <div className="container mx-auto">
+                {/* kani imong eh copy paste, kaning arrowleft circle, tas use navigate dayun sa taas */}
+                <ArrowLeftCircle onClick={() => navigateTo(-1)} className='cursor-pointer' />
                 <div className="mb-8">
                     <h1 className="text-4xl font-bold text-gray-800 text-center">Admin Management</h1>
                 </div>
@@ -118,7 +123,7 @@ const GetAdminList = () => {
                 </div>
             </div>
 
-            {/* Edit Admin Modal */}
+
             {showModal && selectedAdmin && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white rounded-lg w-full max-w-[80vw] max-h-[50vh] p-8 relative">
@@ -132,7 +137,7 @@ const GetAdminList = () => {
                             <h2 className="text-2xl font-bold mb-4">Edit Admin</h2>
                             <p><strong>Employee ID:</strong> {selectedAdmin.adm_employee_id}</p>
                             <p><strong>Name:</strong> {selectedAdmin.adm_first_name} {selectedAdmin.adm_last_name}</p>
-                            {/* Add your edit form fields here */}
+
                         </div>
 
                         <div className="flex-1 p-4 border-l border-gray-200">

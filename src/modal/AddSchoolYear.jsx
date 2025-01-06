@@ -43,7 +43,7 @@ function AddScholarYear() {
             toast.error("Please enter a school year");
             return;
         }
-        const existingSchoolYear = schoolYear.find((schoolYear) => schoolYear.sy_name === formData.year_name);
+        const existingSchoolYear = schoolYear.find((schoolYear) => schoolYear.year_name === formData.year_name);
         if (existingSchoolYear) {
             toast.error("School Year already exists");
             return
@@ -52,7 +52,7 @@ function AddScholarYear() {
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
             const jsonData = {
-                sy_name: formData.year_name,
+                year_name: formData.year_name,
             };
 
             const formDataToSend = new FormData();

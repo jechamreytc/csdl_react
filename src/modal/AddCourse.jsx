@@ -19,14 +19,14 @@ function AddCourse() {
                 const formData = new FormData();
                 formData.append("operation", "getDepartment");
                 const res = await axios.post(url, formData);
-                console.log("API Response:", res.data); // Check this
+                console.log("API Response (Departments):", res.data); // Debugging
                 setDepartments(res.data.map(dept => ({
                     value: dept.dept_id,
                     label: dept.dept_name
                 })));
                 toast.success("Departments loaded successfully");
             } catch (error) {
-                console.log('Failed to load departments:', error);
+                console.error('Failed to load departments:', error);
                 toast.error("Failed to load departments");
             }
         };
@@ -35,7 +35,7 @@ function AddCourse() {
     }, []);
 
     useEffect(() => {
-        const getCourse = async () => {
+        const getCourses = async () => {
             try {
                 const url = secureLocalStorage.getItem("url") + "CSDL.php";
                 const formData = new FormData();
@@ -45,15 +45,16 @@ function AddCourse() {
                     setCourses(res.data);
                     toast.success("Courses loaded successfully");
                 } else {
-                    console.log('Unexpected response format:', res.data);
+                    console.error('Unexpected response format (Courses):', res.data);
                     toast.error("Unexpected data format");
                 }
             } catch (error) {
-                console.log('Failed to load Courses:', error);
-                toast.error("Failed to load Courses");
+                console.error('Failed to load courses:', error);
+                toast.error("Failed to load courses");
             }
         };
-        getCourse();
+
+        getCourses();
     }, []);
 
     const handleInputChange = (e) => {
@@ -69,10 +70,22 @@ function AddCourse() {
             ...formData,
             department: selectedOption ? selectedOption.value : ""
         });
+        console.log("Selected Department:", selectedOption); // Debugging
     };
 
     const handleAdd = async (e) => {
         e.preventDefault();
+
+        if (!formData.course.trim()) {
+            toast.error("Course name is required.");
+            return;
+        }
+
+        if (!formData.department) {
+            toast.error("Please select a department.");
+            console.log("Department is required");
+            return;
+        }
 
         const courseExists = courses.find(
             (dept) => dept.course_name?.toLowerCase() === formData.course.toLowerCase()
@@ -88,24 +101,32 @@ function AddCourse() {
             const jsonData = {
                 course_name: formData.course,
                 course_dept_id: formData.department,
+
+                //diri dapit ko mag console?
+
+
             };
+            // -->
+            console.log("API Request: hahahaha  ", jsonData); // Debugging
             const formDataToSend = new FormData();
             formDataToSend.append("json", JSON.stringify(jsonData));
             formDataToSend.append("operation", "addCourse");
             const res = await axios.post(url, formDataToSend);
+            console.log("API Response (Add Course):", res.data); // Debugging
 
             if (res.data !== 0) {
                 toast.success("Course added successfully");
+                console.log("Course added successfully");
                 setFormData({
                     course: "",
                     department: ""
                 });
             } else {
-                toast.error("Failed to add Course");
+                toast.error("Failed to add course");
             }
         } catch (error) {
-            console.log(error);
-            toast.error("An error occurred while adding the Course");
+            console.error("Error adding course:", error);
+            toast.error("An error occurred while adding the course");
         }
     };
 
@@ -127,6 +148,7 @@ function AddCourse() {
                 onChange={handleDepartmentChange}
                 placeholder="Select Department"
                 isClearable
+                value={departments.find(dept => dept.value === formData.department) || null}
                 className="w-full mb-2 text-lg"
             />
 

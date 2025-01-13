@@ -171,7 +171,16 @@ const Dashboard = () => {
                                     onClick={() => navigateTo("/Batch")}
                                 >
                                     <CircleUser className="mr-2" />
-                                    <span className="text-sm">Batch</span>
+                                    <span className="text-sm">Batch Scholar</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/BatchSubject")}
+                                >
+                                    <CircleUser className="mr-2" />
+                                    <span className="text-sm">Batch Subject</span>
                                 </button>
                             </li>
                             <li className="mt-4">
@@ -189,7 +198,7 @@ const Dashboard = () => {
                 <p className="text-white text-xs mt-4">Powered by PHINMA</p>
             </aside>
 
-            <main className="flex-1 p-8 relative">
+            {/* <main className="flex-1 p-8 relative">
                 <div
                     className="absolute right-[-60px] bg-center opacity-10 rounded-full ${darkMode ? 'bg-gray-950' : 'bg-blue-900}"
                     style={{
@@ -303,7 +312,7 @@ const Dashboard = () => {
                     </table>
 
                     {/* Pagination Controls */}
-                    <div className={`flex items-center justify-between border-t ${darkMode ? 'bg-gray-950' : 'bg-white'} px-4 py-3 sm:px-6 mt-4`}>
+            {/* <div className={`flex items-center justify-between border-t ${darkMode ? 'bg-gray-950' : 'bg-white'} px-4 py-3 sm:px-6 mt-4`}>
 
                         <div className="flex flex-1 justify-between sm:hidden">
                             <button
@@ -353,7 +362,7 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
-            </main>
+            </main> */}
         </div>
     );
 };

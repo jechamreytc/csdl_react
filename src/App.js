@@ -20,10 +20,11 @@ import AssignStudent from './dashboard/AssignStudent';
 import Account from './dashboard/Account';
 import GetAdminList from './modal/GetAdminList';
 import GetDepartment from './modal/GetDepartment';
-import AddAdministrator from './components/AddAdmin';
+import AddAdministrator from './components/AddAdministrator';
 import GetOfficeMaster from './modal/GetOfficeMaster';
 import GetBuilding from './modal/GetBuilding';
 import Batch from './dashboard/Batch';
+import BatchSubject from './dashboard/BatchSubject';
 
 
 // import AddScholarshipSubType from './components/AddScholarshipSubType';
@@ -47,7 +48,7 @@ function App() {
 
           <Route path="/" element={<Login />} />
 
-          <Route path="/addAdministrator" element={<AddAdministrator />} />
+          <Route path="/AddAdministrator" element={<AddAdministrator />} />
           {/* <Route path="/add-department" element={<AddDepartment />} /> */}
           {/* <Route path="/add-school-year" element={<AddSchoolYear />} /> */}
           {/* <Route path="/add-course" element={<AddCourse />} /> */}
@@ -68,6 +69,7 @@ function App() {
           <Route path="/OfficeMasterList" element={<GetOfficeMaster />} />
           <Route path="/BuildingList" element={<GetBuilding />} />
           <Route path="/Batch" element={<Batch />} />
+          <Route path="/BatchSubject" element={<BatchSubject />} />
 
 
         </Routes>

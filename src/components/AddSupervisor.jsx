@@ -6,12 +6,9 @@ import secureLocalStorage from 'react-secure-storage';
 const AddSupervisorMaster = () => {
     const [formData, setFormData] = useState({
         supM_employee_id: '',
-        supM_first_name: '',
-        supM_last_name: '',
-        supM_middle_name: '',
+        supM_name: '',
         supM_department_id: '',
         supM_email: '',
-        supM_contact_number: '',
     });
 
     const [departments, setDepartments] = useState([]);
@@ -72,21 +69,15 @@ const AddSupervisorMaster = () => {
         const trimmedFormData = {
             ...formData,
             supM_employee_id: formData.supM_employee_id.trim(),
-            supM_first_name: formData.supM_first_name.trim(),
-            supM_last_name: formData.supM_last_name.trim(),
-            supM_middle_name: formData.supM_middle_name.trim(),
+            supM_name: formData.supM_name.trim(),
             supM_email: formData.supM_email.trim(),
-            supM_contact_number: formData.supM_contact_number.trim(),
         };
 
-        // Check for duplicate supervisor based on employee ID and full name
+        // Check for duplicate supervisor based on employee ID and name
         const isDuplicate = supervisors.some(
             (supervisor) =>
                 supervisor.supM_employee_id === trimmedFormData.supM_employee_id ||
-                (
-                    supervisor.supM_first_name.toLowerCase() === trimmedFormData.supM_first_name.toLowerCase() &&
-                    supervisor.supM_last_name.toLowerCase() === trimmedFormData.supM_last_name.toLowerCase()
-                )
+                supervisor.supM_name.toLowerCase() === trimmedFormData.supM_name.toLowerCase()
         );
 
         if (isDuplicate) {
@@ -100,12 +91,9 @@ const AddSupervisorMaster = () => {
             const url = secureLocalStorage.getItem('url') + 'CSDL.php';
             const jsonData = {
                 supM_employee_id: trimmedFormData.supM_employee_id,
-                supM_first_name: trimmedFormData.supM_first_name,
-                supM_last_name: trimmedFormData.supM_last_name,
-                supM_middle_name: trimmedFormData.supM_middle_name,
+                supM_name: trimmedFormData.supM_name,
                 supM_department_id: trimmedFormData.supM_department_id,
                 supM_email: trimmedFormData.supM_email,
-                supM_contact_number: trimmedFormData.supM_contact_number,
             };
 
             const formDataToSend = new FormData();
@@ -117,12 +105,9 @@ const AddSupervisorMaster = () => {
                 toast.success('Supervisor added successfully');
                 setFormData({
                     supM_employee_id: '',
-                    supM_first_name: '',
-                    supM_last_name: '',
-                    supM_middle_name: '',
+                    supM_name: '',
                     supM_department_id: '',
                     supM_email: '',
-                    supM_contact_number: '',
                 });
                 // Reload supervisors to ensure list is up to date
                 await getSupervisors();
@@ -154,42 +139,15 @@ const AddSupervisorMaster = () => {
                         />
                     </div>
 
-                    {/* First Name */}
+                    {/* Name */}
                     <div className="flex flex-col">
-                        <label className="mb-2 text-gray-700 font-semibold">First Name</label>
+                        <label className="mb-2 text-gray-700 font-semibold">Name</label>
                         <input
                             type="text"
-                            name="supM_first_name"
-                            value={formData.supM_first_name}
+                            name="supM_name"
+                            value={formData.supM_name}
                             onChange={handleInputChange}
-                            placeholder="Enter First Name"
-                            required
-                            className="p-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
-                        />
-                    </div>
-
-                    {/* Middle Name */}
-                    <div className="flex flex-col">
-                        <label className="mb-2 text-gray-700 font-semibold">Middle Name</label>
-                        <input
-                            type="text"
-                            name="supM_middle_name"
-                            value={formData.supM_middle_name}
-                            onChange={handleInputChange}
-                            placeholder="Enter Middle Name"
-                            className="p-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
-                        />
-                    </div>
-
-                    {/* Last Name */}
-                    <div className="flex flex-col">
-                        <label className="mb-2 text-gray-700 font-semibold">Last Name</label>
-                        <input
-                            type="text"
-                            name="supM_last_name"
-                            value={formData.supM_last_name}
-                            onChange={handleInputChange}
-                            placeholder="Enter Last Name"
+                            placeholder="Enter Full Name"
                             required
                             className="p-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
                         />
@@ -223,20 +181,6 @@ const AddSupervisorMaster = () => {
                             value={formData.supM_email}
                             onChange={handleInputChange}
                             placeholder="Enter Email"
-                            required
-                            className="p-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
-                        />
-                    </div>
-
-                    {/* Contact Number */}
-                    <div className="flex flex-col">
-                        <label className="mb-2 text-gray-700 font-semibold">Contact Number</label>
-                        <input
-                            type="text"
-                            name="supM_contact_number"
-                            value={formData.supM_contact_number}
-                            onChange={handleInputChange}
-                            placeholder="Enter Contact Number"
                             required
                             className="p-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-600"
                         />

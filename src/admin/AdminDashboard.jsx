@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AddCourse from '../modal/AddCourse';
-import AddAdministrator from '../components/AddAdmin';
+import AddAdministrator from '../components/AddAdministrator';
 import AddScholar from '../components/AddScholar';
 import { ArrowLeftCircle, BellIcon, CircleUser, FolderClosed, LogOutIcon, LucideLayoutDashboard, PanelsRightBottom, QrCodeIcon, User } from 'lucide-react';
 import AddDepartment from '../modal/AddDepartment';
@@ -119,13 +119,13 @@ const MasterFiles = () => {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {[
-                                { title: 'Admin', buttonText: 'Add Administrator', route: '/addAdministrator', content: "/addAdministrator", buttonText2: 'Addministrator List', contentlist: "/adminlist" },
+                                { title: 'Admin', buttonText: 'Add Administrator', route: '/AddAdministrator', content: <AddAdministrator />, buttonText2: 'Addministrator List', contentlist: "/adminlist" },
                                 { title: 'Department', buttonText: 'Add Department', route: '/addDepartment', content: <AddDepartment />, buttonText2: 'Department List', contentlist: "/DepartmentList" },
                                 { title: 'School Year', buttonText: 'Add School Year', route: '/addSchoolYear', content: <AddSchoolYear />, buttonText2: 'School Year List', contentlist: <GetSchoolYear /> },
                                 { title: 'Course', buttonText: 'Add Course', route: '/addCourse', content: <AddCourse />, buttonText2: 'Course List', contentlist: <GetCourse /> },
                                 { title: 'Scholarship Type', buttonText: 'Add Scholarship Type', route: '/addScholarshipType', content: <AddScholarshipType />, buttonText2: 'Scholarship Type   List', contentlist: <GetScholarType /> },
                                 { title: 'Office Master', buttonText: 'Add Office Master', route: '/addOfficeMaster', content: <AddOfficeMaster />, buttonText2: 'Office Master List', contentlist: "/OfficeMasterList" },
-                                { title: 'Scholar', buttonText: 'Add Scholar', route: "/AddScholar", content: '/Add Scholar', buttonText: 'Scholar List', contentlist: <GetScholar /> },
+                                { title: 'Scholar', buttonText: 'Add Scholar', route: "/AddScholar", content: <AddScholar />, buttonText: 'Scholar List', contentlist: <GetScholar /> },
                                 { title: 'Supervisor Master', buttonText: 'Add Supervisor Master', route: '/addSupervisor', content: <AddSupervisor />, buttonText2: 'Supervisor List', contentlist: <GetSupervisor /> },
                                 { title: 'Scholarship Sub Type', buttonText: 'Add Scholarship Sub Type', route: '/addScholarshipSubType', content: <AddScholarshipSubType />, buttonText2: 'Scholarship Sub Type List', contentlist: <GetScholarshipSubType /> },
                                 { title: 'Building', buttonText: 'Add Building', route: '/addBuilding', content: <AddBuilding />, buttonText2: 'Building List', contentlist: "/BuildingList" },

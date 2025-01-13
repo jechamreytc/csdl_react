@@ -62,27 +62,7 @@ const App = () => {
         };
         fetchDepartment();
     }, []);
-    // useEffect(() => {
-    //     const fetchAcademicSession = async () => {
-    //         try {
-    //             const url = secureLocalStorage.getItem("url") + "CSDL.php";
-    //             const formdata = new FormData();
-    //             formdata.append("operation", "getAcademicSession");
-    //             const response = await axios.post(url, formdata);
-    //             console.log("response ni fetchAcademicSession", response.data);
-    //             if (response.data) {
-    //                 setAcademicSession(response.data);
-    //             } else {
-    //                 alert(`Failed to fetch academic session: ${response.data.message}`);
-    //             }
-    //         } catch (error) {
-    //             console.error("Error fetching academic session:", error);
-    //             alert("Error fetching academic session. Check logs for details.");
-    //         }
-    //     }
-    //     fetchAcademicSession();
 
-    // })
     useEffect(() => {
         const fetchScholarList = async () => {
             try {

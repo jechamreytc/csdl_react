@@ -9,7 +9,6 @@ const App = () => {
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [days, setDays] = useState([]);
-    const [academicSession, setAcademicSession] = useState({});
 
     const itemsPerPage = 20;
 
@@ -87,13 +86,13 @@ const App = () => {
                     sub_descriptive_title: row["DESCIPTIVE TITLE"],
                     sub_section: row["SECTION"],
                     sub_day_f2f_id: dayF2F.day_id,
-                    sub_time_f2f: row["TIME (F2F)"],
+                    sub_time: row["TIME (F2F)"],
                     sub_day_rc_id: dayRC.day_id,
-                    sub_time_rc_id: row["TIME (RC)"],
+                    sub_time_rc: row["TIME (RC)"],
                     sub_room: row["ROOM"],
-                    sub_supM_id: "",
-                    sub_learning_modalities_id: "",
-                    sub_limit: "",
+                    // sub_supM_id: "",
+                    // sub_learning_modalities_id: "",
+                    // sub_limit: "",
                 };
             });
 
@@ -102,19 +101,20 @@ const App = () => {
             const formDataToSend = new FormData();
             formDataToSend.append("json", JSON.stringify(jsonData));
             formDataToSend.append("operation", "AddSubject");
-            console.log("API Request (Add Subject):", jsonData); // Debugging
+            console.log("API Request (Add Subject):", jsonData);
 
             const response = await axios.post(url, formDataToSend);
+            console.log("RESPONSE ni handleSaveToBackend", response.data);
             if (response.data !== 0) {
                 alert("Data saved successfully!");
                 setData([]);
                 setFileName("");
             } else {
-                alert("Error saving data to backend.");
+                alert(`Error from backend: ${response.data.message}`);
             }
         } catch (error) {
-            console.error("Error saving      to backend:", error);
-            alert(`Error: ${error.message}`);
+            console.error("Error saving data to backend:", error);
+            alert("Error saving data to backend. Check logs for details.");
         } finally {
             setLoading(false);
         }

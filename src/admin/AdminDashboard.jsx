@@ -100,101 +100,106 @@ const MasterFiles = () => {
 
     return (
 
-
-        <div className="flex min-h-screen bg-blue-800">
-
+        <div>
 
 
-            <div className="flex-grow p-10 bg-blue-900">
-                <div className="bg-white p-8 rounded-lg shadow-lg">
-                    <div className="text-left mb-8">
-                        <h1 className="text-5xl font-mono text-blue-900 mb-2">Master Files</h1>
-                    </div>
 
-                    <div className="bg-blue-900 p-6 rounded-lg shadow-lg">
+            <div className="flex min-h-screen bg-blue-800">
+
+
+
+
+                <div className="flex-grow p-10 bg-blue-900">
+                    <div className="bg-white p-8 rounded-lg shadow-lg">
                         <div className="text-left mb-8">
-                            <h1 className="text-3xl font-normal text-white mb-2">Master Files</h1>
-                            <p className="text-white text-lg">Maintain and reference master files for centralized and accurate data management.</p>
+                            <h1 className="text-5xl font-mono text-blue-900 mb-2">Master Files</h1>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {[
-                                { title: 'Admin', buttonText: 'Add Administrator', route: '/AddAdministrator', content: <AddAdministrator />, buttonText2: 'Addministrator List', contentlist: "/adminlist" },
-                                { title: 'Department', buttonText: 'Add Department', route: '/addDepartment', content: <AddDepartment />, buttonText2: 'Department List', contentlist: "/DepartmentList" },
-                                { title: 'School Year', buttonText: 'Add School Year', route: '/addSchoolYear', content: <AddSchoolYear />, buttonText2: 'School Year List', contentlist: <GetSchoolYear /> },
-                                { title: 'Course', buttonText: 'Add Course', route: '/addCourse', content: <AddCourse />, buttonText2: 'Course List', contentlist: <GetCourse /> },
-                                { title: 'Scholarship Type', buttonText: 'Add Scholarship Type', route: '/addScholarshipType', content: <AddScholarshipType />, buttonText2: 'Scholarship Type   List', contentlist: <GetScholarType /> },
-                                { title: 'Office Master', buttonText: 'Add Office Master', route: '/addOfficeMaster', content: <AddOfficeMaster />, buttonText2: 'Office Master List', contentlist: "/OfficeMasterList" },
-                                { title: 'Scholar', buttonText: 'Add Scholar', route: "/AddScholar", content: <AddScholar />, buttonText: 'Scholar List', contentlist: <GetScholar /> },
-                                { title: 'Supervisor Master', buttonText: 'Add Supervisor Master', route: '/addSupervisor', content: <AddSupervisor />, buttonText2: 'Supervisor List', contentlist: <GetSupervisor /> },
-                                { title: 'Scholarship Sub Type', buttonText: 'Add Scholarship Sub Type', route: '/addScholarshipSubType', content: <AddScholarshipSubType />, buttonText2: 'Scholarship Sub Type List', contentlist: <GetScholarshipSubType /> },
-                                { title: 'Building', buttonText: 'Add Building', route: '/addBuilding', content: <AddBuilding />, buttonText2: 'Building List', contentlist: "/BuildingList" },
-                                { title: 'Room', buttonText: 'Add Room', route: '/addRoom', content: <AddRoom />, buttonText2: 'Room List', contentlist: <GetRoom /> },
-                                { title: 'Modality', buttonText: 'Add Modality', route: '/addModality', content: <AddModality />, buttonText2: 'Modality List', contentlist: <GetModality /> },
-                                { title: 'Subject', buttonText: 'Add Subject', route: '/addSubject', content: <AddSubject />, buttonText2: 'Subject List', contentlist: <GetSubject /> },
-                            ].map(({ title, buttonText, route, content, contentlist, buttonText2 }, index) => (
-                                <div key={index} className="flex flex-col items-center">
-                                    <h2 className="text-white text-lg font-semibold mb-2">{title}</h2>
-                                    <div className="bg-blue-700 p-4 rounded-lg shadow-lg flex flex-col items-center">
-                                        <h3 className="text-white text-base font-semibold mb-2">{buttonText}</h3>
-                                        <div className="flex gap-2">
-                                            <button
-                                                className="w-24 py-1 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200 ease-in-out text-xs"
-                                                onClick={() => openModal(content, buttonText)}
-                                            >
-                                                Add
-                                            </button>
-                                            <button className="w-24 py-1 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200 ease-in-out text-xs"
-                                                onClick={() => openListModal(contentlist, buttonText2)}>
-                                                Get List
-                                            </button>
+                        <div className="bg-blue-900 p-6 rounded-lg shadow-lg">
+                            <div className="text-left mb-8">
+                                <h1 className="text-3xl font-normal text-white mb-2">Master Files</h1>
+                                <p className="text-white text-lg">Maintain and reference master files for centralized and accurate data management.</p>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {[
+                                    { title: 'Admin', buttonText: 'Add Administrator', route: '/AddAdministrator', content: <AddAdministrator />, buttonText2: 'Addministrator List', contentlist: "/adminlist" },
+                                    { title: 'Department', buttonText: 'Add Department', route: '/addDepartment', content: <AddDepartment />, buttonText2: 'Department List', contentlist: "/DepartmentList" },
+                                    { title: 'School Year', buttonText: 'Add School Year', route: '/addSchoolYear', content: <AddSchoolYear />, buttonText2: 'School Year List', contentlist: <GetSchoolYear /> },
+                                    { title: 'Course', buttonText: 'Add Course', route: '/addCourse', content: <AddCourse />, buttonText2: 'Course List', contentlist: <GetCourse /> },
+                                    { title: 'Scholarship Type', buttonText: 'Add Scholarship Type', route: '/addScholarshipType', content: <AddScholarshipType />, buttonText2: 'Scholarship Type   List', contentlist: <GetScholarType /> },
+                                    { title: 'Office Master', buttonText: 'Add Office Master', route: '/addOfficeMaster', content: <AddOfficeMaster />, buttonText2: 'Office Master List', contentlist: "/OfficeMasterList" },
+                                    { title: 'Scholar', buttonText: 'Add Scholar', route: "/AddScholar", content: <AddScholar />, buttonText: 'Scholar List', contentlist: <GetScholar /> },
+                                    { title: 'Supervisor Master', buttonText: 'Add Supervisor Master', route: '/addSupervisor', content: <AddSupervisor />, buttonText2: 'Supervisor List', contentlist: <GetSupervisor /> },
+                                    { title: 'Scholarship Sub Type', buttonText: 'Add Scholarship Sub Type', route: '/addScholarshipSubType', content: <AddScholarshipSubType />, buttonText2: 'Scholarship Sub Type List', contentlist: <GetScholarshipSubType /> },
+                                    { title: 'Building', buttonText: 'Add Building', route: '/addBuilding', content: <AddBuilding />, buttonText2: 'Building List', contentlist: "/BuildingList" },
+                                    { title: 'Room', buttonText: 'Add Room', route: '/addRoom', content: <AddRoom />, buttonText2: 'Room List', contentlist: <GetRoom /> },
+                                    { title: 'Modality', buttonText: 'Add Modality', route: '/addModality', content: <AddModality />, buttonText2: 'Modality List', contentlist: <GetModality /> },
+                                    { title: 'Subject', buttonText: 'Add Subject', route: '/addSubject', content: <AddSubject />, buttonText2: 'Subject List', contentlist: <GetSubject /> },
+                                ].map(({ title, buttonText, route, content, contentlist, buttonText2 }, index) => (
+                                    <div key={index} className="flex flex-col items-center">
+                                        <h2 className="text-white text-lg font-semibold mb-2">{title}</h2>
+                                        <div className="bg-blue-700 p-4 rounded-lg shadow-lg flex flex-col items-center">
+                                            <h3 className="text-white text-base font-semibold mb-2">{buttonText}</h3>
+                                            <div className="flex gap-2">
+                                                <button
+                                                    className="w-24 py-1 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200 ease-in-out text-xs"
+                                                    onClick={() => openModal(content, buttonText)}
+                                                >
+                                                    Add
+                                                </button>
+                                                <button className="w-24 py-1 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200 ease-in-out text-xs"
+                                                    onClick={() => openListModal(contentlist, buttonText2)}>
+                                                    Get List
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
 
-            {
-                isOpenModal && (
-                    <div className='fixed inset-0  bg-black bg-opacity-50 flex justify-center items-center w-full'>
-                        <div className='bg-blue-800 p-8 rounded-lg shadow-lg relative max-w-md w-full'>
-                            <div className='grid grid-cols-3 text-xl font-bold md-4 text-black'>
-                                <div className=''>
-                                    <ArrowLeftCircle className='cursor-pointer h-7 w-7 text-white' onClick={closeModal} />
+                {
+                    isOpenModal && (
+                        <div className='fixed inset-0  bg-black bg-opacity-50 flex justify-center items-center w-full'>
+                            <div className='bg-blue-800 p-8 rounded-lg shadow-lg relative max-w-md w-full'>
+                                <div className='grid grid-cols-3 text-xl font-bold md-4 text-black'>
+                                    <div className=''>
+                                        <ArrowLeftCircle className='cursor-pointer h-7 w-7 text-white' onClick={closeModal} />
+                                    </div>
+                                    <p className='text-center text-white'>{modalTitle}</p>
                                 </div>
-                                <p className='text-center text-white'>{modalTitle}</p>
-                            </div>
-                            <div>
-                                {modalContent}
+                                <div>
+                                    {modalContent}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )
-            }
+                    )
+                }
 
 
-            {
-                isOpenListModal && (
-                    <div className='fixed inset-0  bg-black bg-opacity-50 flex justify-center items-center w-full'>
-                        <div className='bg-blue-800 p-8 rounded-lg shadow-lg relative max-w-md w-full'>
-                            <div className='grid grid-cols-3 text-xl font-bold md-4 text-black'>
-                                <div className=''>
-                                    <ArrowLeftCircle className='cursor-pointer h-7 w-7 text-white' onClick={closeListModal} />
+                {
+                    isOpenListModal && (
+                        <div className='fixed inset-0  bg-black bg-opacity-50 flex justify-center items-center w-full'>
+                            <div className='bg-blue-800 p-8 rounded-lg shadow-lg relative max-w-md w-full'>
+                                <div className='grid grid-cols-3 text-xl font-bold md-4 text-black'>
+                                    <div className=''>
+                                        <ArrowLeftCircle className='cursor-pointer h-7 w-7 text-white' onClick={closeListModal} />
+                                    </div>
+                                    <p className='text-center text-white'>{modalTitle}</p>
                                 </div>
-                                <p className='text-center text-white'>{modalTitle}</p>
-                            </div>
-                            <div>
-                                {modalContent}
+                                <div>
+                                    {modalContent}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )
-            }
-        </div >
+                    )
+                }
+            </div >
+        </div>
     );
 };
 

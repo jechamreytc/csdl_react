@@ -3,20 +3,22 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import secureLocalStorage from 'react-secure-storage';
 import Select from 'react-select';
+import AddDepartmentModal from '../modal/AddDepartment';
 
 const AddScholar = () => {
     const [formData, setFormData] = useState({
         studId: '',
+        academicSession: '',
         firstName: '',
         lastName: '',
         middleName: '',
+        scholarship: '',
+        department: '',
         course: '',
         yearLevel: '',
-        scholarshipType: '',
-        scholarshipSub: '',
         contactNumber: '',
         email: '',
-        modality: '',
+        modality: ''
     });
 
     const [yearLevels, setYearLevels] = useState([]);
@@ -68,17 +70,18 @@ const AddScholar = () => {
         try {
             const url = secureLocalStorage.getItem('url') + 'CSDL.php';
             const jsonData = {
-                stud_school_id: formData.studId,
+                stud_id: formData.studId,
+                stud_academic_session_id: formData.academicSession,
                 stud_first_name: formData.firstName,
                 stud_last_name: formData.lastName,
                 stud_middle_name: formData.middleName,
-                stud_year_level: formData.yearLevel,
+                stud_scholarship_id: formData.scholarship,
+                stud_department_id: formData.department,
                 stud_course_id: formData.course,
-                stud_scholarship_type_id: formData.scholarshipType,
-                stud_scholarship_sub_type_id: formData.scholarshipSub,
+                stud_year_level_id: formData.yearLevel,
                 stud_contact_number: formData.contactNumber,
                 stud_email: formData.email,
-                stud_typeScholar_id: formData.modality,
+                stud_modality_id: formData.modality
             };
 
             const formDataToSend = new FormData();
@@ -171,7 +174,7 @@ const AddScholar = () => {
                             <label className="block text-sm font-medium">Scholarship Type*</label>
                             <Select
                                 options={scholarshipTypes.map(type => ({ label: type.type_name, value: type.type_id }))}
-                                onChange={(selectedOption) => handleComboBoxChange(selectedOption, 'scholarshipType')}
+                                onChange={(selectedOption) => handleComboBoxChange(selectedOption, 'scholarship')}
                                 placeholder="Select Scholarship Type"
                                 isClearable
                                 className="mt-1"

@@ -149,6 +149,15 @@ const Dashboard = () => {
                             <li>
                                 <button
                                     className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/StudentFacilitator")}
+                                >
+                                    <User className="mr-2" />
+                                    <span className="text-sm">Assigne StudentFacilitator</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/AdminDashboard")}
                                 >
                                     <FolderClosed className="mr-2" />

@@ -25,6 +25,8 @@ import GetOfficeMaster from './modal/GetOfficeMaster';
 import GetBuilding from './modal/GetBuilding';
 import Batch from './dashboard/Batch';
 import BatchSubject from './dashboard/BatchSubject';
+import StudentFacilitator from './dashboard/StudentFacilitator';
+
 
 
 // import AddScholarshipSubType from './components/AddScholarshipSubType';
@@ -70,6 +72,7 @@ function App() {
           <Route path="/BuildingList" element={<GetBuilding />} />
           <Route path="/Batch" element={<Batch />} />
           <Route path="/BatchSubject" element={<BatchSubject />} />
+          <Route path="/StudentFacilitator" element={<StudentFacilitator />} />
 
 
         </Routes>

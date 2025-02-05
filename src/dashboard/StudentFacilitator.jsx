@@ -26,6 +26,7 @@ function StudentFacilitator() {
     const [selectedSubject, setSelectedSubject] = useState(null); // Track selected subject
     const [saveStatus, setSaveStatus] = useState(""); // To show save status message
     const [selectedStudent, setSelectedStudent] = useState(null); // Track selected student
+    const [selectedSessions, setSelectedSessions] = useState(null); // Track selected session
 
     const normalizeTime = (time) => {
         if (!time) {
@@ -156,7 +157,9 @@ function StudentFacilitator() {
 
     const handleSubjectSelect = (selectedOption) => {
         setSelectedSubject(selectedOption); // Update selected subject
-        console.log("Selected Subject:", selectedOption); // Log selected subject
+        console.log("Selected Subject:", selectedOption);
+        setSelectedSessions(selectedSessions);
+        console.log("Selected Session:",); // Log selected subject
     };
 
     const handleClearClick = () => {
@@ -176,7 +179,7 @@ function StudentFacilitator() {
             return;
         }
 
-        // Hardcoded student facilitator ID
+        // Prepare data to save
         const dataToSave = {
             assignment_name: formData.mode,
             dutyH_name: formData.hours,
@@ -184,19 +187,8 @@ function StudentFacilitator() {
             off_subject_id: selectedSubject.value,
             session_name: selectedStudent?.session_name || '', // Ensure session_name is passed correctly
         };
-        const handleStudentChange = (selectedOption) => {
-            console.log('Selected student:', selectedOption); // Log student change
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                student: selectedOption ? selectedOption.value : '',
-            }));
 
-            const student = activeScholars.find((stud) => stud.stud_id === selectedOption?.value); // Ensure the student is found in activeScholars
-            setSelectedStudent(student || null); // Ensure selectedStudent is correctly set
-            setSession(student ? student.session_name : ''); // Ensure session name is being set properly
-        };
-
-        console.log("Data to save:", dataToSave);
+        console.log("Data to save:", dataToSave); // Log the data to save for debugging
 
         try {
             const url = secureLocalStorage.getItem("url") + 'CSDL.php';
@@ -207,21 +199,37 @@ function StudentFacilitator() {
             const res = await axios.post(url, formData);
 
             // Check if the response indicates success or failure
-            if (res.data === "1") {
+            if (res.data !== "0") {
                 setSaveStatus("Data saved successfully!");
             } else {
-                setSaveStatus("Failed to save data.");
+                setSaveStatus(`Failed to save data. Server response: ${res.data}`);
+                console.error("Server Response:", res.data); // Log the server response for debugging
             }
         } catch (error) {
-            console.error("Error saving data:", error);
-            setSaveStatus("Error saving data.");
+            // Log detailed error
+            console.error("Error during save operation:", error);
+
+            // If the error has a response (Axios error), log the response
+            if (error.response) {
+                console.error("Error Response Data:", error.response.data);
+                console.error("Error Response Status:", error.response.status);
+                console.error("Error Response Headers:", error.response.headers);
+            } else if (error.request) {
+                // If no response was received
+                console.error("Error Request:", error.request);
+            } else {
+                // Any other errors that may have occurred
+                console.error("Error Message:", error.message);
+            }
+
+            setSaveStatus("Error saving data. Please try again.");
         }
     };
 
     // Convert the scholars data to the format required by react-select
     const scholarOptions = activeScholars.map(scholar => ({
         value: scholar.stud_active_id,
-        label: `${scholar.stud_active_id} | ${scholar.stud_name} | ${scholar.course_name}`,
+        label: `${scholar.stud_active_id} | ${scholar.stud_name} | ${scholar.course_name} | ${scholar.session_name}`,
     }));
 
     // Convert the subjects data to the format required by react-select
@@ -253,15 +261,22 @@ function StudentFacilitator() {
                         onChange={(selectedOption) => {
                             const selectedScholarId = selectedOption ? selectedOption.value : "";
                             setScholarId(selectedScholarId);
+                            // Find the selected scholar from activeScholars array and set it as selectedStudent
+                            const selectedScholar = activeScholars.find(scholar => scholar.stud_active_id === selectedScholarId);
+                            setSelectedStudent(selectedScholar); // Include session_name in the selectedStudent
                             console.log("Selected Scholar ID:", selectedScholarId);
                         }}
                         placeholder="Select a Scholar"
                         className="text-black"
                     />
-                    {scholarId && (
+
+                    {/* Display student info dynamically, including session_name */}
+                    {selectedStudent && (
                         <div className="mt-4">
-                            <h2 className="text-blue-100 font-medium">Scholar Info:</h2>
-                            <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">{scholarId}</p>
+                            <h2 className="text-blue-100 font-medium">Student Info:</h2>
+                            <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">
+                                {selectedStudent.stud_name} | {selectedStudent.session_name} {/* Display session_name */}
+                            </p>
                         </div>
                     )}
                 </div>
@@ -321,23 +336,18 @@ function StudentFacilitator() {
                     />
                 </div>
 
-                <Button variant="secondary" onClick={handleClearClick} className="mt-4">
-                    Clear
-                </Button>
-                <Button variant="primary" onClick={handleSaveClick} className="mt-4 ml-4">
-                    Save
-                </Button>
+                <div className="flex justify-between mt-6">
+                    <Button variant="secondary" onClick={handleClearClick}>
+                        Clear
+                    </Button>
+                    <Button variant="primary" onClick={handleSaveClick}>
+                        Save
+                    </Button>
+                </div>
 
                 {saveStatus && (
                     <div className="mt-4">
-                        <p>{saveStatus}</p>
-                    </div>
-                )}
-
-                {selectedStudent && selectedStudent.session_name && (
-                    <div className="mt-4">
-                        <h2 className="text-blue-100 font-medium">Session Name:</h2>
-                        <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">{selectedStudent.session_name}</p>
+                        <p className="text-green-500">{saveStatus}</p>
                     </div>
                 )}
             </div>

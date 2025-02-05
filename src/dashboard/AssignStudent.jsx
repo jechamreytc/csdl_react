@@ -34,11 +34,13 @@ function AssignStudent() {
             formData.append('operation', 'getAssignScholar');
             const res = await axios.post(url, formData);
             console.log('Fetched data:', res.data); // Log the fetched data
-            setStudents(res.data.getScholar || []);
+            setStudents(res.data.getScholarSession || []);
             setSubjects(res.data.getSubject || []);
             setSupervisor(res.data.getSupervisorMaster || []);
             setDepartments(res.data.getDepartmentMaster || []);
             toast.success('Form data loaded successfully');
+
+            console.log(students);
         } catch (error) {
             toast.error('Failed to load form data');
             console.error('Error fetching data:', error); // Log error if fetching fails
@@ -55,9 +57,10 @@ function AssignStudent() {
             ...prevFormData,
             student: selectedOption ? selectedOption.value : '',
         }));
-        const student = students.find((stud) => stud.stud_id === selectedOption?.value);
-        setSelectedStudent(student || null);
-        setSession(student ? student.session_name : '');
+
+        const student = students.find((stud) => stud.stud_active_id === selectedOption?.value);
+        setSelectedStudent(student || null);  // This should store the full student object
+        setSession(student ? student.session_name : ''); // Update session if a student is selected
     };
 
     const handleDepartmentChange = async (selectedOption) => {
@@ -116,8 +119,8 @@ function AssignStudent() {
     };
 
     const studentOptions = students.map((stud) => ({
-        value: stud.stud_id,
-        label: `${stud.stud_id} - ${stud.stud_name}`,
+        value: stud.stud_active_id,
+        label: `${stud.stud_active_id} - ${stud.stud_name}`,
     }));
 
     const departmentOptions = departments.map((dept) => ({

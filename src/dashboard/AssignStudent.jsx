@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Sun, Moon, CircleUser, FolderClosed, LogOutIcon, PanelsRightBottom, QrCodeIcon, User, List, Mail, Calendar, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage';
@@ -128,84 +129,200 @@ function AssignStudent() {
         label: dept.dept_name,
     }));
 
+    const handleLogOut = () => {
+        navigateTo("/");
+    };
+
     return (
         <div className="flex h-screen overflow-hidden bg-blue-900">
-            <aside>
-                <Dashboard />
+            <aside
+
+            >
+                <div className="text-white mb-6">
+                    <div className="flex items-center mb-6">
+                        <img
+                            src="images/csdl.jpg"
+                            alt="CSDL Logo"
+                            className="w-24 h-24 rounded-full mr-3"
+                        />
+                        <div>
+                            <br />
+                            <h1 className="text-xl font-bold">HK SMS</h1>
+                            <p className="text-xl">HK Scholars Management System</p>
+                        </div>
+                    </div>
+
+                    <nav>
+                        <ul className="space-y-4">
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/MainDashboard")}
+                                >
+                                    <PanelsRightBottom className="mr-2" />
+                                    <span className="text-sm">Dashboard</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/ScholarList")}
+                                >
+                                    <List className="mr-2" />
+                                    <span className="text-sm">Scholar List</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/qrcode")}
+                                >
+                                    <QrCodeIcon className="mr-2" />
+                                    <span className="text-sm">QR Code</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/AssignStudent")}
+                                >
+                                    <User className="mr-2" />
+                                    <span className="text-sm">Assign Office</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/StudentFacilitator")}
+                                >
+                                    <User className="mr-2" />
+                                    <span className="text-sm">Assign StudentFacilitator</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/AdminDashboard")}
+                                >
+                                    <FolderClosed className="mr-2" />
+                                    <span className="text-sm">Master Files</span>
+                                </button>
+                            </li>
+                            <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/Account")}
+                                >
+                                    <CircleUser className="mr-2" />
+                                    <span className="text-sm">Account</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/Batch")}
+                                >
+                                    <CircleUser className="mr-2" />
+                                    <span className="text-sm">Batch Scholar</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    onClick={() => navigateTo("/BatchSubject")}
+                                >
+                                    <CircleUser className="mr-2" />
+                                    <span className="text-sm">Batch Subject</span>
+                                </button>
+                            </li>
+                            <li className="mt-4">
+                                <button
+                                    className="flex items-center p-3 bg-red-600 hover:bg-red-700 rounded-md w-full transition-all duration-200"
+                                    onClick={handleLogOut}
+                                >
+                                    <LogOutIcon className="mr-2" />
+                                    <span className="text-sm">Logout</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <p className="text-white text-xs mt-4">Powered by PHINMA</p>
             </aside>
             <main className="flex-1 bg-blue-900 text-white p-8">
                 <h1 className="text-3xl font-bold text-center mb-8">Assign Duty to Students</h1>
-                <form className="bg-blue-800 p-6 rounded-lg shadow-lg">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {/* Mode (Hardcoded to "Office") */}
-                        <div>
-                            <label className="block text-blue-100 font-medium mb-2">Mode</label>
-                            <p className="w-full bg-blue-600 text-white py-3 pl-4 rounded-lg">{formData.mode}</p>
-                        </div>
 
-                        {/* Department Combobox */}
-                        <div>
-                            <label className="block text-blue-100 font-medium mb-2">Department</label>
-                            <Select
-                                options={departmentOptions}
-                                value={departmentOptions.find((option) => option.value === formData.department)}
-                                onChange={handleDepartmentChange}
-                                placeholder="Select Department"
-                                className="text-black"
-                            />
-                            {selectedDepartment && (
-                                <div className="mt-4">
-                                    <h2 className="text-blue-100 font-medium">Day:</h2>
-                                    <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">{selectedDepartment.day_name || 'N/A'}</p>
-
-                                    <h2 className="text-blue-100 font-medium mt-4">Time:</h2>
-                                    <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">{selectedDepartment.offT_time || 'N/A'}</p>
-
-                                    <h2 className="text-blue-100 font-medium mt-4">Supervisor:</h2>
-                                    <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">{selectedDepartment.supM_name || 'N/A'}</p>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Student Combobox */}
-                        <div>
-                            <label className="block text-blue-100 font-medium mb-2">Student</label>
-                            <Select
-                                options={studentOptions}
-                                value={studentOptions.find((option) => option.value === formData.student)}
-                                onChange={handleStudentChange}
-                                placeholder="Select Student"
-                                className="text-black"
-                            />
-                        </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Mode (Hardcoded to "Office") */}
+                    <div>
+                        <label className="block text-blue-100 font-medium mb-2">Mode</label>
+                        <p className="w-full bg-blue-600 text-white py-3 pl-4 rounded-lg">{formData.mode}</p>
                     </div>
 
-                    {/* Displaying Academic Session */}
-                    {selectedStudent && (
-                        <div className="mt-4">
-                            <h2 className="text-blue-100 font-medium">Academic Session:</h2>
-                            <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">
-                                {session}
-                            </p>
-                        </div>
-                    )}
+                    {/* Department Combobox */}
+                    <div>
+                        <label className="block text-blue-100 font-medium mb-2">Department</label>
+                        <Select
+                            options={departmentOptions}
+                            value={departmentOptions.find((option) => option.value === formData.department)}
+                            onChange={handleDepartmentChange}
+                            placeholder="Select Department"
+                            className="text-black"
+                        />
+                        {selectedDepartment && (
+                            <div className="mt-4">
+                                <h2 className="text-blue-100 font-medium">Day:</h2>
+                                <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">{selectedDepartment.day_name || 'N/A'}</p>
 
-                    {/* Displaying Hours */}
+                                <h2 className="text-blue-100 font-medium mt-4">Time:</h2>
+                                <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">{selectedDepartment.offT_time || 'N/A'}</p>
+
+                                <h2 className="text-blue-100 font-medium mt-4">Supervisor:</h2>
+                                <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">{selectedDepartment.supM_name || 'N/A'}</p>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Student Combobox */}
+                    <div>
+                        <label className="block text-blue-100 font-medium mb-2">Student</label>
+                        <Select
+                            options={studentOptions}
+                            value={studentOptions.find((option) => option.value === formData.student)}
+                            onChange={handleStudentChange}
+                            placeholder="Select Student"
+                            className="text-black"
+                        />
+                    </div>
+                </div>
+
+                {/* Displaying Academic Session */}
+                {selectedStudent && (
                     <div className="mt-4">
-                        <h2 className="text-blue-100 font-medium">Assigned Hours:</h2>
+                        <h2 className="text-blue-100 font-medium">Academic Session:</h2>
                         <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">
-                            {formData.hours}
+                            {session}
                         </p>
                     </div>
+                )}
 
-                    <button
-                        type="button"
-                        onClick={handleSave} // Trigger save manually
-                        className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-medium transition"
-                    >
-                        Save Assignment
-                    </button>
-                </form>
+                {/* Displaying Hours */}
+                <div className="mt-4">
+                    <h2 className="text-blue-100 font-medium">Assigned Hours:</h2>
+                    <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">
+                        {formData.hours}
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    onClick={handleSave} // Trigger save manually
+                    className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-medium transition"
+                >
+                    Save Assignment
+                </button>
+
             </main>
         </div>
     );

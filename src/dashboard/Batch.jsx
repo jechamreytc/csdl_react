@@ -106,6 +106,7 @@ const App = () => {
             const sheetName = workbook.SheetNames[0];
             const sheet = workbook.Sheets[sheetName];
             const jsonData = XLSX.utils.sheet_to_json(sheet);
+            console.log("json data", jsonData)
 
             const processedData = jsonData.map((row) => ({
                 ...row,
@@ -115,6 +116,7 @@ const App = () => {
                     : "",
             }));
 
+            console.log("processedDta", processedData);
             setData(processedData);
         } catch (error) {
             console.error("Error reading the Excel file:", error);
@@ -124,75 +126,100 @@ const App = () => {
 
     // Save data to backend
     const handleSaveToBackend = async () => {
-        if (data.length === 0) {
-            alert("No data to save!");
+        console.log("Raw data before mapping:", data);
+        console.log("Course array:", course);
+        console.log("Department array:", department);
+        console.log("Scholarship array:", scholarListType);
+        console.log("Percent array:", percentStyped);
+        console.log("Academic session array:", academicSession);
+        console.log("School year array:", schoolYear);
+        console.log("Student status array:", studStatus);
+
+        // Ensure that the data array is not empty
+        if (!data || data.length === 0) {
+            console.warn("Data is empty! No data will be sent.");
             return;
         }
 
-        console.log("data ni handleSaveToBackend", data);
-
-        const jsonData = data.map((row) => {
-            const courseId = course.find((c) => row.COURSE === c.course_name);
-            // console.log("courseId ni handleSaveToBackend", courseId);
-            const departmentId = department.find((d) => row.COLLEGE === d.dept_name);
-            // console.log("departmentId ni handleSaveToBackend", departmentId);
-
-            const scholarId = scholarListType.find((s) => row.SCHOLARSHIP === s.type_name);
-            // console.log("scholarId ni handleSaveToBackend", scholarId);
-
-            const percentId = percentStyped.find((a) => row.PERCENT === Number(a.percent_name));
-            // console.log("percentId ni handleSaveToBackend", percentId);
-
-            const academicSessionId = academicSession.find((b) => row.ACADEMIC_SESSION === b.session_name);
-            // console.log("academicSessionId ni handleSaveToBackend", academicSessionId);
-
-            const schoolyearId = schoolYear.find((d) => row.YEAR === d.year_name);
-            // console.log("schoolyearId ni handleSaveToBackend", schoolyearId);
-
-            const studStatusId = studStatus.find((e) => row.STUDENT_STATUS === e.Status_name);
-            // console.log("studStatusId ni handleSaveToBackend", studStatusId);
+        // Check the course, department, etc., arrays
 
 
-            return {
-                stud_id: row["STUDENT_NO"],
-                stud_academic_session_id: academicSessionId.session_id,
-                stud_name: row["NAME"],
-                stud_scholarship_id: scholarId.type_id,
-                stud_department_id: departmentId.dept_id,
-                stud_course_id: courseId.course_id,
-                stud_year_id: schoolyearId.year_id,
-                stud_status_id: studStatusId.Status_id,
-                stud_percent_id: percentId.percent_id,
-                stud_amount: row["AMOUNT"],
-                stud_applied_on_tuition: row["APPLIED_TO_TUITION"],
-                stud_applied_on_misc: row["APPLIED_TO_MISC"],
-                stud_date: row["DATE"],
-                stud_modified_by: row["MODIFIED BY"],
-                stud_modified_date: row["MODIFIED DATE"],
-                // stud_batch: "",
-                // stud_password: "",
-                stud_image_file: "noImage.png",
-                // stud_contactNumber: "",
-                // stud_email: "",
-                // stud_qrCode: "",
-            };
-        });
+        const jsonData = data
+            .map((row, index) => {
 
-        console.log("jsonData ni handleSaveToBackend", JSON.stringify(jsonData));
+                // Log the values being used in the `find()` method for better tracking
+                const courseId = course.find((c) => row.COURSE === c.course_name);
+                const departmentId = department.find((d) => row.COLLEGE === d.dept_name);
+                const scholarId = scholarListType.find((s) => row.SCHOLARSHIP === s.type_name);
+                const percentId = percentStyped.find((a) => Number(row.PERCENT) === Number(a.percent_name));
+                const academicSessionId = academicSession.find((b) => row.ACADEMIC_SESSION === b.session_name);
+                const schoolyearId = schoolYear.find((d) => row.YEAR === d.year_name);
+                const studStatusId = studStatus.find((e) => row.STUDENT_STATUS === e.status_name);
 
+                console.log("STUDENT_STATUS", row.STUDENT_STATUS)
+                console.log("Status_nameStatus_nameStatus_nameStatus_name", studStatus.status_name)
+
+                // Debug logs for comparison values
+                console.log("courseId:", courseId);
+                console.log("departmentId:", departmentId);
+                console.log("scholarId:", scholarId);
+                console.log("percentId:", percentId);
+                console.log("academicSessionId:", academicSessionId);
+                console.log("schoolyearId:", schoolyearId);
+                console.log("studStatusId:", studStatusId);
+
+                // Skip rows that don't have valid IDs for the required fields
+                // if (!academicSessionId || !courseId || !departmentId || !scholarId || !percentId || !schoolyearId || !studStatusId) {
+                //     console.error("Missing data for row", row);
+                //     return null;
+                // }
+
+                return {
+                    stud_id: row["STUDENT_NO"],
+                    stud_active_academic_session_id: academicSessionId.session_id,
+                    stud_name: row["NAME"],
+                    stud_scholarship_id: scholarId.type_id,
+                    stud_department_id: departmentId.dept_id,
+                    stud_course_id: courseId.course_id,
+                    stud_active_year_id: schoolyearId.year_id,
+                    stud_active_status_id: studStatusId.Status_id,
+                    stud_active_percent_id: percentId.percent_id,
+                    stud_active_amount: row["AMOUNT"],
+                    stud_active_applied_on_tuition: row["APPLIED_TO_TUITION"],
+                    stud_active_applied_on_misc: row["APPLIED_TO_MISC"],
+                    stud_active_mode_id: row["MODE"],
+                    stud_date: row["DATE"],
+                    stud_modified_by: row["MODIFIED BY"],
+                    stud_modified_date: row["MODIFIED DATE"],
+                    stud_image_file: "noImage.png", // Placeholder image file
+                };
+            })
+            .filter((row) => row !== null); // Remove invalid rows
+
+        console.log("jsonData after mapping:", JSON.stringify(jsonData));
+        console.log("jsonData Length:", jsonData.length);
+
+        if (jsonData.length === 0) {
+            console.warn("jsonData is empty! No data will be sent.");
+            return;
+        }
 
         setLoading(true);
         try {
-            const url = secureLocalStorage.getItem("url") + "CSDL.php";
+            const url = `${secureLocalStorage.getItem("url")}CSDL.php`;
             const formDataToSend = new FormData();
+            console.log("JSON DATA", jsonData)
             formDataToSend.append("json", JSON.stringify(jsonData));
-            formDataToSend.append("operation", "AddScholar");
+            formDataToSend.append("operation", "AddScholarBatch");
+
+            console.log("API Request Add Scholar:", jsonData);
 
             const response = await axios.post(url, formDataToSend);
-            console.log("RESPONSE ni handleSaveToBackend", response.data);
-            if (response.data !== 0) {
+            console.log("RESPONSE from backend:", response.data);
+
+            if (response.data === 1) {
                 alert("Data saved successfully!");
-                setData([]);
+                //setData([]);
                 setFileName("");
             } else {
                 alert(`Error from backend: ${response.data.message}`);
@@ -204,6 +231,12 @@ const App = () => {
             setLoading(false);
         }
     };
+
+
+
+
+
+
 
 
 

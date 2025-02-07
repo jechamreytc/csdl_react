@@ -101,8 +101,8 @@ const App = () => {
             const formDataToSend = new FormData();
             formDataToSend.append("json", JSON.stringify(jsonData));
             formDataToSend.append("operation", "AddSubject");
-            console.log("API Request (Add Subject):", jsonData);
 
+            console.log("API Request (Add Subject):", jsonData);
             const response = await axios.post(url, formDataToSend);
             console.log("RESPONSE ni handleSaveToBackend", response.data);
             if (response.data !== 0) {

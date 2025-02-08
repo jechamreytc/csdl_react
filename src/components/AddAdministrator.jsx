@@ -5,12 +5,9 @@ import secureLocalStorage from 'react-secure-storage';
 
 const AddAdministrator = () => {
     const [formData, setFormData] = useState({
-        employeeId: "",
-        firstName: "",
-        middleName: "",
-        lastName: "",
+        idNumber: "",
+        name: "",
         email: "",
-        contactNumber: "",
     });
 
     const [loading, setLoading] = useState(false);
@@ -21,6 +18,7 @@ const AddAdministrator = () => {
             ...formData,
             [name]: value
         });
+        console.log(`Updated ${name}:`, value);
     };
 
     const isValidEmail = (email) => {
@@ -34,12 +32,9 @@ const AddAdministrator = () => {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
 
             const jsonData = {
-                adm_employee_id: formData.employeeId,
-                adm_first_name: formData.firstName,
-                adm_middle_name: formData.middleName,
-                adm_last_name: formData.lastName,
+                adm_id: formData.idNumber,
+                adm_name: formData.name,
                 adm_email: formData.email,
-                adm_contact_number: formData.contactNumber,
             };
 
             const formDataToSend = new FormData();
@@ -50,18 +45,12 @@ const AddAdministrator = () => {
 
             if (res.data !== 0) {
                 toast.success("Administrator added successfully");
-                setFormData({
-                    employeeId: "",
-                    firstName: "",
-                    middleName: "",
-                    lastName: "",
-                    email: "",
-                    contactNumber: "",
-                });
+                setFormData({ idNumber: "", name: "", email: "" });
             } else {
                 toast.error("Failed to add administrator");
             }
         } catch (error) {
+            console.error("Error during signup:", error);
             toast.error("An error occurred during signup");
         } finally {
             setLoading(false);
@@ -80,85 +69,45 @@ const AddAdministrator = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 py-10">
-            <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
-                <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Add Administrator</h2>
+        <div className="min-h-screen flex items-center justify-center bg-white py-10">
+            <div className="bg-green-50 shadow-lg rounded-lg p-8 w-full max-w-md">
+                <h2 className="text-2xl font-semibold text-center text-green-700 mb-6">Add Administrator</h2>
                 <form className="space-y-6" onSubmit={handleSubmit}>
                     <div>
-                        <label className="block text-sm font-medium text-gray-600">Employee ID*</label>
+                        <label className="block text-sm font-medium text-green-700">ID Number*</label>
                         <input
                             type="text"
-                            name="employeeId"
-                            value={formData.employeeId}
+                            name="idNumber"
+                            value={formData.idNumber}
                             onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="Enter Employee ID"
-                            required
-                        />
-                    </div>
-
-                    <div className="flex space-x-4">
-                        <div className="w-1/2">
-                            <label className="block text-sm font-medium text-gray-600">First Name*</label>
-                            <input
-                                type="text"
-                                name="firstName"
-                                value={formData.firstName}
-                                onChange={handleInputChange}
-                                className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                placeholder="Enter First Name"
-                                required
-                            />
-                        </div>
-                        <div className="w-1/2">
-                            <label className="block text-sm font-medium text-gray-600">Middle Name*</label>
-                            <input
-                                type="text"
-                                name="middleName"
-                                value={formData.middleName}
-                                onChange={handleInputChange}
-                                className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                placeholder="Enter Middle Name"
-                                required
-                            />
-                        </div>
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-600">Last Name*</label>
-                        <input
-                            type="text"
-                            name="lastName"
-                            value={formData.lastName}
-                            onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="Enter Last Name"
+                            className="mt-1 p-2 block w-full rounded-md border-green-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                            placeholder="Enter ID Number"
                             required
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-600">Email Address*</label>
+                        <label className="block text-sm font-medium text-green-700">Name*</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleInputChange}
+                            className="mt-1 p-2 block w-full rounded-md border-green-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                            placeholder="Enter Name"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-green-700">Email Address*</label>
                         <input
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                            className="mt-1 p-2 block w-full rounded-md border-green-300 shadow-sm focus:border-green-500 focus:ring-green-500"
                             placeholder="Enter Email Address"
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-600">Contact Number*</label>
-                        <input
-                            type="text"
-                            name="contactNumber"
-                            value={formData.contactNumber}
-                            onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="Enter Contact Number"
                             required
                         />
                     </div>
@@ -166,7 +115,7 @@ const AddAdministrator = () => {
                     <div className="text-center">
                         <button
                             type="submit"
-                            className="bg-indigo-500 text-white py-2 px-6 rounded-md hover:bg-indigo-600 transition duration-300"
+                            className="bg-green-500 text-white py-2 px-6 rounded-md hover:bg-green-600 transition duration-300"
                             disabled={loading}
                         >
                             {loading ? "Adding..." : "Add Administrator"}

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import secureLocalStorage from "react-secure-storage";
 import { useNavigate } from "react-router-dom";
 
 const AuthPage = () => {
@@ -8,7 +7,6 @@ const AuthPage = () => {
     const [password, setPassword] = useState("");
     const [mathPuzzle, setMathPuzzle] = useState({ question: "", answer: 0 });
     const [userAnswer, setUserAnswer] = useState("");
-    const [wordPuzzleImg, setWordPuzzleImg] = useState("");
     const [hasError, setHasError] = useState(false);
     const [attempts, setAttempts] = useState(0);
     const [lockout, setLockout] = useState(false);
@@ -25,13 +23,8 @@ const AuthPage = () => {
         });
     };
 
-    const loadWordPuzzle = () => {
-        setWordPuzzleImg(`http://localhost/csdl/generate_custom_word_puzzle.php?${Math.random()}`);
-    };
-
     useEffect(() => {
         generateMathPuzzle();
-        loadWordPuzzle();
     }, []);
 
     useEffect(() => {
@@ -47,11 +40,14 @@ const AuthPage = () => {
         return () => clearInterval(timer);
     }, [lockout, countdown]);
 
-    const handleLogin = (e) => {
-        e.preventDefault();
-
+    const handleLogin = () => {
         if (lockout) {
             toast.error(`Please wait ${countdown} seconds before trying again.`);
+            return;
+        }
+
+        if (!username.trim() || !password.trim()) {
+            toast.error("Please fill in both Username and Password.");
             return;
         }
 
@@ -64,7 +60,7 @@ const AuthPage = () => {
 
             if (attempts + 1 >= 3) {
                 setLockout(true);
-                setCountdown(10); // Lockout period in seconds
+                setCountdown(10);
                 toast.error("Too many incorrect attempts. Please wait 10 seconds.");
             }
             return;
@@ -84,8 +80,8 @@ const AuthPage = () => {
                 </div>
                 <div className="bg-white p-8 rounded-r-xl">
                     <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">Sign in</h2>
-                    <form className="space-y-4" onSubmit={handleLogin}>
-                        {/* Login Fields */}
+
+                    <div className="space-y-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Email or ID</label>
                             <input
@@ -108,8 +104,6 @@ const AuthPage = () => {
                                 disabled={lockout}
                             />
                         </div>
-
-                        {/* Math Puzzle Section */}
                         <div className="mt-4 bg-gray-100 p-5 rounded-lg shadow-md">
                             <h3 className="text-xl font-semibold text-blue-700 mb-3">Math Puzzle Challenge</h3>
                             <div className="flex items-center justify-between bg-blue-50 p-4 rounded-md mb-3">
@@ -120,23 +114,22 @@ const AuthPage = () => {
                                 placeholder="Enter your answer"
                                 value={userAnswer}
                                 onChange={(e) => setUserAnswer(e.target.value)}
-                                className={`w-full p-3 border ${hasError ? "border-red-500" : "border-blue-300"
-                                    } rounded-lg focus:outline-none focus:ring-2 ${hasError ? "focus:ring-red-400" : "focus:ring-blue-400"
-                                    }`}
+                                className={`w-full p-3 border ${hasError ? "border-red-500" : "border-blue-300"} rounded-lg focus:outline-none focus:ring-2 ${hasError ? "focus:ring-red-400" : "focus:ring-blue-400"}`}
                                 disabled={lockout}
                             />
                             {hasError && (
-                                <p className="mt-2 text-sm text-red-500">
-                                    Incorrect answer. Please try again.
-                                </p>
+                                <p className="mt-2 text-sm text-red-500">Incorrect answer. Please try again.</p>
                             )}
                             <p className="mt-2 text-sm text-gray-500">* Solve this puzzle to verify you're human!</p>
                         </div>
-
-                        <button type="submit" className="w-full py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition" disabled={lockout}>
+                        <button
+                            onClick={handleLogin}
+                            className="w-full py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition"
+                            disabled={lockout}
+                        >
                             {lockout ? `Locked (${countdown}s)` : "Login"}
                         </button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

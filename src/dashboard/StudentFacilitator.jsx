@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
 import Select from "react-select"; // Importing react-select
+import { toast } from 'sonner';
 
 function StudentFacilitator() {
     const [formData, setFormData] = useState({
@@ -171,11 +172,9 @@ function StudentFacilitator() {
         setSelectedSubject(null); // Reset selected subject
         setSession(''); // Clear session on reset
     };
-
     const handleSaveClick = async () => {
-        // Check if both scholarId and selectedSubject are selected
         if (!scholarId || !selectedSubject) {
-            setSaveStatus("Please select both Scholar and Subject before saving.");
+            toast.error("Please select both Scholar and Subject before saving.");
             return;
         }
 
@@ -185,10 +184,10 @@ function StudentFacilitator() {
             dutyH_name: formData.hours,
             assign_stud_id: scholarId,
             off_subject_id: selectedSubject.value,
-            session_name: selectedStudent?.session_name || '', // Ensure session_name is passed correctly
+            session_name: selectedStudent?.session_name || '',
         };
 
-        console.log("Data to save:", dataToSave); // Log the data to save for debugging
+        console.log("Data to save:", dataToSave);
 
         try {
             const url = secureLocalStorage.getItem("url") + 'CSDL.php';
@@ -198,33 +197,30 @@ function StudentFacilitator() {
 
             const res = await axios.post(url, formData);
 
-            // Check if the response indicates success or failure
             if (res.data !== "0") {
-                setSaveStatus("Data saved successfully!");
+                toast.success("Data saved successfully!");
+
+                // Automatically clear the form
+                setScholarId("");
+                setSelectedSubject(null);
+                setSelectedSessions(null);
+                setSelectedStudent(null);
+                setSession("");
+                setScholarSchedules([]);
+                setFilteredSubjects(subjects);
+                setSelectedRow(null);
+                setSelectedSchedule(null);
             } else {
-                setSaveStatus(`Failed to save data. Server response: ${res.data}`);
-                console.error("Server Response:", res.data); // Log the server response for debugging
+                toast.error(`Failed to save data. Server response: ${res.data}`);
+                console.error("Server Response:", res.data);
             }
         } catch (error) {
-            // Log detailed error
             console.error("Error during save operation:", error);
-
-            // If the error has a response (Axios error), log the response
-            if (error.response) {
-                console.error("Error Response Data:", error.response.data);
-                console.error("Error Response Status:", error.response.status);
-                console.error("Error Response Headers:", error.response.headers);
-            } else if (error.request) {
-                // If no response was received
-                console.error("Error Request:", error.request);
-            } else {
-                // Any other errors that may have occurred
-                console.error("Error Message:", error.message);
-            }
-
-            setSaveStatus("Error saving data. Please try again.");
+            toast.error("Error saving data. Please try again.");
         }
     };
+
+
 
     // Convert the scholars data to the format required by react-select
     const scholarOptions = activeScholars.map(scholar => ({
@@ -280,9 +276,6 @@ function StudentFacilitator() {
         ),
     }));
 
-
-
-
     return (
         <div className="p-6 bg-white rounded-lg shadow-lg border-2 border-green-700">
             <h1 className="text-2xl font-bold mb-6 text-green-700">Assign Filter</h1>
@@ -334,7 +327,7 @@ function StudentFacilitator() {
                 <div>
                     <label className="block text-white font-medium mb-2 bg-green-700 p-2 rounded-lg">Schedule</label>
                     <div className="card shadow-lg">
-                        <div className="card-body bg-green-700 text-white rounded-lg h-[46vh] overflow-y-auto">
+                        <div className="card-body bg-green-700 text-white rounded-lg h-[54vh] overflow-y-auto">
                             {Array.isArray(scholarSchedules) && scholarSchedules.length > 0 ? (
                                 scholarSchedules.map((schedule, index) => (
                                     <div key={index} className="p-2 border-b border-white cursor-pointer hover:bg-green-600" onClick={() => handleRowClick(index)}>
@@ -362,7 +355,7 @@ function StudentFacilitator() {
                     <label className="block text-white font-medium mb-2 bg-green-700 p-2 rounded-lg">
                         Select Subject
                     </label>
-                    <div className="rounded-lg bg-green-700 shadow-lg h-[46vh] overflow-y-auto">
+                    <div className="rounded-lg bg-green-700 shadow-lg h-[54vh] overflow-y-auto">
                         {subjectOptions.length > 0 ? (
                             <table className="w-full">
                                 {/* Table Header */}

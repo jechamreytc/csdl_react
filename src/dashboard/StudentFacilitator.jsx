@@ -233,125 +233,202 @@ function StudentFacilitator() {
     }));
 
     // Convert the subjects data to the format required by react-select
+    const subjectHeaders = (
+        <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(9, auto)",
+            gap: "10px",
+            alignItems: "center",
+            padding: "5px",
+            borderBottom: "2px solid #000",
+            fontWeight: "bold",
+            backgroundColor: "#f0f0f0"
+        }}>
+            <div>Code</div>
+            <div>Title</div>
+            <div>Section</div>
+            <div>Room</div>
+            <div>F2F Day</div>
+            <div>RC Day</div>
+            <div>Learning</div>
+            <div>Used</div>
+            <div>Time</div>
+        </div>
+    );
+
     const subjectOptions = filteredSubjects.map(subject => ({
         value: subject.sub_id,
-        label: `${subject.sub_code} | ${subject.sub_descriptive_title} | ${subject.sub_section} | ${subject.sub_room} | ${subject.f2f_day} | ${subject.rc_day} | ${subject.learning_name} | ${subject.sub_used} | ${subject.sub_time}`,
+        label: (
+            <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(9, auto)",
+                gap: "10px",
+                alignItems: "center",
+                padding: "5px",
+                borderBottom: "1px solid #ccc"
+            }}>
+                <div>{subject.sub_code}</div>
+                <div>{subject.sub_descriptive_title}</div>
+                <div>{subject.sub_section}</div>
+                <div>{subject.sub_room}</div>
+                <div>{subject.f2f_day}</div>
+                <div>{subject.rc_day}</div>
+                <div>{subject.learning_name}</div>
+                <div>{subject.sub_used}</div>
+                <div>{subject.sub_time}</div>
+            </div>
+        ),
     }));
 
+
+
+
     return (
-        <div className="p-4">
-            <h1 className="text-2xl font-bold mb-4">Assign Filter</h1>
+        <div className="p-6 bg-white rounded-lg shadow-lg border-2 border-green-700">
+            <h1 className="text-2xl font-bold mb-6 text-green-700">Assign Filter</h1>
 
-            <div>
-                <label className="block text-blue-100 font-medium mb-2">Mode</label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                        <label className="block text-blue-100 font-medium mb-2">Mode</label>
-                        <p className="w-full bg-blue-600 text-white py-3 pl-4 rounded-lg">{formData.mode}</p>
-                    </div>
+            {/* Mode and Assigned Hours */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label className="block text-white font-medium mb-2 bg-green-700 p-2 rounded-lg">Mode</label>
+                    <p className="w-full bg-green-700 text-white py-3 pl-4 rounded-lg">{formData.mode}</p>
+                </div>
 
-                    <div className="mt-4">
-                        <h2 className="text-blue-100 font-medium">Assigned Hours:</h2>
-                        <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">{formData.hours}</p>
-                    </div>
-                    <label className="block text-blue-100 font-medium mb-2">Select Scholar</label>
+                <div>
+                    <label className="block text-white font-medium mb-2 bg-green-700 p-2 rounded-lg">Assigned Hours</label>
+                    <p className="w-full bg-green-700 text-white py-3 pl-4 rounded-lg">{formData.hours}</p>
+                </div>
+            </div>
+
+            {/* Select Scholar and Student Info */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div>
+                    <label className="block text-white font-medium mb-2 bg-green-700 p-2 rounded-lg">Select Scholar</label>
                     <Select
                         options={scholarOptions}
                         value={scholarOptions.find(option => option.value === scholarId)}
                         onChange={(selectedOption) => {
                             const selectedScholarId = selectedOption ? selectedOption.value : "";
                             setScholarId(selectedScholarId);
-                            // Find the selected scholar from activeScholars array and set it as selectedStudent
                             const selectedScholar = activeScholars.find(scholar => scholar.stud_active_id === selectedScholarId);
-                            setSelectedStudent(selectedScholar); // Include session_name in the selectedStudent
-                            console.log("Selected Scholar ID:", selectedScholarId);
+                            setSelectedStudent(selectedScholar);
                         }}
                         placeholder="Select a Scholar"
                         className="text-black"
                     />
+                </div>
 
-                    {/* Display student info dynamically, including session_name */}
-                    {selectedStudent && (
+                {selectedStudent && (
+                    <div>
+                        <label className="block text-white font-medium mb-2 bg-green-700 p-2 rounded-lg">Student Info</label>
+                        <p className="w-full bg-green-700 text-white py-3 pl-4 rounded-lg">
+                            {selectedStudent.stud_name} | {selectedStudent.session_name}
+                        </p>
+                    </div>
+                )}
+            </div>
+
+            {/* Schedule and Select Subject */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                {/* Schedule Card */}
+                <div>
+                    <label className="block text-white font-medium mb-2 bg-green-700 p-2 rounded-lg">Schedule</label>
+                    <div className="card shadow-lg">
+                        <div className="card-body bg-green-700 text-white rounded-lg h-[46vh] overflow-y-auto">
+                            {Array.isArray(scholarSchedules) && scholarSchedules.length > 0 ? (
+                                scholarSchedules.map((schedule, index) => (
+                                    <div key={index} className="p-2 border-b border-white cursor-pointer hover:bg-green-600" onClick={() => handleRowClick(index)}>
+                                        <p><strong>Day:</strong> {schedule.ocr_day}</p>
+                                        <p><strong>Time:</strong> {schedule.ocr_schedule_time_from} - {schedule.ocr_schedule_time_to}</p>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="text-center">No schedules found for this Scholar ID.</p>
+                            )}
+                        </div>
+                    </div>
+                    {selectedSchedule && (
                         <div className="mt-4">
-                            <h2 className="text-blue-100 font-medium">Student Info:</h2>
-                            <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">
-                                {selectedStudent.stud_name} | {selectedStudent.session_name} {/* Display session_name */}
+                            <h3 className="text-lg font-semibold text-green-700">Selected Schedule:</h3>
+                            <p className="text-gray-700">
+                                {selectedSchedule.ocr_day} | {selectedSchedule.ocr_schedule_time_from} - {selectedSchedule.ocr_schedule_time_to}
                             </p>
                         </div>
                     )}
                 </div>
 
-                <Table striped bordered hover responsive>
-                    <thead>
-                        <tr>
-                            <th>Day</th>
-                            <th>From</th>
-                            <th>To</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {Array.isArray(scholarSchedules) && scholarSchedules.length > 0 ? (
-                            scholarSchedules.map((schedule, index) => (
-                                <tr
-                                    key={index}
-                                    onClick={() => handleRowClick(index)}
-                                    style={{
-                                        backgroundColor: selectedRow === index ? "green" : "#f8f9fa",
-                                        cursor: "pointer",
-                                        color: selectedRow === index ? "#fff" : "#6c757d",
-                                    }}
-                                >
-                                    <td>{schedule.ocr_day}</td>
-                                    <td>{schedule.ocr_schedule_time_from}</td>
-                                    <td>{schedule.ocr_schedule_time_to}</td>
-                                </tr>
-                            ))
+                {/* Subject Selection - Matching Height */}
+                <div>
+                    <label className="block text-white font-medium mb-2 bg-green-700 p-2 rounded-lg">
+                        Select Subject
+                    </label>
+                    <div className="rounded-lg bg-green-700 shadow-lg h-[46vh] overflow-y-auto">
+                        {subjectOptions.length > 0 ? (
+                            <table className="w-full">
+                                {/* Table Header */}
+                                <thead>
+                                    <tr className="bg-green-800 text-white">
+                                        <th className="p-3 text-center">Code</th>
+                                        <th className="p-3 text-center">Title</th>
+                                        <th className="p-3 text-center">Section</th>
+                                        <th className="p-3 text-center">Room</th>
+                                        <th className="p-3 text-center">F2F Day</th>
+                                        <th className="p-3 text-center">RC Day</th>
+                                        <th className="p-3 text-center">Learning</th>
+                                        <th className="p-3 text-center">Used</th>
+                                        <th className="p-3 text-center">Time</th>
+                                    </tr>
+                                </thead>
+                                {/* Table Body */}
+                                <tbody>
+                                    {subjectOptions.map((subject, index) => (
+                                        <tr
+                                            key={index}
+                                            className={`cursor-pointer hover:bg-green-600 hover:text-white ${selectedSubject?.value === subject.value ? "bg-green-800 text-white" : "text-white"
+                                                }`}
+                                            onClick={() => handleSubjectSelect(subject)}
+                                        >
+                                            {subject.label.props.children.map((child, idx) => (
+                                                <td key={idx} className="p-3 text-center">
+                                                    {child}
+                                                </td>
+                                            ))}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         ) : (
-                            <tr>
-                                <td colSpan="3" className="text-center">
-                                    No schedules found for this Scholar ID.
-                                </td>
-                            </tr>
+                            <p className="text-center text-white">No subjects available.</p>
                         )}
-                    </tbody>
-                </Table>
-
-                {selectedSchedule && (
-                    <div className="mt-4">
-                        <h3 className="text-lg font-semibold">Selected Schedule:</h3>
-                        <p>
-                            {selectedSchedule.ocr_day} | {selectedSchedule.ocr_schedule_time_from} - {selectedSchedule.ocr_schedule_time_to}
-                        </p>
                     </div>
-                )}
-
-                <div className="mt-4">
-                    <label className="block text-blue-100 font-medium mb-2">Select Subject</label>
-                    <Select
-                        options={subjectOptions}
-                        value={selectedSubject}
-                        onChange={handleSubjectSelect}
-                        placeholder="Select a Subject"
-                        className="text-black"
-                    />
                 </div>
 
-                <div className="flex justify-between mt-6">
-                    <Button variant="secondary" onClick={handleClearClick}>
-                        Clear
-                    </Button>
-                    <Button variant="primary" onClick={handleSaveClick}>
-                        Save
-                    </Button>
-                </div>
-
-                {saveStatus && (
-                    <div className="mt-4">
-                        <p className="text-green-500">{saveStatus}</p>
-                    </div>
-                )}
             </div>
+
+
+            {/* Buttons */}
+            <div className="flex justify-between mt-6">
+                <button
+                    className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition"
+                    onClick={handleClearClick}
+                >
+                    Clear
+                </button>
+                <button
+                    className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition"
+                    onClick={handleSaveClick}
+                >
+                    Save
+                </button>
+            </div>
+
+            {saveStatus && (
+                <div className="mt-4">
+                    <p className="text-green-700">{saveStatus}</p>
+                </div>
+            )}
         </div>
+
     );
 }
 

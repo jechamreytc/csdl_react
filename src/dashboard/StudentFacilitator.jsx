@@ -143,17 +143,32 @@ function StudentFacilitator() {
 
         const selectedDay = normalizeTime(selectedSchedule.ocr_day);
 
-        const filtered = subjects.filter((item) => {
-            const subjectDay = normalizeTime(item.f2f_day);
-            const subjectTime = item.sub_time;
+        console.log("selected day", selectedDay)
 
-            const isSameDay = subjectDay === selectedDay;
-            const isSameTimeRange = compareTimeRange(subjectTime, selectedSchedule.ocr_schedule_time_from, selectedSchedule.ocr_schedule_time_to);
-
-            return isSameDay && isSameTimeRange;
+        const filteredData = subjects.filter((item) => {
+            let isValid = false;
+            if (selectedDay === item.f2f_day && compareTimeRange(item.sub_time, selectedSchedule.ocr_schedule_time_from, selectedSchedule.ocr_schedule_time_to)) {
+                isValid = true;
+            } else if (selectedDay === item.rc_day && compareTimeRange(item.sub_time, selectedSchedule.ocr_schedule_time_from, selectedSchedule.ocr_schedule_time_to)) {
+                isValid = true;
+            }
+            return isValid;
+            // return selectedDay === item.f2f_day || item.rc_day
         });
+        console.log("filtered", filteredData);
 
-        setFilteredSubjects(filtered);
+        // const filtered = subjects.filter((item) => {
+        //     console.log("ITEMS", item)
+        //     const subjectDay = normalizeTime(item.f2f_day);
+        //     const subjectTime = item.sub_time;
+
+        //     const isSameDay = subjectDay === selectedDay;
+        //     const isSameTimeRange = compareTimeRange(subjectTime, selectedSchedule.ocr_schedule_time_from, selectedSchedule.ocr_schedule_time_to);
+
+        //     return isSameDay && isSameTimeRange;
+        // });
+
+        setFilteredSubjects(filteredData);
     };
 
     const handleSubjectSelect = (selectedOption) => {
@@ -301,6 +316,7 @@ function StudentFacilitator() {
                         options={scholarOptions}
                         value={scholarOptions.find(option => option.value === scholarId)}
                         onChange={(selectedOption) => {
+                            console.log("selectedOption ", selectedOption);
                             const selectedScholarId = selectedOption ? selectedOption.value : "";
                             setScholarId(selectedScholarId);
                             const selectedScholar = activeScholars.find(scholar => scholar.stud_active_id === selectedScholarId);

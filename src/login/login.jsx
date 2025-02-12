@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import secureLocalStorage from "react-secure-storage";
+import axios from "axios";
 
 const AuthPage = () => {
     const [username, setUsername] = useState("");
@@ -12,7 +14,7 @@ const AuthPage = () => {
     const [lockout, setLockout] = useState(false);
     const [countdown, setCountdown] = useState(0);
 
-    const router = useNavigate();
+    const navigate = useNavigate();
 
     const generateMathPuzzle = () => {
         const num1 = Math.floor(Math.random() * 50) + 1;
@@ -33,14 +35,16 @@ const AuthPage = () => {
             timer = setInterval(() => {
                 setCountdown((prev) => prev - 1);
             }, 1000);
-        } else if (countdown === 0) {
+        } else if (countdown === 0 && lockout) {
             setLockout(false);
             setAttempts(0);
         }
         return () => clearInterval(timer);
     }, [lockout, countdown]);
 
-    const handleLogin = () => {
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
         if (lockout) {
             toast.error(`Please wait ${countdown} seconds before trying again.`);
             return;
@@ -66,10 +70,32 @@ const AuthPage = () => {
             return;
         }
 
+        try {
+            const url = secureLocalStorage.getItem('url') + 'user.php';
+            const jsonData = { username: username, password: password };
+            console.log("json ni login", JSON.stringify(jsonData));
+            const formData = new FormData();
+            formData.append("json", JSON.stringify(jsonData));
+            formData.append("operation", "adminLogin");
+
+            const res = await axios.post(url, formData);
+            console.log("res ni login", res.data);
+
+            if (res.data === 0) {
+                toast.error("Invalid Credentials");
+            } else {
+                toast.success("Login successful!");
+                navigate("/MainDashboard");
+            }
+        } catch (error) {
+            toast.error("Login failed. Please try again later.");
+            console.error("Login error:", error);
+        }
+
         setHasError(false);
-        toast.success("Login successful!");
-        router("/MainDashboard");
     };
+
+
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-600 to-green-500">

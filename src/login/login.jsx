@@ -85,6 +85,7 @@ const AuthPage = () => {
                 toast.error("Invalid Credentials");
             } else {
                 toast.success("Login successful!");
+                secureLocalStorage.setItem("adminLogin", "true");
                 navigate("/MainDashboard");
             }
         } catch (error) {
@@ -94,6 +95,12 @@ const AuthPage = () => {
 
         setHasError(false);
     };
+
+    useEffect(() => {
+        if (secureLocalStorage.getItem("adminLogin") === "true") {
+            navigate("/MainDashboard");
+        }
+    }, [])
 
 
 

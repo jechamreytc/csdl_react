@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage';
 import Dashboard from './MainDashboard';
 import Select from 'react-select';
+import Navigator from "./navigator";
 
 function AssignStudent() {
     const [formData, setFormData] = useState({
@@ -134,11 +135,10 @@ function AssignStudent() {
     };
 
     return (
-        <div className="flex h-screen overflow-hidden bg-blue-900">
-            <aside
-
-            >
-                <div className="text-white mb-6">
+        <div className="flex h-screen bg-white">
+            {/* Sidebar */}
+            {/* <aside className="w-64 bg-green-700 text-white p-6">
+                <div className="mb-6">
                     <div className="flex items-center mb-6">
                         <img
                             src="images/csdl.jpg"
@@ -146,9 +146,8 @@ function AssignStudent() {
                             className="w-24 h-24 rounded-full mr-3"
                         />
                         <div>
-                            <br />
                             <h1 className="text-xl font-bold">HK SMS</h1>
-                            <p className="text-xl">HK Scholars Management System</p>
+                            <p className="text-md">HK Scholars Management System</p>
                         </div>
                     </div>
 
@@ -156,7 +155,7 @@ function AssignStudent() {
                         <ul className="space-y-4">
                             <li>
                                 <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    className="flex items-center p-3 hover:bg-green-600 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/MainDashboard")}
                                 >
                                     <PanelsRightBottom className="mr-2" />
@@ -165,7 +164,7 @@ function AssignStudent() {
                             </li>
                             <li>
                                 <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    className="flex items-center p-3 hover:bg-green-600 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/ScholarList")}
                                 >
                                     <List className="mr-2" />
@@ -174,7 +173,7 @@ function AssignStudent() {
                             </li>
                             <li>
                                 <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    className="flex items-center p-3 hover:bg-green-600 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/qrcode")}
                                 >
                                     <QrCodeIcon className="mr-2" />
@@ -183,7 +182,7 @@ function AssignStudent() {
                             </li>
                             <li>
                                 <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    className="flex items-center p-3 hover:bg-green-600 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/AssignStudent")}
                                 >
                                     <User className="mr-2" />
@@ -192,48 +191,21 @@ function AssignStudent() {
                             </li>
                             <li>
                                 <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    className="flex items-center p-3 hover:bg-green-600 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/StudentFacilitator")}
                                 >
                                     <User className="mr-2" />
-                                    <span className="text-sm">Assign StudentFacilitator</span>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/AdminDashboard")}
-                                >
-                                    <FolderClosed className="mr-2" />
-                                    <span className="text-sm">Master Files</span>
+                                    <span className="text-sm">Assign Student Facilitator</span>
                                 </button>
                             </li>
                             <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
                             <li>
                                 <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                    className="flex items-center p-3 hover:bg-green-600 rounded-md w-full transition-all duration-200"
                                     onClick={() => navigateTo("/Account")}
                                 >
                                     <CircleUser className="mr-2" />
                                     <span className="text-sm">Account</span>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/Batch")}
-                                >
-                                    <CircleUser className="mr-2" />
-                                    <span className="text-sm">Batch Scholar</span>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/BatchSubject")}
-                                >
-                                    <CircleUser className="mr-2" />
-                                    <span className="text-sm">Batch Subject</span>
                                 </button>
                             </li>
                             <li className="mt-4">
@@ -249,20 +221,23 @@ function AssignStudent() {
                     </nav>
                 </div>
                 <p className="text-white text-xs mt-4">Powered by PHINMA</p>
-            </aside>
-            <main className="flex-1 bg-blue-900 text-white p-8">
+            </aside> */}
+            <Navigator />
+
+            {/* Main Content */}
+            <main className="flex-1 bg-white text-gray-900 p-8">
                 <h1 className="text-3xl font-bold text-center mb-8">Assign Duty to Students</h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Mode (Hardcoded to "Office") */}
                     <div>
-                        <label className="block text-blue-100 font-medium mb-2">Mode</label>
-                        <p className="w-full bg-blue-600 text-white py-3 pl-4 rounded-lg">{formData.mode}</p>
+                        <label className="block text-gray-700 font-medium mb-2">Mode</label>
+                        <p className="w-full bg-gray-100 py-3 pl-4 rounded-lg">{formData.mode}</p>
                     </div>
 
                     {/* Department Combobox */}
                     <div>
-                        <label className="block text-blue-100 font-medium mb-2">Department</label>
+                        <label className="block text-gray-700 font-medium mb-2">Department</label>
                         <Select
                             options={departmentOptions}
                             value={departmentOptions.find((option) => option.value === formData.department)}
@@ -272,21 +247,21 @@ function AssignStudent() {
                         />
                         {selectedDepartment && (
                             <div className="mt-4">
-                                <h2 className="text-blue-100 font-medium">Day:</h2>
-                                <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">{selectedDepartment.day_name || 'N/A'}</p>
+                                <h2 className="text-gray-700 font-medium">Day:</h2>
+                                <p className="w-full bg-gray-100 py-3 pl-4 rounded-lg">{selectedDepartment.day_name || 'N/A'}</p>
 
-                                <h2 className="text-blue-100 font-medium mt-4">Time:</h2>
-                                <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">{selectedDepartment.offT_time || 'N/A'}</p>
+                                <h2 className="text-gray-700 font-medium mt-4">Time:</h2>
+                                <p className="w-full bg-gray-100 py-3 pl-4 rounded-lg">{selectedDepartment.offT_time || 'N/A'}</p>
 
-                                <h2 className="text-blue-100 font-medium mt-4">Supervisor:</h2>
-                                <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">{selectedDepartment.supM_name || 'N/A'}</p>
+                                <h2 className="text-gray-700 font-medium mt-4">Supervisor:</h2>
+                                <p className="w-full bg-gray-100 py-3 pl-4 rounded-lg">{selectedDepartment.supM_name || 'N/A'}</p>
                             </div>
                         )}
                     </div>
 
                     {/* Student Combobox */}
                     <div>
-                        <label className="block text-blue-100 font-medium mb-2">Student</label>
+                        <label className="block text-gray-700 font-medium mb-2">Student</label>
                         <Select
                             options={studentOptions}
                             value={studentOptions.find((option) => option.value === formData.student)}
@@ -300,31 +275,27 @@ function AssignStudent() {
                 {/* Displaying Academic Session */}
                 {selectedStudent && (
                     <div className="mt-4">
-                        <h2 className="text-blue-100 font-medium">Academic Session:</h2>
-                        <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">
-                            {session}
-                        </p>
+                        <h2 className="text-gray-700 font-medium">Academic Session:</h2>
+                        <p className="w-full bg-gray-100 py-3 pl-4 rounded-lg">{session}</p>
                     </div>
                 )}
 
                 {/* Displaying Hours */}
                 <div className="mt-4">
-                    <h2 className="text-blue-100 font-medium">Assigned Hours:</h2>
-                    <p className="w-full bg-blue-600 py-3 pl-4 rounded-lg">
-                        {formData.hours}
-                    </p>
+                    <h2 className="text-gray-700 font-medium">Assigned Hours:</h2>
+                    <p className="w-full bg-gray-100 py-3 pl-4 rounded-lg">{formData.hours}</p>
                 </div>
 
                 <button
                     type="button"
-                    onClick={handleSave} // Trigger save manually
+                    onClick={handleSave}
                     className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-medium transition"
                 >
                     Save Assignment
                 </button>
-
             </main>
         </div>
+
     );
 }
 

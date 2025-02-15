@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import secureLocalStorage from 'react-secure-storage';
 import { FaTrash, FaEdit, FaTimes } from 'react-icons/fa';
 
-const GetScholarList = ({ onClose }) => {
+const GetScholarLists = ({ onClose }) => {
     const [scholars, setScholars] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedScholar, setSelectedScholar] = useState(null);
@@ -155,4 +155,4 @@ const GetScholarList = ({ onClose }) => {
     );
 };
 
-export default GetScholarList;
+export default GetScholarLists;

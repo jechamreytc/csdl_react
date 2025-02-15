@@ -19,6 +19,7 @@ const GetCourse = () => {
                 const formData = new FormData();
                 formData.append("operation", "getcourse");
                 const res = await axios.post(url, formData);
+                console.log("res ni get course", res.data)
 
                 if (Array.isArray(res.data)) {
                     setCourses(res.data);
@@ -53,15 +54,15 @@ const GetCourse = () => {
         getDepartments();
     }, []);
 
-    const deleteCourse = async (crs_id) => {
+    const deleteCourse = async (course_id) => {
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
             const formData = new FormData();
             formData.append("operation", "deleteCourse");
-            formData.append("crs_id", crs_id);
+            formData.append("course_id", course_id);
             const res = await axios.post(url, formData);
             if (res.data === 1) {
-                setCourses(prevCourses => prevCourses.filter(course => course.crs_id !== crs_id));
+                setCourses(prevCourses => prevCourses.filter(course => course.course_id !== course_id));
                 toast.success("Course deleted successfully");
             } else {
                 toast.error("Failed to delete Course");
@@ -73,7 +74,7 @@ const GetCourse = () => {
 
     const openEditModal = (course) => {
         setEditCourse(course);
-        setNewCourseName(course.crs_name);
+        setNewCourseName(course.course_name);
         setNewDepartment(course.department || '');
     };
 
@@ -82,16 +83,16 @@ const GetCourse = () => {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
             const formData = new FormData();
             formData.append("operation", "updateCourse");
-            formData.append("crs_id", editCourse.crs_id);
-            formData.append("crs_name", newCourseName);
+            formData.append("course_id", editCourse.course_id);
+            formData.append("course_name", newCourseName);
             formData.append("department", newDepartment);
             const res = await axios.post(url, formData);
 
             if (res.data === 1) {
                 setCourses(prevCourses =>
                     prevCourses.map(course =>
-                        course.crs_id === editCourse.crs_id
-                            ? { ...course, crs_name: newCourseName, department: newDepartment }
+                        course.course_id === editCourse.course_id
+                            ? { ...course, course_name: newCourseName, department: newDepartment }
                             : course
                     )
                 );
@@ -113,19 +114,19 @@ const GetCourse = () => {
             <div className="flex flex-col space-y-4">
                 {courses.length > 0 ? (
                     courses.map((course) => (
-                        <div key={course.crs_id}>
+                        <div key={course.course_id}>
                             <div
                                 className="flex items-center justify-between bg-blue-800 rounded-md py-3 px-5 text-white cursor-pointer hover:bg-blue-900 transition-transform duration-300"
                                 onClick={() => setExpandedCourse(expandedCourse === course ? null : course)}
                             >
-                                <span className="text-lg font-medium flex-1">{course.crs_name}</span>
+                                <span className="text-lg font-medium flex-1">{course.course_name}</span>
                                 {expandedCourse === course && (
                                     <div className="flex space-x-2">
                                         <button
                                             className="text-red-500 hover:bg-red-600 hover:text-white p-1 rounded-md"
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                deleteCourse(course.crs_id);
+                                                deleteCourse(course.course_id);
                                             }}
                                         >
                                             <FaTrash />

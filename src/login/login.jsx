@@ -42,6 +42,20 @@ const AuthPage = () => {
         return () => clearInterval(timer);
     }, [lockout, countdown]);
 
+    const handleUsernameChange = (e) => {
+        const value = e.target.value;
+        if (/^[a-zA-Z0-9@.-]*$/.test(value)) {
+            setUsername(value);
+        }
+    };
+
+    const handlePasswordChange = (e) => {
+        const value = e.target.value;
+        if (/^[a-zA-Z0-9@.-]*$/.test(value)) {
+            setPassword(value);
+        }
+    };
+
     const handleLogin = async (e) => {
         e.preventDefault();
 
@@ -73,13 +87,11 @@ const AuthPage = () => {
         try {
             const url = secureLocalStorage.getItem('url') + 'user.php';
             const jsonData = { username: username, password: password };
-            console.log("json ni login", JSON.stringify(jsonData));
             const formData = new FormData();
             formData.append("json", JSON.stringify(jsonData));
             formData.append("operation", "adminLogin");
 
             const res = await axios.post(url, formData);
-            console.log("res ni login", res.data);
 
             if (res.data === 0) {
                 toast.error("Invalid Credentials");
@@ -102,8 +114,6 @@ const AuthPage = () => {
         }
     }, [])
 
-
-
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-600 to-green-500">
             <div className="grid grid-cols-1 md:grid-cols-2 w-full max-w-6xl shadow-lg rounded-xl">
@@ -116,12 +126,12 @@ const AuthPage = () => {
 
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Email or ID</label>
+                            <label className="block text-sm font-medium text-gray-700">Username</label>
                             <input
                                 type="text"
-                                placeholder="Email or ID"
+                                placeholder="Username"
                                 value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                onChange={handleUsernameChange}
                                 className="w-full p-3 border border-gray-300 rounded-lg"
                                 disabled={lockout}
                             />
@@ -132,13 +142,13 @@ const AuthPage = () => {
                                 type="password"
                                 placeholder="Password"
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={handlePasswordChange}
                                 className="w-full p-3 border border-gray-300 rounded-lg"
                                 disabled={lockout}
                             />
                         </div>
                         <div className="mt-4 bg-gray-100 p-5 rounded-lg shadow-md">
-                            <h3 className="text-xl font-semibold text-blue-700 mb-3">Math Puzzle Challenge</h3>
+                            <h3 className="text-xl font-semibold text-blue-700 mb-3">TEST</h3>
                             <div className="flex items-center justify-between bg-blue-50 p-4 rounded-md mb-3">
                                 <p className="text-lg font-bold text-blue-900">{mathPuzzle.question}</p>
                             </div>

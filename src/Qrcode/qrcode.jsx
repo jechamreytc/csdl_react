@@ -5,6 +5,7 @@ import {
     Trash2, Edit, Gauge, List, QrCode, GraduationCap, Book, Settings, Bell, Mail, LogOut, Calendar, Search,
 } from 'lucide-react';
 import { useState } from 'react';
+import Navigator from '../dashboard/navigator';
 
 function Qrcode() {
     const [firstName, setFirstName] = useState('');
@@ -38,109 +39,7 @@ function Qrcode() {
 
     return (
         <div className="flex h-screen" style={{ backgroundColor: "rgb(8, 54, 100)" }}>
-            <aside className="w-1/6 p-4 flex flex-col justify-between" style={{ backgroundColor: "#109315" }}>
-                <div className="text-white mb-6">
-                    <div className="flex items-center mb-6">
-                        <img
-                            src="images/csdl.jpg"
-                            alt="CSDL Logo"
-                            className="w-24 h-24 rounded-full mr-3"
-                        />
-                        <div>
-                            <br />
-                            <h1 className="text-xl font-bold">HK SMS</h1>
-                            <p className="text-xl">HK Scholars Management System</p>
-                        </div>
-                    </div>
-
-                    <nav>
-                        <ul className="space-y-4">
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/MainDashboard")}
-                                >
-                                    <PanelsRightBottom className="mr-2" />
-                                    <span className="text-sm">Dashboard</span>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/ScholarList")}
-                                >
-                                    <List className="mr-2" />
-                                    <span className="text-sm">Scholar List</span>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/qrcode")}
-                                >
-                                    <QrCodeIcon className="mr-2" />
-                                    <span className="text-sm">QR Code</span>
-                                </button>
-                            </li>
-
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/AssignStudent")}
-                                >
-                                    <User className="mr-2" />
-                                    <span className="text-sm">Assigned Student</span>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/AdminDashboard")}
-                                >
-                                    <FolderClosed className="mr-2" />
-                                    <span className="text-sm">Master Files</span>
-                                </button>
-                            </li>
-                            <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/Account")}
-                                >
-                                    <CircleUser className="mr-2" />
-                                    <span className="text-sm">Account</span>
-                                </button>
-                            </li>
-                            {/* <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                >
-                                    <BellIcon className="mr-2" />
-                                    <span className="text-sm">Notification</span>
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                >
-                                    <Mail className="mr-2" />
-                                    <span className="text-sm">Messages</span>
-                                </button>
-                            </li> */}
-                            <li className="mt-4">
-                                <button
-                                    className="flex items-center p-3 bg-red-600 hover:bg-red-700 rounded-md w-full transition-all duration-200"
-                                    onClick={handleLogOut}
-                                >
-                                    <LogOutIcon className="mr-2" />
-                                    <span className="text-sm">Logout</span>
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-                <p className="text-white text-xs mt-4">Powered by PHINMA</p>
-            </aside >
+            <Navigator />
             <div className="flex-grow p-10 bg-blue-500">
                 <div className="bg-white p-8 rounded-lg shadow-lg">
                     <div className="text-left mb-8">

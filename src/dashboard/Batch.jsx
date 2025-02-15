@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
+import Navigator from "./navigator";
+import { useNavigate } from "react-router-dom";
 
 const App = () => {
     const [data, setData] = useState([]);
@@ -233,88 +235,85 @@ const App = () => {
     };
 
 
-
-
-
-
-
-
-
     // Pagination
     const startIdx = (currentPage - 1) * itemsPerPage;
     const currentData = data.slice(startIdx, startIdx + itemsPerPage);
     const totalPages = Math.ceil(data.length / itemsPerPage);
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 p-6">
-            <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-7xl mx-auto">
-                <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Excel File Uploader</h1>
-                <label className="block w-full bg-gray-200 text-gray-700 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-300 focus:outline-none">
-                    <input
-                        type="file"
-                        accept=".xlsx, .xls"
-                        onChange={handleFileUpload}
-                        className="hidden"
-                    />
-                    <div className="p-4 text-center">Choose Excel File</div>
-                </label>
-                {fileName && <p className="text-center text-gray-600 mt-4">Selected File: {fileName}</p>}
+        <div className="grid grid-cols-7 gap-4">
+            <Navigator />
+            {/* <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 p-6"> */}
+            <div className="min-h-screen p-6 col-span-6">
+                <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-7xl mx-auto">
+                    <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Excel File Uploader</h1>
+                    <label className="block w-full bg-gray-200 text-gray-700 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-300 focus:outline-none">
+                        <input
+                            type="file"
+                            accept=".xlsx, .xls"
+                            onChange={handleFileUpload}
+                            className="hidden"
+                        />
+                        <div className="p-4 text-center">Choose Excel File</div>
+                    </label>
+                    {fileName && <p className="text-center text-gray-600 mt-4">Selected File: {fileName}</p>}
 
-                {currentData.length > 0 && (
-                    <>
-                        <div className="overflow-x-auto mt-6">
-                            <table className="table-auto w-full border-collapse border border-gray-300 text-sm">
-                                <thead>
-                                    <tr className="bg-gray-100">
-                                        {Object.keys(currentData[0]).map((key) => (
-                                            <th key={key} className="border px-4 py-2 text-gray-800 font-medium">
-                                                {key}
-                                            </th>
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {currentData.map((row, idx) => (
-                                        <tr key={idx} className="even:bg-gray-50">
-                                            {Object.values(row).map((value, i) => (
-                                                <td key={i} className="border px-6 py-4 text-gray-700">
-                                                    {value}
-                                                </td>
+                    {currentData.length > 0 && (
+                        <>
+                            <div className="overflow-x-auto mt-6">
+                                <table className="table-auto w-full border-collapse border border-gray-300 text-sm">
+                                    <thead>
+                                        <tr className="bg-gray-100">
+                                            {Object.keys(currentData[0]).map((key) => (
+                                                <th key={key} className="border px-4 py-2 text-gray-800 font-medium">
+                                                    {key}
+                                                </th>
                                             ))}
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div className="flex justify-between items-center mt-6">
+                                    </thead>
+                                    <tbody>
+                                        {currentData.map((row, idx) => (
+                                            <tr key={idx} className="even:bg-gray-50">
+                                                {Object.values(row).map((value, i) => (
+                                                    <td key={i} className="border px-6 py-4 text-gray-700">
+                                                        {value}
+                                                    </td>
+                                                ))}
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div className="flex justify-between items-center mt-6">
+                                <button
+                                    disabled={currentPage === 1}
+                                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                    className="bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 focus:outline-none"
+                                >
+                                    Previous
+                                </button>
+                                <p className="text-gray-700">
+                                    Page {currentPage} of {totalPages}
+                                </p>
+                                <button
+                                    disabled={currentPage === totalPages}
+                                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                                    className="bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 focus:outline-none"
+                                >
+                                    Next
+                                </button>
+                            </div>
                             <button
-                                disabled={currentPage === 1}
-                                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                                className="bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 focus:outline-none"
+                                onClick={handleSaveToBackend}
+                                disabled={loading}
+                                className={`mt-6 w-full py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-75 ${loading ? "bg-gray-400 text-gray-800" : "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-400"
+                                    }`}
                             >
-                                Previous
+                                {loading ? "Saving..." : "Save to Backend"}
                             </button>
-                            <p className="text-gray-700">
-                                Page {currentPage} of {totalPages}
-                            </p>
-                            <button
-                                disabled={currentPage === totalPages}
-                                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                                className="bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 focus:outline-none"
-                            >
-                                Next
-                            </button>
-                        </div>
-                        <button
-                            onClick={handleSaveToBackend}
-                            disabled={loading}
-                            className={`mt-6 w-full py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-75 ${loading ? "bg-gray-400 text-gray-800" : "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-400"
-                                }`}
-                        >
-                            {loading ? "Saving..." : "Save to Backend"}
-                        </button>
-                    </>
-                )}
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );

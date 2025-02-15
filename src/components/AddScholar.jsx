@@ -23,7 +23,6 @@ const AddScholar = () => {
 
     const [yearLevels, setYearLevels] = useState([]);
     const [courses, setCourses] = useState([]);
-    const [scholarshipSub, setScholarshipSub] = useState([]);
     const [scholarshipTypes, setScholarshipTypes] = useState([]);
     const [modalities, setModalities] = useState([]);
 
@@ -35,15 +34,15 @@ const AddScholar = () => {
                 formData.append('operation', 'getAddScholarDropDown');
                 const res = await axios.post(url, formData);
 
-                setYearLevels(res.data.yearLevel);
-                setCourses(res.data.course);
-                setScholarshipTypes(res.data.scholarshipType);
-                setScholarshipSub(res.data.scholarshipSub);
-                setModalities(res.data.modality);
+                setYearLevels(res.data.yearLevel || []);
+                setCourses(res.data.course || []);
+                setScholarshipTypes(res.data.scholarshipType || []);
+                setModalities(res.data.modality || []);
 
                 toast.success('Form data loaded successfully');
             } catch (error) {
                 toast.error('Failed to load form data');
+                setModalities([]);
             }
         };
 
@@ -107,130 +106,63 @@ const AddScholar = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium">Student ID*</label>
-                            <input
-                                type="text"
-                                name="studId"
-                                value={formData.studId}
-                                onChange={handleInputChange}
-                                className="mt-1 p-2 w-full border rounded"
-                                required
-                            />
+                            <input type="text" name="studId" value={formData.studId} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" required />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium">Academic Session</label>
+                            <input type="text" name="middleName" value={formData.middleName} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium">First Name*</label>
-                            <input
-                                type="text"
-                                name="firstName"
-                                value={formData.firstName}
-                                onChange={handleInputChange}
-                                className="mt-1 p-2 w-full border rounded"
-                                required
-                            />
+                            <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" required />
                         </div>
                         <div>
                             <label className="block text-sm font-medium">Last Name*</label>
-                            <input
-                                type="text"
-                                name="lastName"
-                                value={formData.lastName}
-                                onChange={handleInputChange}
-                                className="mt-1 p-2 w-full border rounded"
-                                required
-                            />
+                            <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" required />
                         </div>
                         <div>
                             <label className="block text-sm font-medium">Middle Name</label>
-                            <input
-                                type="text"
-                                name="middleName"
-                                value={formData.middleName}
-                                onChange={handleInputChange}
-                                className="mt-1 p-2 w-full border rounded"
-                            />
+                            <input type="text" name="middleName" value={formData.middleName} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium">ScholarShip</label>
+                            <input type="text" name="middleName" value={formData.middleName} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium">Department</label>
+                            <input type="text" name="middleName" value={formData.middleName} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium">Course*</label>
-                            <Select
-                                options={courses.map(course => ({ label: course.crs_name, value: course.crs_id }))}
-                                onChange={(selectedOption) => handleComboBoxChange(selectedOption, 'course')}
-                                placeholder="Select Course"
-                                isClearable
-                                className="mt-1"
-                                required
-                            />
+                            <Select options={courses.map(course => ({ label: course.crs_name, value: course.crs_id }))} onChange={(selectedOption) => handleComboBoxChange(selectedOption, 'course')} placeholder="Select Course" isClearable className="mt-1" required />
                         </div>
                         <div>
                             <label className="block text-sm font-medium">Year Level*</label>
-                            <Select
-                                options={yearLevels.map(level => ({ label: level.year_level_name, value: level.year_level_id }))}
-                                onChange={(selectedOption) => handleComboBoxChange(selectedOption, 'yearLevel')}
-                                placeholder="Select Year Level"
-                                isClearable
-                                className="mt-1"
-                                required
-                            />
+                            <Select options={yearLevels.map(level => ({ label: level.year_level_name, value: level.year_level_id }))} onChange={(selectedOption) => handleComboBoxChange(selectedOption, 'yearLevel')} placeholder="Select Year Level" isClearable className="mt-1" required />
                         </div>
                         <div>
                             <label className="block text-sm font-medium">Scholarship Type*</label>
-                            <Select
-                                options={scholarshipTypes.map(type => ({ label: type.type_name, value: type.type_id }))}
-                                onChange={(selectedOption) => handleComboBoxChange(selectedOption, 'scholarship')}
-                                placeholder="Select Scholarship Type"
-                                isClearable
-                                className="mt-1"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium">Scholarship Sub Type*</label>
-                            <Select
-                                options={scholarshipSub.map(sub => ({ label: sub.stype_name, value: sub.stype_id }))}
-                                onChange={(selectedOption) => handleComboBoxChange(selectedOption, 'scholarshipSub')}
-                                placeholder="Select Scholarship Sub Type"
-                                isClearable
-                                className="mt-1"
-                                required
-                            />
+                            <Select options={scholarshipTypes.map(type => ({ label: type.type_name, value: type.type_id }))} onChange={(selectedOption) => handleComboBoxChange(selectedOption, 'scholarship')} placeholder="Select Scholarship Type" isClearable className="mt-1" required />
                         </div>
                         <div>
                             <label className="block text-sm font-medium">Contact Number</label>
-                            <input
-                                type="text"
-                                name="contactNumber"
-                                value={formData.contactNumber}
-                                onChange={handleInputChange}
-                                className="mt-1 p-2 w-full border rounded"
-                            />
+                            <input type="text" name="contactNumber" value={formData.contactNumber} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium">Email</label>
-                            <input
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                className="mt-1 p-2 w-full border rounded"
-                            />
+                            <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium">Modality</label>
-                            <Select
-                                options={modalities.map(mod => ({ label: mod.stypeScholar_name, value: mod.stypeScholar_id }))}
-                                onChange={(selectedOption) => handleComboBoxChange(selectedOption, 'modality')}
-                                placeholder="Select Modality"
-                                isClearable
-                                className="mt-1"
-                            />
+                            <label className="block text-sm font-medium">Percent</label>
+                            <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium">Amount</label>
+                            <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
                         </div>
                     </div>
-
                     <div className="flex justify-end">
-                        <button
-                            type="submit"
-                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
-                        >
-                            Submit
-                        </button>
+                        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">Submit</button>
                     </div>
                 </form>
             </div>

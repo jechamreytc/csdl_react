@@ -35,6 +35,7 @@ import AddModality from '../modal/AddModality';
 import GetModality from '../modal/GetModality';
 import AddSubject from '../modal/AddSubject';
 import GetSubject from '../modal/GetSubject';
+import Navigator from '../dashboard/navigator';
 
 const MasterFiles = () => {
     const navigateTo = useNavigate();
@@ -100,21 +101,14 @@ const MasterFiles = () => {
 
     return (
 
-        <div>
-
-
-
-            <div className="flex min-h-screen bg-blue-800">
-
-
-
-
+        <div className='grid grid-cols-7 h-screen'>
+            <Navigator />
+            <div className="bg-blue-800 col-span-6 ">
                 <div className="flex-grow p-10 bg-blue-900">
                     <div className="bg-white p-8 rounded-lg shadow-lg">
                         <div className="text-left mb-8">
                             <h1 className="text-5xl font-mono text-blue-900 mb-2">Master Files</h1>
                         </div>
-
                         <div className="bg-blue-900 p-6 rounded-lg shadow-lg">
                             <div className="text-left mb-8">
                                 <h1 className="text-3xl font-normal text-white mb-2">Master Files</h1>
@@ -125,11 +119,11 @@ const MasterFiles = () => {
                                 {[
                                     { title: 'Admin', buttonText: 'Add Administrator', route: '/AddAdministrator', content: <AddAdministrator />, buttonText2: 'Addministrator List', contentlist: "/adminlist" },
                                     { title: 'Department', buttonText: 'Add Department', route: '/addDepartment', content: <AddDepartment />, buttonText2: 'Department List', contentlist: "/DepartmentList" },
-                                    { title: 'School Year', buttonText: 'Add School Year', route: '/addSchoolYear', content: <AddSchoolYear />, buttonText2: 'School Year List', contentlist: <GetSchoolYear /> },
-                                    { title: 'Course', buttonText: 'Add Course', route: '/addCourse', content: <AddCourse />, buttonText2: 'Course List', contentlist: <GetCourse /> },
-                                    { title: 'Scholarship Type', buttonText: 'Add Scholarship Type', route: '/addScholarshipType', content: <AddScholarshipType />, buttonText2: 'Scholarship Type   List', contentlist: <GetScholarType /> },
-                                    { title: 'Office Master', buttonText: 'Add Office Master', route: '/addOfficeMaster', content: <AddOfficeMaster />, buttonText2: 'Office Master List', contentlist: "/OfficeMasterList" },
-                                    { title: 'Scholar', buttonText: 'Add Scholar', route: "/AddScholar", content: <AddScholar />, buttonText: 'Scholar List', contentlist: <GetScholar /> },
+                                    { title: 'School Year', buttonText: 'Add School Year', route: '/addSchoolYear', content: <AddSchoolYear />, buttonText2: 'School Year List', contentlist: "/SchoolYear" },
+                                    { title: 'Course', buttonText: 'Add Course', route: '/addCourse', content: <AddCourse />, buttonText2: 'Course List', contentlist: "/CourseList" },
+                                    { title: 'Scholarship Type', buttonText: 'Add Scholarship Type', route: '/addScholarshipType', content: <AddScholarshipType />, buttonText2: 'Scholarship Type   List', contentlist: "/ScholarshipType" },
+
+                                    { title: 'Scholar', buttonText: 'Add Scholar', route: "/AddScholar", content: <AddScholar />, buttonText: 'Scholar List', contentlist: "/ScholarList" },
                                     { title: 'Supervisor Master', buttonText: 'Add Supervisor Master', route: '/addSupervisor', content: <AddSupervisor />, buttonText2: 'Supervisor List', contentlist: <GetSupervisor /> },
                                     { title: 'Scholarship Sub Type', buttonText: 'Add Scholarship Sub Type', route: '/addScholarshipSubType', content: <AddScholarshipSubType />, buttonText2: 'Scholarship Sub Type List', contentlist: <GetScholarshipSubType /> },
                                     { title: 'Building', buttonText: 'Add Building', route: '/addBuilding', content: <AddBuilding />, buttonText2: 'Building List', contentlist: "/BuildingList" },

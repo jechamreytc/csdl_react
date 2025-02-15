@@ -1,13 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import AdminDashboard from './admin/AdminDashboard';
 import { Toaster } from 'sonner';
 import secureLocalStorage from 'react-secure-storage';
-// import AddDepartment from './components/AddDepartment';
-// import AddSchoolYear from './components/AddSchoolYear';
-// import AddCourse from './components/AddCourse';
-// import AddScholarshipType from './components/AddScholarshipType';
 import AddOfficeMaster from './components/AddOfficeMaster';
 import AddSupervisor from './components/AddSupervisor';
 import AddScholar from './components/AddScholar';
@@ -26,43 +22,38 @@ import GetBuilding from './modal/GetBuilding';
 import Batch from './dashboard/Batch';
 import BatchSubject from './dashboard/BatchSubject';
 import StudentFacilitator from './dashboard/StudentFacilitator';
+import AddBuilding from './modal/AddBuilding';
+import AddModality from './modal/AddModality';
+import GetSchoolYear from './modal/GetSchoolYear';
+import GetCourse from './modal/GetCourse';
+import GetScholarshipType from './modal/GetScholarType';
+import GetScholarLists from './modal/GetScholar';
 
 
-
-// import AddScholarshipSubType from './components/AddScholarshipSubType';
-
-
-
+const ProtectedRoute = ({ children }) => {
+  const isAuthenticated = secureLocalStorage.getItem("adminLogin") === "true";
+  return isAuthenticated ? children : <Navigate to="/" />;
+};
 
 function App() {
 
   if (secureLocalStorage.getItem("url") !== "http://localhost/csdl/") {
     secureLocalStorage.setItem("url", "http://localhost/csdl/");
   }
-  return (
 
+  return (
     <>
       <Toaster richColors position="top-right" duration={1500} />
       <Router>
-        {/* <AddScholar />
-      <AddOfficeMaster /> */}
         <Routes>
-
           <Route path="/" element={<Login />} />
-
           <Route path="/AddAdministrator" element={<AddAdministrator />} />
-          {/* <Route path="/add-department" element={<AddDepartment />} /> */}
-          {/* <Route path="/add-school-year" element={<AddSchoolYear />} /> */}
-          {/* <Route path="/add-course" element={<AddCourse />} /> */}
-          {/* <Route path="/add-scholarship-type" element={<AddScholarshipType />} /> */}
           <Route path="/OfficeMaster" element={<AddOfficeMaster />} />
           <Route path="/addSupervisor" element={<AddSupervisor />} />
-          {/* <Route path="/add-scholarship-sub-type" element={<AddScholarshipSubType />} /> */}
           <Route path="/AddScholar" element={<AddScholar />} />
           <Route path="/AdminDashboard" element={<AdminDashboard />} />
           <Route path="/ScholarList" element={<ScholarList />} />
           <Route path='/qrcode' element={<Qrcode />} />
-          <Route path="/MainDashboard" element={<MainDashboard />} />
           <Route path="/AddBatchScholar" element={<AddBatchScholar />} />
           <Route path="/AssignStudent" element={<AssignStudent />} />
           <Route path="/Account" element={<Account />} />
@@ -73,12 +64,45 @@ function App() {
           <Route path="/Batch" element={<Batch />} />
           <Route path="/BatchSubject" element={<BatchSubject />} />
           <Route path="/StudentFacilitator" element={<StudentFacilitator />} />
+          <Route path='/SchoolYear' element={<GetSchoolYear />} />
+          <Route path='/CourseList' element={<GetCourse />} />
+          <Route path='/ScholarshipType' element={<GetScholarshipType />} />
+          <Route path='/ScholarList' element={<GetScholarLists />} />
+
+          <Route
+            path="/MainDashboard"
+            element={
+              <ProtectedRoute>
+                <MainDashboard />
+                {/* <AddAdministrator />
+                <AddOfficeMaster />
+                <AddScholar />
+                <AddSupervisor />
+                <Account />
+                <AssignStudent />
+                <Batch />
+                <BatchSubject />
+                <MainDashboard />
+                <navigator />
+                <ScholarList />
+                <StudentFacilitator />
+                <AddBatchScholar />
+                <AddBuilding />
+                <AddModality />
+                <AdminDashboard /> */}
 
 
+
+
+
+
+
+
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </Router>
-
-
     </>
   );
 }

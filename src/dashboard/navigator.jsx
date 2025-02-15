@@ -9,6 +9,8 @@ function Navigator() {
         navigateTo("/");
         secureLocalStorage.removeItem("adminLogin");
     };
+
+    // tig validate if admin login
     useEffect(() => {
         if (secureLocalStorage.getItem("adminLogin") !== "true") {
             handleLogOut();

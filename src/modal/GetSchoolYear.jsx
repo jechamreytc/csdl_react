@@ -17,6 +17,7 @@ const GetSchoolYear = () => {
                 formData.append("operation", "getschoolyear");
                 const res = await axios.post(url, formData);
                 setSchoolYear(res.data);
+                console.log("res sa get", res.data);
                 toast.success("School Year loaded successfully");
             } catch (error) {
                 console.log('Failed to load School Year:', error);
@@ -26,16 +27,16 @@ const GetSchoolYear = () => {
         GetSchoolYear();
     }, []);
 
-    const deleteSchoolYear = async (sy_id) => {
+    const deleteSchoolYear = async (year_id) => {
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
-            const jsonData = { sy_id };
+            const jsonData = { year_id };
             const formData = new FormData();
             formData.append("operation", "deleteSchoolYear");
             formData.append("json", JSON.stringify(jsonData));
             const res = await axios.post(url, formData);
             if (res.data === 1) {
-                setSchoolYear(schoolYear.filter((item) => item.sy_id !== sy_id));
+                setSchoolYear(schoolYear.filter((item) => item.year_id !== year_id));
                 toast.success("School Year deleted successfully");
             } else {
                 toast.error(res.data.message || "Failed to delete school year");
@@ -46,21 +47,21 @@ const GetSchoolYear = () => {
         }
     };
 
-    const handleDelete = (sy_id) => {
+    const handleDelete = (year_id) => {
         if (window.confirm("Are you sure you want to delete this School Year?")) {
-            deleteSchoolYear(sy_id);
+            deleteSchoolYear(year_id);
         }
     };
 
-    const handleEdit = (sy_id, currentName) => {
-        setEditId(sy_id);
+    const handleEdit = (year_id, currentName) => {
+        setEditId(year_id);
         setEditName(currentName);
     };
 
-    const saveSchoolYear = async (sy_id) => {
+    const saveSchoolYear = async (year_id) => {
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
-            const jsonData = { sy_id, sy_name: editName };
+            const jsonData = { year_id, year_name: editName };
             const formData = new FormData();
             formData.append("operation", "updateSchoolYear");
             formData.append("json", JSON.stringify(jsonData));
@@ -68,7 +69,7 @@ const GetSchoolYear = () => {
             if (res.data === 1) {
                 setSchoolYear(
                     schoolYear.map((item) =>
-                        item.sy_id === sy_id ? { ...item, sy_name: editName } : item
+                        item.year_id === year_id ? { ...item, year_name: editName } : item
                     )
                 );
                 toast.success("School Year updated successfully");
@@ -91,10 +92,10 @@ const GetSchoolYear = () => {
                 {schoolYear.length > 0 ? (
                     schoolYear.map((item) => (
                         <div
-                            key={item.sy_id}
+                            key={item.year_id}
                             className="flex items-center justify-between bg-blue-800 rounded-lg py-4 px-6 text-white hover:bg-blue-700 transition-colors duration-300 shadow-md"
                         >
-                            {editId === item.sy_id ? (
+                            {editId === item.year_id ? (
                                 <input
                                     type="text"
                                     value={editName}
@@ -102,27 +103,27 @@ const GetSchoolYear = () => {
                                     className="text-lg font-medium bg-blue-800 text-white border-b-2 border-gray-500 focus:border-white focus:outline-none"
                                 />
                             ) : (
-                                <span className="text-lg font-medium">{item.sy_name}</span>
+                                <span className="text-lg font-medium">{item.year_name}</span>
                             )}
                             <div className="flex space-x-3">
-                                {editId === item.sy_id ? (
+                                {editId === item.year_id ? (
                                     <button
                                         className="text-green-500 hover:bg-green-600 hover:text-white p-2 rounded-full transition-transform transform hover:scale-105"
-                                        onClick={() => saveSchoolYear(item.sy_id)}
+                                        onClick={() => saveSchoolYear(item.year_id)}
                                     >
                                         <FaSave />
                                     </button>
                                 ) : (
                                     <button
                                         className="text-green-500 hover:bg-green-600 hover:text-white p-2 rounded-full transition-transform transform hover:scale-105"
-                                        onClick={() => handleEdit(item.sy_id, item.sy_name)}
+                                        onClick={() => handleEdit(item.year_id, item.year_name)}
                                     >
                                         <FaEdit />
                                     </button>
                                 )}
                                 <button
                                     className="text-red-500 hover:bg-red-600 hover:text-white p-2 rounded-full transition-transform transform hover:scale-105"
-                                    onClick={() => handleDelete(item.sy_id)}
+                                    onClick={() => handleDelete(item.year_id)}
                                 >
                                     <FaTrash />
                                 </button>

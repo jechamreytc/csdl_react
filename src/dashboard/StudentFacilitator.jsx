@@ -301,10 +301,13 @@ function StudentFacilitator() {
     }));
 
     return (
-        <div className="grid grid-cols-7 gap-1 h-screen bg-white rounded-lg shadow-lg border-3">
-            <Navigator />
+        <div className="grid grid-cols-1 md:grid-cols-7 gap-1 h-screen bg-white rounded-lg shadow-lg border-3">
+            <Navigator className="hidden md:block" />
             <div className="col-span-6 p-3">
-                <h1 className="text-2xl font-bold mb-6 text-green-700">Assign Student Facilitator</h1>
+                <h1 className="text-2xl font-bold mb-6 text-green-700 text-center md:text-left">
+                    Assign Student Facilitator
+                </h1>
+
                 {/* Mode and Assigned Hours */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -333,7 +336,7 @@ function StudentFacilitator() {
                                 setSelectedStudent(selectedScholar);
                             }}
                             placeholder="Select a Scholar"
-                            className="text-black"
+                            className="text-black w-full"
                         />
                     </div>
 
@@ -353,7 +356,7 @@ function StudentFacilitator() {
                     <div>
                         <label className="block text-white font-medium mb-2 bg-green-700 p-2 rounded-lg">Schedule</label>
                         <div className="card shadow-lg">
-                            <div className="card-body bg-green-700 text-white rounded-lg h-[54vh] overflow-y-auto">
+                            <div className="card-body bg-green-700 text-white rounded-lg h-64 md:h-[54vh] overflow-auto">
                                 {Array.isArray(scholarSchedules) && scholarSchedules.length > 0 ? (
                                     scholarSchedules.map((schedule, index) => (
                                         <div key={index} className="p-2 border-b border-white cursor-pointer hover:bg-green-600" onClick={() => handleRowClick(index)}>
@@ -378,27 +381,23 @@ function StudentFacilitator() {
 
                     {/* Subject Selection - Matching Height */}
                     <div>
-                        <label className="block text-white font-medium mb-2 bg-green-700 p-2 rounded-lg">
-                            Select Subject
-                        </label>
-                        <div className="rounded-lg bg-green-700 shadow-lg h-[54vh] overflow-y-auto">
+                        <label className="block text-white font-medium mb-2 bg-green-700 p-2 rounded-lg">Select Subject</label>
+                        <div className="rounded-lg bg-green-700 shadow-lg h-64 md:h-[54vh] overflow-auto">
                             {subjectOptions.length > 0 ? (
-                                <table className="w-full">
-                                    {/* Table Header */}
+                                <table className="w-full text-sm">
                                     <thead>
                                         <tr className="bg-green-800 text-white">
-                                            <th className="p-3 text-center">Code</th>
-                                            <th className="p-3 text-center">Title</th>
-                                            <th className="p-3 text-center">Section</th>
-                                            <th className="p-3 text-center">Room</th>
-                                            <th className="p-3 text-center">F2F Day</th>
-                                            <th className="p-3 text-center">RC Day</th>
-                                            <th className="p-3 text-center">Learning</th>
-                                            <th className="p-3 text-center">Used</th>
-                                            <th className="p-3 text-center">Time</th>
+                                            <th className="p-2 text-center">Code</th>
+                                            <th className="p-2 text-center">Title</th>
+                                            <th className="p-2 text-center hidden md:table-cell">Section</th>
+                                            <th className="p-2 text-center hidden md:table-cell">Room</th>
+                                            <th className="p-2 text-center hidden md:table-cell">F2F Day</th>
+                                            <th className="p-2 text-center hidden md:table-cell">RC Day</th>
+                                            <th className="p-2 text-center hidden md:table-cell">Learning</th>
+                                            <th className="p-2 text-center hidden md:table-cell">Used</th>
+                                            <th className="p-2 text-center">Time</th>
                                         </tr>
                                     </thead>
-                                    {/* Table Body */}
                                     <tbody>
                                         {subjectOptions.map((subject, index) => (
                                             <tr
@@ -408,7 +407,7 @@ function StudentFacilitator() {
                                                 onClick={() => handleSubjectSelect(subject)}
                                             >
                                                 {subject.label.props.children.map((child, idx) => (
-                                                    <td key={idx} className="p-3 text-center">
+                                                    <td key={idx} className="p-2 text-center">
                                                         {child}
                                                     </td>
                                                 ))}
@@ -421,20 +420,18 @@ function StudentFacilitator() {
                             )}
                         </div>
                     </div>
-
                 </div>
 
-
                 {/* Buttons */}
-                <div className="flex justify-between mt-6">
+                <div className="flex flex-col md:flex-row justify-between mt-6 gap-3">
                     <button
-                        className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition"
+                        className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition w-full md:w-auto"
                         onClick={handleClearClick}
                     >
                         Clear
                     </button>
                     <button
-                        className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition"
+                        className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition w-full md:w-auto"
                         onClick={handleSaveClick}
                     >
                         Save
@@ -443,11 +440,12 @@ function StudentFacilitator() {
 
                 {saveStatus && (
                     <div className="mt-4">
-                        <p className="text-green-700">{saveStatus}</p>
+                        <p className="text-green-700 text-center md:text-left">{saveStatus}</p>
                     </div>
                 )}
             </div>
         </div>
+
 
     );
 }

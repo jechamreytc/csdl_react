@@ -108,9 +108,10 @@ function AssignStudent() {
             data.append('json', JSON.stringify(jsonData)); // Add JSON data
             data.append('operation', 'AddOfficeStudent');
             const res = await axios.post(url, data);
-            console.log('Save response:', res.data); // Log the response from the save operation
+            console.log('Save response:', res.data);
+            // Log the response from the save operation
             if (res.data !== 0) {
-                toast.success('Scholar added successfully');
+                alert('Data saved successfully!');
             } else {
                 toast.error('Failed to add scholar');
             }

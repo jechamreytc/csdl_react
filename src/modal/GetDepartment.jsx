@@ -10,7 +10,7 @@ const GetDepartment = () => {
     const [editId, setEditId] = useState(null);
     const [editName, setEditName] = useState("");
     const [showModal, setShowModal] = useState(false);
-    const [showValidation, setShowValidation] = useState(false); // State for validation
+    const [showValidation, setShowValidation] = useState(false);
 
     useEffect(() => {
         const getDepartments = async () => {
@@ -22,7 +22,6 @@ const GetDepartment = () => {
                 setDepartments(res.data);
                 toast.success("Departments loaded successfully!");
             } catch (error) {
-                console.error('Failed to load departments:', error);
                 toast.error("Failed to load departments.");
             }
         };
@@ -32,29 +31,19 @@ const GetDepartment = () => {
     const deleteDepartment = async (dept_id) => {
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
-            const jsonData = { dept_id };
             const formData = new FormData();
             formData.append("operation", "deleteDepartment");
-            formData.append("json", JSON.stringify(jsonData));
+            formData.append("json", JSON.stringify({ dept_id }));
             const res = await axios.post(url, formData);
 
-            if (res.data === -1) {
-                toast.error("Cannot delete, department is in use.");
-            } else if (res.data === 1) {
+            if (res.data === 1) {
                 setDepartments(departments.filter((department) => department.dept_id !== dept_id));
                 toast.success("Department deleted successfully!");
             } else {
-                toast.error(res.data.message || "Failed to delete department.");
+                toast.error("Failed to delete department.");
             }
         } catch (error) {
-            console.error('Failed to delete department:', error);
             toast.error("Failed to delete department.");
-        }
-    };
-
-    const handleDelete = (departmentId) => {
-        if (window.confirm("Are you sure you want to delete this department?")) {
-            deleteDepartment(departmentId);
         }
     };
 
@@ -62,23 +51,20 @@ const GetDepartment = () => {
         setEditId(departmentId);
         setEditName(currentName);
         setShowModal(true);
+        setShowValidation(false);
     };
 
     const saveDepartment = async () => {
-        // Check if department name already exists
-        const isDuplicate = departments.some(dept => dept.dept_name.toLowerCase() === editName.toLowerCase());
-
-        if (isDuplicate) {
-            setShowValidation(true); // Show validation message
+        if (!editName.trim()) {
+            setShowValidation(true);
             return;
         }
 
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
-            const jsonData = { dept_id: editId, dept_name: editName };
             const formData = new FormData();
-            formData.append("operation", "updateDerpartment");
-            formData.append("json", JSON.stringify(jsonData));
+            formData.append("operation", "updateDepartment");
+            formData.append("json", JSON.stringify({ dept_id: editId, dept_name: editName }));
             const res = await axios.post(url, formData);
 
             if (res.data === 1) {
@@ -87,12 +73,10 @@ const GetDepartment = () => {
                 ));
                 toast.success("Department updated successfully!");
                 setShowModal(false);
-                setShowValidation(false); // Reset validation state
             } else {
-                toast.error(res.data.message || "Failed to update department.");
+                toast.error("Failed to update department.");
             }
         } catch (error) {
-            console.error('Failed to update department:', error);
             toast.error("Failed to update department.");
         }
     };
@@ -100,28 +84,27 @@ const GetDepartment = () => {
     return (
         <div className="min-h-screen bg-gray-100 py-8 px-4">
             <div className="w-full max-w-4xl mx-auto text-center mb-6">
-                <h1 className="text-4xl font-bold text-blue-900 mb-4">Department List</h1>
-                <p className="text-blue-700 text-lg">Manage departments by editing or deleting entries.</p>
+                <h1 className="text-4xl font-extrabold text-green-800 mb-6">Department List</h1>
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
+            <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto">
                 {departments.length > 0 ? (
                     departments.map((department) => (
                         <div
                             key={department.dept_id}
-                            className="bg-white rounded-lg p-6 shadow-md border border-gray-300 hover:shadow-lg transition-transform transform hover:scale-105"
+                            className="bg-green-500 rounded-lg p-6 shadow-lg border border-green-600 hover:bg-green-600 transition duration-300"
                         >
-                            <h2 className="text-2xl font-semibold text-blue-800 mb-4">{department.dept_name}</h2>
+                            <h2 className="text-2xl font-semibold text-white mb-4">{department.dept_name}</h2>
                             <div className="flex justify-end space-x-3">
                                 <button
-                                    className="text-blue-500 hover:text-blue-700 p-2 transition-colors"
+                                    className="text-white bg-gray-800 hover:bg-gray-700 p-2 rounded-md"
                                     onClick={() => handleEdit(department.dept_id, department.dept_name)}
                                 >
                                     <FaEdit size={20} />
                                 </button>
                                 <button
-                                    className="text-red-500 hover:text-red-700 p-2 transition-colors"
-                                    onClick={() => handleDelete(department.dept_id)}
+                                    className="text-white bg-red-600 hover:bg-red-500 p-2 rounded-md"
+                                    onClick={() => deleteDepartment(department.dept_id)}
                                 >
                                     <FaTrash size={20} />
                                 </button>
@@ -129,37 +112,37 @@ const GetDepartment = () => {
                         </div>
                     ))
                 ) : (
-                    <p className="text-center text-blue-700 text-lg">No Data Found</p>
+                    <p className="text-center text-gray-700 text-lg">No Data Found</p>
                 )}
             </div>
 
-            {/* Edit Modal */}
+            {/* Edit Department Modal */}
             <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-                <Modal.Header closeButton>
+                <Modal.Header closeButton className="bg-green-600 text-white">
                     <Modal.Title>Edit Department</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="bg-white">
                     <Form>
                         <Form.Group controlId="formDepartmentName">
-                            <Form.Label>Department Name</Form.Label>
+                            <Form.Label className="text-gray-800 font-semibold">Department Name</Form.Label>
                             <Form.Control
                                 type="text"
                                 value={editName}
                                 onChange={(e) => setEditName(e.target.value)}
                                 placeholder="Enter new department name"
-                                isInvalid={showValidation} // Validation state
+                                isInvalid={showValidation}
                             />
                             <Form.Control.Feedback type="invalid">
-                                Department name already exists.
+                                Department name cannot be empty.
                             </Form.Control.Feedback>
                         </Form.Group>
                     </Form>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowModal(false)}>
-                        Cancel
+                <Modal.Footer className="bg-white">
+                    <Button variant="secondary" className="bg-gray-300 text-gray-700 border-0" onClick={() => setShowModal(false)}>
+                        Close
                     </Button>
-                    <Button variant="primary" onClick={saveDepartment}>
+                    <Button variant="primary" className="bg-green-600 text-white border-0" onClick={saveDepartment}>
                         Save Changes
                     </Button>
                 </Modal.Footer>

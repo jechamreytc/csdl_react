@@ -5,9 +5,9 @@ import secureLocalStorage from 'react-secure-storage';
 
 const AddSupervisorMaster = () => {
     const [formData, setFormData] = useState({
-        supM_employee_id: '',
+        supM_id: '',
         supM_name: '',
-        supM_department_id: '',
+        // supM_department_id: '',
         supM_email: '',
     });
 
@@ -68,7 +68,7 @@ const AddSupervisorMaster = () => {
         // Trim form values to avoid accidental duplicates due to whitespace
         const trimmedFormData = {
             ...formData,
-            supM_employee_id: formData.supM_employee_id.trim(),
+            supM_id: formData.supM_id.trim(),
             supM_name: formData.supM_name.trim(),
             supM_email: formData.supM_email.trim(),
         };
@@ -76,7 +76,7 @@ const AddSupervisorMaster = () => {
         // Check for duplicate supervisor based on employee ID and name
         const isDuplicate = supervisors.some(
             (supervisor) =>
-                supervisor.supM_employee_id === trimmedFormData.supM_employee_id ||
+                supervisor.supM_id === trimmedFormData.supM_id ||
                 supervisor.supM_name.toLowerCase() === trimmedFormData.supM_name.toLowerCase()
         );
 
@@ -90,11 +90,12 @@ const AddSupervisorMaster = () => {
         try {
             const url = secureLocalStorage.getItem('url') + 'CSDL.php';
             const jsonData = {
-                supM_employee_id: trimmedFormData.supM_employee_id,
+                supM_id: trimmedFormData.supM_id,
                 supM_name: trimmedFormData.supM_name,
-                supM_department_id: trimmedFormData.supM_department_id,
+                // supM_department_id: trimmedFormData.supM_department_id,
                 supM_email: trimmedFormData.supM_email,
             };
+            console.log('JSON data:', jsonData);
 
             const formDataToSend = new FormData();
             formDataToSend.append('json', JSON.stringify(jsonData));
@@ -104,11 +105,12 @@ const AddSupervisorMaster = () => {
             if (res.data !== 0) {
                 toast.success('Supervisor added successfully');
                 setFormData({
-                    supM_employee_id: '',
+                    supM_id: '',
                     supM_name: '',
-                    supM_department_id: '',
+                    // supM_department_id: '',
                     supM_email: '',
                 });
+                console.log("res ni add supervisor", res.data);
                 // Reload supervisors to ensure list is up to date
                 await getSupervisors();
             } else {
@@ -130,8 +132,8 @@ const AddSupervisorMaster = () => {
                         <label className="mb-2 text-gray-700 font-semibold">Employee ID</label>
                         <input
                             type="text"
-                            name="supM_employee_id"
-                            value={formData.supM_employee_id}
+                            name="supM_id"
+                            value={formData.supM_id}
                             onChange={handleInputChange}
                             placeholder="Enter Employee ID"
                             required
@@ -153,7 +155,7 @@ const AddSupervisorMaster = () => {
                         />
                     </div>
 
-                    {/* Department */}
+                    {/* Department
                     <div className="flex flex-col">
                         <label className="mb-2 text-gray-700 font-semibold">Department</label>
                         <select
@@ -170,7 +172,7 @@ const AddSupervisorMaster = () => {
                                 </option>
                             ))}
                         </select>
-                    </div>
+                    </div> */}
 
                     {/* Email */}
                     <div className="flex flex-col">

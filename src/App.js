@@ -28,6 +28,7 @@ import GetSchoolYear from './modal/GetSchoolYear';
 import GetCourse from './modal/GetCourse';
 import GetScholarshipType from './modal/GetScholarType';
 import GetScholarLists from './modal/GetScholar';
+import GetSubject from './modal/GetSubject';
 
 
 const ProtectedRoute = ({ children }) => {
@@ -68,6 +69,7 @@ function App() {
           <Route path='/CourseList' element={<GetCourse />} />
           <Route path='/ScholarshipType' element={<GetScholarshipType />} />
           <Route path='/ScholarList' element={<GetScholarLists />} />
+          <Route path='/Subjectlist' element={<GetSubject />} />
 
           <Route
             path="/MainDashboard"

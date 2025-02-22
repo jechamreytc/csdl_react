@@ -6,7 +6,7 @@ import secureLocalStorage from 'react-secure-storage';
 import axios from 'axios';
 import Navigator from './navigator';
 
-const Dashboard = () => {
+const MainDashboard = () => {
     const [formData, setFormData] = useState({
         course: "",
         yearLevel: "",
@@ -96,4 +96,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default MainDashboard;

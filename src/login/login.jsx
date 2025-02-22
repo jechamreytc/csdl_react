@@ -112,17 +112,21 @@ const AuthPage = () => {
         if (secureLocalStorage.getItem("adminLogin") === "true") {
             navigate("/MainDashboard");
         }
-    }, [])
+    }, []);
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-600 to-green-500">
-            <div className="grid grid-cols-1 md:grid-cols-2 w-full max-w-6xl shadow-lg rounded-xl">
-                <div className="hidden md:flex flex-col justify-center items-center bg-blue-900 text-white rounded-l-xl">
-                    <h1 className="text-5xl font-bold">HK SMS</h1>
-                    <p className="text-lg mt-2">HK Scholars Management System</p>
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-600 to-green-500 px-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 w-full max-w-4xl shadow-lg rounded-xl overflow-hidden">
+
+                {/* Left Section (Hidden on Small Screens) */}
+                <div className="hidden sm:flex flex-col justify-center items-center bg-blue-900 text-white p-8 rounded-l-xl">
+                    <h1 className="text-3xl md:text-5xl font-bold">HK SMS</h1>
+                    <p className="text-lg md:text-xl mt-2">HK Scholars Management System</p>
                 </div>
-                <div className="bg-white p-8 rounded-r-xl">
-                    <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">Sign in</h2>
+
+                {/* Right Section (Login Form) */}
+                <div className="bg-white p-6 md:p-10 w-full rounded-r-xl">
+                    <h2 className="text-2xl md:text-3xl font-semibold text-gray-700 text-center mb-6">Sign in</h2>
 
                     <div className="space-y-4">
                         <div>
@@ -132,7 +136,7 @@ const AuthPage = () => {
                                 placeholder="Username"
                                 value={username}
                                 onChange={handleUsernameChange}
-                                className="w-full p-3 border border-gray-300 rounded-lg"
+                                className="w-full p-3 text-base md:text-lg border border-gray-300 rounded-lg"
                                 disabled={lockout}
                             />
                         </div>
@@ -143,12 +147,14 @@ const AuthPage = () => {
                                 placeholder="Password"
                                 value={password}
                                 onChange={handlePasswordChange}
-                                className="w-full p-3 border border-gray-300 rounded-lg"
+                                className="w-full p-3 text-base md:text-lg border border-gray-300 rounded-lg"
                                 disabled={lockout}
                             />
                         </div>
+
+                        {/* Math Puzzle */}
                         <div className="mt-4 bg-gray-100 p-5 rounded-lg shadow-md">
-                            <h3 className="text-xl font-semibold text-blue-700 mb-3">TEST</h3>
+                            <h3 className="text-xl font-semibold text-blue-700 mb-3">Security Check</h3>
                             <div className="flex items-center justify-between bg-blue-50 p-4 rounded-md mb-3">
                                 <p className="text-lg font-bold text-blue-900">{mathPuzzle.question}</p>
                             </div>
@@ -157,7 +163,7 @@ const AuthPage = () => {
                                 placeholder="Enter your answer"
                                 value={userAnswer}
                                 onChange={(e) => setUserAnswer(e.target.value)}
-                                className={`w-full p-3 border ${hasError ? "border-red-500" : "border-blue-300"} rounded-lg focus:outline-none focus:ring-2 ${hasError ? "focus:ring-red-400" : "focus:ring-blue-400"}`}
+                                className={`w-full p-3 text-base md:text-lg border ${hasError ? "border-red-500" : "border-blue-300"} rounded-lg focus:outline-none focus:ring-2 ${hasError ? "focus:ring-red-400" : "focus:ring-blue-400"}`}
                                 disabled={lockout}
                             />
                             {hasError && (
@@ -165,9 +171,11 @@ const AuthPage = () => {
                             )}
                             <p className="mt-2 text-sm text-gray-500">* Solve this puzzle to verify you're human!</p>
                         </div>
+
+                        {/* Login Button */}
                         <button
                             onClick={handleLogin}
-                            className="w-full py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition"
+                            className="w-full py-3 bg-green-500 text-white text-lg md:text-xl rounded-lg font-semibold hover:bg-green-600 transition"
                             disabled={lockout}
                         >
                             {lockout ? `Locked (${countdown}s)` : "Login"}

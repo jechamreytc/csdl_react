@@ -241,12 +241,12 @@ const App = () => {
     const totalPages = Math.ceil(data.length / itemsPerPage);
 
     return (
-        <div className="grid grid-cols-7 gap-4">
+        <div className="grid grid-cols-7 gap-4 h-screen">
             <Navigator />
             {/* <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 p-6"> */}
             <div className="min-h-screen p-6 col-span-6">
                 <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-7xl mx-auto">
-                    <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Excel File Uploader</h1>
+                    <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Scholar Uploader</h1>
                     <label className="block w-full bg-gray-200 text-gray-700 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-300 focus:outline-none">
                         <input
                             type="file"

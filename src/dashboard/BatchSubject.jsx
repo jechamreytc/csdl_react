@@ -133,7 +133,7 @@ const App = () => {
             <Navigator />
             <div className="p-6 col-span-6">
                 <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-7xl mx-auto">
-                    <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Excel File Uploader</h1>
+                    <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Subject Uploader</h1>
                     <label className="block w-full bg-gray-200 text-gray-700 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-300 focus:outline-none">
                         <input
                             type="file"

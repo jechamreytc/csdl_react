@@ -6,29 +6,29 @@ import secureLocalStorage from 'react-secure-storage';
 function AddRoom() {
     const [formData, setFormData] = useState({
         room: "",
-        building: ""
+        // building: ""
     });
-    const [buildings, setBuildings] = useState([]);
+    // const [buildings, setBuildings] = useState([]);
     const [rooms, setRooms] = useState([]);
 
-    useEffect(() => {
-        const getBuildings = async () => {
-            try {
-                const url = secureLocalStorage.getItem("url") + "CSDL.php";
-                const formData = new FormData();
-                formData.append("operation", "getBuilding");
-                const res = await axios.post(url, formData);
-                setBuildings(res.data);
-                toast.success("Buildings loaded successfully");
-                console.log('Buildings:', res.data);
-            } catch (error) {
-                console.log('Failed to load buildings:', error);
-                toast.error("Failed to load buildings");
-            }
-        };
+    // useEffect(() => {
+    //     const getBuildings = async () => {
+    //         try {
+    //             const url = secureLocalStorage.getItem("url") + "CSDL.php";
+    //             const formData = new FormData();
+    //             formData.append("operation", "getBuilding");
+    //             const res = await axios.post(url, formData);
+    //             setBuildings(res.data);
+    //             toast.success("Buildings loaded successfully");
+    //             console.log('Buildings:', res.data);
+    //         } catch (error) {
+    //             console.log('Failed to load buildings:', error);
+    //             toast.error("Failed to load buildings");
+    //         }
+    //     };
 
-        getBuildings();
-    }, []);
+    //     getBuildings();
+    // }, []);
 
     const getRooms = async () => {
         try {
@@ -64,8 +64,15 @@ function AddRoom() {
     const handleAdd = async (e) => {
         e.preventDefault();
 
+        const roomName = formData.room.trim(); // Remove leading and trailing spaces
+
+        if (roomName === "") {
+            toast.error("Room name cannot be empty.");
+            return;
+        }
+
         const roomExists = rooms.some(
-            (room) => room.room_number === formData.room
+            (room) => room.room_name.toLowerCase().trim() === roomName.toLowerCase()
         );
 
         if (roomExists) {
@@ -76,24 +83,22 @@ function AddRoom() {
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
             const jsonData = {
-                room_number: formData.room,
-                room_building_id: formData.building, // Ensure this matches the backend expected field
+                room_name: roomName,
             };
 
             const formDataToSend = new FormData();
             formDataToSend.append("json", JSON.stringify(jsonData));
             formDataToSend.append("operation", "AddRoom");
 
-            console.log('Sending data:', jsonData); // Log the data being sent
+            console.log('Sending data:', jsonData);
             const res = await axios.post(url, formDataToSend);
-            console.log('Response from server:', res.data); // Log the server response
+            console.log('Response from server:', res.data);
 
             if (res.data !== 0) {
                 toast.success("Room added successfully");
 
                 setFormData({
                     room: "",
-                    building: ""
                 });
 
                 await getRooms();
@@ -101,10 +106,11 @@ function AddRoom() {
                 toast.error("Failed to add room");
             }
         } catch (error) {
-            console.log('Error while adding room:', error); // Log the error
+            console.log('Error while adding room:', error);
             toast.error("An error occurred while adding the room");
         }
     };
+
 
     return (
         <div className="flex flex-col items-center bg-blue-100 p-6 rounded-lg max-w-md mx-auto shadow-md">
@@ -119,7 +125,7 @@ function AddRoom() {
                 className="p-2 text-lg w-full mb-2 border border-blue-900 rounded"
             />
 
-            <select
+            {/* <select
                 name="building"
                 value={formData.building}
                 onChange={handleInputChange}
@@ -131,7 +137,7 @@ function AddRoom() {
                         {building.build_name}
                     </option>
                 )) : (<option disabled>No buildings yet</option>)}
-            </select>
+            </select> */}
 
             <button
                 onClick={handleAdd}

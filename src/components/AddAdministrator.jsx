@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import secureLocalStorage from 'react-secure-storage';
-import { ArrowLeft } from 'lucide-react';
 
-const AddAdministrator = ({ onClose }) => {
+const AddAdministrator = ({ onClose = () => { } }) => {
     const [formData, setFormData] = useState({
         idNumber: "",
         name: "",
@@ -50,6 +49,11 @@ const AddAdministrator = ({ onClose }) => {
             email: formData.email.trim(),
         };
 
+        if (!trimmedFormData.idNumber || !trimmedFormData.name || !trimmedFormData.email) {
+            toast.error("All fields are required");
+            return;
+        }
+
         const isDuplicate = administrators.some(
             (admin) =>
                 admin.adm_id === trimmedFormData.idNumber ||
@@ -80,6 +84,7 @@ const AddAdministrator = ({ onClose }) => {
                 toast.success("Administrator added successfully");
                 setFormData({ idNumber: "", name: "", email: "" });
                 getAdministrators();
+                onClose(); // Close modal after successful submission
             } else {
                 toast.error("Failed to add administrator");
             }
@@ -91,19 +96,39 @@ const AddAdministrator = ({ onClose }) => {
         }
     };
 
+    const handleClose = () => {
+        console.log("Closing modal...");
+        if (typeof onClose === "function") {
+            onClose(); // Ensure onClose is a function before calling it
+        }
+    };
+
+    const handleBackgroundClick = (e) => {
+        if (e.target === e.currentTarget) {
+            handleClose();
+        }
+    };
+
     return (
         <div
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4"
-            onClick={onClose} // Clicking on the background will close the modal
+            onClick={handleBackgroundClick}
         >
             <div
-                className="bg-white shadow-xl rounded-lg p-6 w-full max-w-lg"
-                onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+                className="bg-white shadow-xl rounded-lg p-6 w-full max-w-lg relative"
+                onClick={(e) => e.stopPropagation()}
             >
-                <button onClick={onClose} className="flex items-center text-green-600 hover:text-green-800 mb-4">
-                    <ArrowLeft className="mr-2" /> Back
+                {/* Close Button */}
+                <button
+                    type="button"
+                    onClick={handleClose}
+                    className="absolute top-2 right-2 bg-gray-200 rounded-full text-gray-600 p-2 hover:bg-gray-300 transition-colors"
+                >
+                    X
                 </button>
+
                 <h2 className="text-2xl font-semibold text-center text-green-700 mb-4">Add Administrator</h2>
+
                 <form className="space-y-4" onSubmit={signup}>
                     <div>
                         <label className="block text-sm font-medium text-gray-700">ID Number*</label>

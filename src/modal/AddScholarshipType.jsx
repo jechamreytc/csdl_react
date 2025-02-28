@@ -1,57 +1,66 @@
-import React, { useEffect, useState } from 'react';
-import { toast } from 'sonner';
-import axios from 'axios';
-import secureLocalStorage from 'react-secure-storage';
+import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
+import axios from "axios";
+import secureLocalStorage from "react-secure-storage";
 
 function AddScholarshipType() {
     const [formData, setFormData] = useState({
         scholarship_type: "",
+        percent: ""
     });
 
     const [scholarshipTypes, setScholarshipTypes] = useState([]);
+    const [percent, setPercent] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        const getScholarshipTypes = async () => {
+        const getPercent = async () => {
             try {
                 const url = secureLocalStorage.getItem("url") + "CSDL.php";
                 const formData = new FormData();
-                formData.append("operation", "getscholarship_type");
+                formData.append("operation", "getPercentStype");
+
                 const res = await axios.post(url, formData);
-                setScholarshipTypes(res.data);
-                toast.success("Scholarship types loaded successfully");
+                setPercent(res.data);
             } catch (error) {
-                console.log('Failed to load scholarship types:', error);
-                toast.error("Failed to load scholarship types");
+                console.error("Failed to load percent options:", error);
+                toast.error("Failed to load percent options");
             }
         };
-        getScholarshipTypes();
+
+        getPercent();
     }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleAdd = async (e) => {
         e.preventDefault();
         if (loading) return;
 
-        // Safeguard against empty input
-        const scholarshipType = formData.scholarship_type || "";
-        if (scholarshipType.trim() === "") {
-            toast.error("Scholarship type cannot be empty");
+        const trimmedType = formData.scholarship_type.trim();
+        const selectedPercent = parseInt(formData.percent, 10);
+
+        // Validation: Ensure fields are filled
+        if (!trimmedType || isNaN(selectedPercent)) {
+            toast.error("All fields are required");
             return;
         }
 
-        // Check for duplicate
-        const scholarshipTypeExists = scholarshipTypes.some(
-            (scholarshipTypeItem) => scholarshipTypeItem.type_name?.toLowerCase() === scholarshipType.toLowerCase()
+        // Validation: Ensure percent is even
+        if (selectedPercent % 2 !== 0) {
+            toast.error("Percent must be an even number");
+            return;
+        }
+
+        // Validation: Check if the scholarship type already exists
+        const isDuplicate = scholarshipTypes.some(
+            (stype) => stype.type_name.toLowerCase() === trimmedType.toLowerCase()
         );
-        if (scholarshipTypeExists) {
+
+        if (isDuplicate) {
             toast.error("Scholarship type already exists");
             return;
         }
@@ -59,9 +68,9 @@ function AddScholarshipType() {
         setLoading(true);
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
-
             const jsonData = {
-                type_name: scholarshipType,
+                type_name: trimmedType,
+                type_percent_id: selectedPercent
             };
 
             const formDataToSend = new FormData();
@@ -72,12 +81,13 @@ function AddScholarshipType() {
 
             if (res.data !== 0) {
                 toast.success("Scholarship Type added successfully");
-                setFormData({ scholarship_type: "" }); // Reset form
+                setFormData({ scholarship_type: "", percent: "" });
+                setScholarshipTypes([...scholarshipTypes, jsonData]);
             } else {
                 toast.error("Failed to add Scholarship Type");
             }
         } catch (error) {
-            console.log(error);
+            console.error("Error adding Scholarship Type:", error);
             toast.error("An error occurred while adding the Scholarship Type");
         } finally {
             setLoading(false);
@@ -95,13 +105,29 @@ function AddScholarshipType() {
                 onChange={handleInputChange}
                 className="p-3 text-lg w-full mb-4 border border-blue-700 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
             />
+            <select
+                name="percent"
+                value={formData.percent}
+                onChange={handleInputChange}
+                className="p-2 text-lg w-full mb-4 border border-blue-900 rounded"
+            >
+                <option value="">Select Percent</option>
+                {percent.length > 0 ? (
+                    percent.map((p, index) => (
+                        <option key={index} value={p.percent_id}>
+                            {p.percent_name}
+                        </option>
+                    ))
+                ) : (
+                    <option disabled>No percent options available</option>
+                )}
+            </select>
             <button
                 onClick={handleAdd}
-                className={`px-5 py-3 text-lg text-white rounded-md transition-colors duration-300 ${loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'
-                    }`}
+                className={`px-5 py-3 text-lg text-white rounded-md transition-colors duration-300 ${loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"}`}
                 disabled={loading}
             >
-                {loading ? 'Adding...' : 'Add'}
+                {loading ? "Adding..." : "Add"}
             </button>
         </div>
     );

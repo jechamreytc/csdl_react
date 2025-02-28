@@ -103,8 +103,8 @@ const MasterFiles = () => {
 
         <div className='grid grid-cols-7 h-screen'>
             <Navigator />
-            <div className="bg-green-800 col-span-6 ">
-                <div className="flex-grow p-10 bg-green-900">
+            <div className="bg-white col-span-6 ">
+                <div className="flex-grow p-10 bg-white">
                     <div className="bg-white p-8 rounded-lg shadow-lg">
                         <div className="text-left mb-8">
                             <h1 className="text-5xl font-mono text-green-900 mb-2">Master Files</h1>
@@ -121,15 +121,15 @@ const MasterFiles = () => {
                                     { title: 'Department', buttonText: 'Add Department', route: '/addDepartment', content: <AddDepartment />, buttonText2: 'Department List', contentlist: "/DepartmentList" },
                                     // { title: 'School Year', buttonText: 'Add School Year', route: '/addSchoolYear', content: <AddSchoolYear />, buttonText2: 'School Year List', contentlist: "/SchoolYear" },
                                     { title: 'Course', buttonText: 'Add Course', route: '/addCourse', content: <AddCourse />, buttonText2: 'Course List', contentlist: "/CourseList" },
-                                    // { title: 'Scholarship Type', buttonText: 'Add Scholarship Type', route: '/addScholarshipType', content: <AddScholarshipType />, buttonText2: 'Scholarship Type   List', contentlist: "/ScholarshipType" },
+                                    { title: 'Scholarship Type', buttonText: 'Add Scholarship Type', route: '/addScholarshipType', content: <AddScholarshipType />, buttonText2: 'Scholarship Type   List', contentlist: "/ScholarshipType" },
 
-                                    // { title: 'Scholar', buttonText: 'Add Scholar', route: "/AddScholar", content: <AddScholar />, buttonText: 'Scholar List', contentlist: "/ScholarList" },
+                                    { title: 'Scholar', buttonText: 'Add Scholar', route: "/AddScholar", content: <AddScholar />, buttonText: 'Scholar List', contentlist: "/ScholarList" },
                                     { title: 'Supervisor Master', buttonText: 'Add Supervisor Master', route: '/addSupervisor', content: <AddSupervisor />, buttonText2: 'Supervisor List', contentlist: <GetSupervisor /> },
                                     // { title: 'Scholarship Sub Type', buttonText: 'Add Scholarship Sub Type', route: '/addScholarshipSubType', content: <AddScholarshipSubType />, buttonText2: 'Scholarship Sub Type List', contentlist: <GetScholarshipSubType /> },
                                     { title: 'Building', buttonText: 'Add Building', route: '/addBuilding', content: <AddBuilding />, buttonText2: 'Building List', contentlist: "/BuildingList" },
                                     { title: 'Room', buttonText: 'Add Room', route: '/addRoom', content: <AddRoom />, buttonText2: 'Room List', contentlist: <GetRoom /> },
                                     // { title: 'Modality', buttonText: 'Add Modality', route: '/addModality', content: <AddModality />, buttonText2: 'Modality List', contentlist: <GetModality /> },
-                                    // { title: 'Subject', buttonText: 'Add Subject', route: '/addSubject', content: <AddSubject />, buttonText2: 'Subject List', contentlist: "/SubjectList" },
+                                    { title: 'Subject', buttonText: 'Add Subject', route: '/addSubject', content: <AddSubject />, buttonText2: 'Subject List', contentlist: "/SubjectList" },
                                 ].map(({ title, buttonText, route, content, contentlist, buttonText2 }, index) => (
                                     <div key={index} className="flex flex-col items-center">
                                         <h2 className="text-white text-lg font-semibold mb-2">{title}</h2>

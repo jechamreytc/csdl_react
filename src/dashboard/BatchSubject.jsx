@@ -133,26 +133,26 @@ const App = () => {
             <Navigator />
             <div className="p-6 col-span-6">
                 <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-7xl mx-auto">
-                    <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Subject Uploader</h1>
-                    <label className="block w-full bg-gray-200 text-gray-700 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-300 focus:outline-none">
+                    <h1 className="text-3xl font-bold text-center text-green-900 mb-6">Subject Uploader</h1>
+                    <label className="block w-full bg-white text-green border border-white rounded-lg cursor-pointer hover:bg-green-900 text-white focus:outline-none">
                         <input
                             type="file"
                             accept=".xlsx, .xls"
                             onChange={handleFileUpload}
                             className="hidden"
                         />
-                        <div className="p-4 text-center">Choose Excel File</div>
+                        <div className="p-4 text-center text-green-900">Choose Excel File</div>
                     </label>
-                    {fileName && <p className="text-center text-gray-600 mt-4">Selected File: {fileName}</p>}
+                    {fileName && <p className="text-center text-green-900 mt-4">Selected File: {fileName}</p>}
 
                     {currentData.length > 0 && (
                         <>
                             <div className="overflow-x-auto mt-6">
-                                <table className="table-auto w-full border-collapse border border-gray-300 text-sm">
+                                <table className="table-auto w-full border-collapse border border-green-900 text-sm">
                                     <thead>
-                                        <tr className="bg-gray-100">
+                                        <tr className="bg-green-900s">
                                             {Object.keys(currentData[0]).map((key) => (
-                                                <th key={key} className="border px-4 py-2 text-gray-800 font-medium">
+                                                <th key={key} className="border bg-green-900 px-4 py-2 text-white font-medium">
                                                     {key}
                                                 </th>
                                             ))}
@@ -162,7 +162,7 @@ const App = () => {
                                         {currentData.map((row, idx) => (
                                             <tr key={idx} className="even:bg-gray-50">
                                                 {Object.values(row).map((value, i) => (
-                                                    <td key={i} className="border px-6 py-4 text-gray-700">
+                                                    <td key={i} className="border px-6 py-4 text-green-900">
                                                         {value}
                                                     </td>
                                                 ))}
@@ -195,7 +195,7 @@ const App = () => {
                                 disabled={loading}
                                 className={`mt-6 w-full py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-75 ${loading
                                     ? "bg-gray-400 text-gray-800"
-                                    : "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-400"
+                                    : "bg-green-600 text-white hover:bg-green-700 focus:ring-green-400"
                                     }`}
                             >
                                 {loading ? "Saving..." : "Save to Backend"}

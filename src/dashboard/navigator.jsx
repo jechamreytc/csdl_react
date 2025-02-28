@@ -6,6 +6,7 @@ import secureLocalStorage from "react-secure-storage";
 function Navigator() {
     const navigateTo = useNavigate();
     const handleLogOut = () => {
+        console.log("logout");
         navigateTo("/");
         secureLocalStorage.removeItem("adminLogin");
     };
@@ -17,7 +18,7 @@ function Navigator() {
         }
     }, []);
     return (
-        <aside className="w-64 bg-green-700 text-white p-6">
+        <aside className="w-64 bg-green-900 text-white p-6">
             <div className="mb-6">
                 <div className="flex items-center mb-6">
                     <img

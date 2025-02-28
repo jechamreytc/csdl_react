@@ -40,13 +40,13 @@ function Qrcode() {
     return (
         <div className="flex h-screen" style={{ backgroundColor: "rgb(8, 54, 100)" }}>
             <Navigator />
-            <div className="flex-grow p-10 bg-blue-500">
+            <div className="flex-grow p-10 bg-white">
                 <div className="bg-white p-8 rounded-lg shadow-lg">
                     <div className="text-left mb-8">
-                        <h1 className="text-5xl font-mono text-blue-500 mb-2">QR Code</h1>
+                        <h1 className="text-5xl font-mono text-green-900 mb-2">QR Code</h1>
                     </div>
 
-                    <div className="bg-blue-600 p-6 rounded-lg shadow-lg">
+                    <div className="bg-green-900 p-6 rounded-lg shadow-lg">
                         <div className="text-left mb-8">
                             <h1 className="text-3xl font-normal text-white mb-2">Generate QR Code</h1>
                             <p className="text-white text-lg">Generate a QR code quickly: Enter the student info and get a shareable code for easy scanning.</p>

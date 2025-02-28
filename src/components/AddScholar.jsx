@@ -18,13 +18,24 @@ const AddScholar = () => {
         yearLevel: '',
         contactNumber: '',
         email: '',
-        modality: ''
+        percent: '',
+        amount: '',
+        modality: '',
+        activeAppliedOnTuition: '',
+        activeAppliedOnMisc: '',
+        date: '',
+        modifiedBy: '',
+        modifiedDate: '',
+
     });
 
     const [yearLevels, setYearLevels] = useState([]);
     const [courses, setCourses] = useState([]);
     const [scholarshipTypes, setScholarshipTypes] = useState([]);
     const [modalities, setModalities] = useState([]);
+    const [percent, setPercent] = useState([]);
+    const [department, setDepartment] = useState([]);
+    const [year, setYear] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -38,6 +49,9 @@ const AddScholar = () => {
                 setCourses(res.data.course || []);
                 setScholarshipTypes(res.data.scholarshipType || []);
                 setModalities(res.data.modality || []);
+                setPercent(res.data.scholarshipSub || []);
+                setDepartment(res.data.department || []);
+                setYear(res.data.year || []);
 
                 toast.success('Form data loaded successfully');
             } catch (error) {
@@ -71,16 +85,22 @@ const AddScholar = () => {
             const jsonData = {
                 stud_id: formData.studId,
                 stud_academic_session_id: formData.academicSession,
-                stud_first_name: formData.firstName,
-                stud_last_name: formData.lastName,
-                stud_middle_name: formData.middleName,
+                stud_name: formData.fullname,
+
                 stud_scholarship_id: formData.scholarship,
                 stud_department_id: formData.department,
                 stud_course_id: formData.course,
                 stud_year_level_id: formData.yearLevel,
                 stud_contact_number: formData.contactNumber,
                 stud_email: formData.email,
-                stud_modality_id: formData.modality
+                stud_active_percent_id: formData.percent,
+                stud_active_amount: formData.amount,
+                // stud_modality_id: formData.modality,
+                stud_active_applied_on_tuition: formData.activeAppliedOnTuition,
+                stud_active_applied_on_misc: formData.activeAppliedOnMisc,
+                stud_date: formData.date,
+                stud_modified_by: formData.modifiedBy,
+                stud_modified_date: formData.modifiedDate,
             };
 
             const formDataToSend = new FormData();
@@ -88,6 +108,7 @@ const AddScholar = () => {
             formDataToSend.append('operation', 'AddScholar');
 
             const res = await axios.post(url, formDataToSend);
+            console.log('Res submithaha ', res.data);
             if (res.data !== 0) {
                 toast.success('Scholar added successfully');
             } else {
@@ -110,35 +131,35 @@ const AddScholar = () => {
                         </div>
                         <div>
                             <label className="block text-sm font-medium">Academic Session</label>
-                            <input type="text" name="middleName" value={formData.middleName} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
+                            <input type="text" name="academicSession" value={formData.academicSession} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium">First Name*</label>
-                            <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" required />
+                            <label className="block text-sm font-medium">Full Name*</label>
+                            <input
+                                type="text"
+                                name="fullName"
+                                value={formData.fullname}
+                                onChange={handleInputChange}
+                                className="mt-1 p-2 w-full border rounded"
+                                required
+                            />
                         </div>
-                        <div>
-                            <label className="block text-sm font-medium">Last Name*</label>
-                            <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" required />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium">Middle Name</label>
-                            <input type="text" name="middleName" value={formData.middleName} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
-                        </div>
+
                         <div>
                             <label className="block text-sm font-medium">ScholarShip</label>
-                            <input type="text" name="middleName" value={formData.middleName} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
+                            <input type="text" name="scholarship" value={formData.scholarship} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium">Department</label>
-                            <input type="text" name="middleName" value={formData.middleName} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
+                            <label className="block text-sm font-medium">Department*</label>
+                            <Select options={department.map(department => ({ label: department.dept_name, value: department.dept_id }))} onChange={(selectedOption) => handleComboBoxChange(selectedOption, 'department')} placeholder="Select Department" isClearable className="mt-1" required />
                         </div>
                         <div>
                             <label className="block text-sm font-medium">Course*</label>
-                            <Select options={courses.map(course => ({ label: course.crs_name, value: course.crs_id }))} onChange={(selectedOption) => handleComboBoxChange(selectedOption, 'course')} placeholder="Select Course" isClearable className="mt-1" required />
+                            <Select options={courses.map(course => ({ label: course.course_name, value: course.course_id }))} onChange={(selectedOption) => handleComboBoxChange(selectedOption, 'course')} placeholder="Select Course" isClearable className="mt-1" required />
                         </div>
                         <div>
                             <label className="block text-sm font-medium">Year Level*</label>
-                            <Select options={yearLevels.map(level => ({ label: level.year_level_name, value: level.year_level_id }))} onChange={(selectedOption) => handleComboBoxChange(selectedOption, 'yearLevel')} placeholder="Select Year Level" isClearable className="mt-1" required />
+                            <Select options={year.map(year => ({ label: year.year_name, value: year.year_id }))} onChange={(selectedOption) => handleComboBoxChange(selectedOption, 'year')} placeholder="Select Year Level" isClearable className="mt-1" required />
                         </div>
                         <div>
                             <label className="block text-sm font-medium">Scholarship Type*</label>
@@ -153,12 +174,36 @@ const AddScholar = () => {
                             <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium">Percent</label>
-                            <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
+                            <label className="block text-sm font-medium">Percent*</label>
+                            <Select options={percent.map(percent => ({ label: percent.percent_name, value: percent.percent_id }))} onChange={(selectedOption) => handleComboBoxChange(selectedOption, 'percent')} placeholder="Select Percent" isClearable className="mt-1" required />
                         </div>
                         <div>
                             <label className="block text-sm font-medium">Amount</label>
-                            <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
+                            <input type="amount" name="amount" value={formData.amount} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
+                        </div>
+                        {/* <div>
+                            <label className="block text-sm font-medium">Modality</label>
+                            <input type="email" name="modality" value={formData.modality} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
+                        </div> */}
+                        <div>
+                            <label className="block text-sm font-medium">Applied On Tuition</label>
+                            <input type="activeAppliedOnTuition" name="activeAppliedOnTuition" value={formData.activeAppliedOnTuition} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium">Applied On Miscellaneous </label>
+                            <input type="activeAppliedOnMisc" name="activeAppliedOnMisc" value={formData.activeAppliedOnMisc} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium">Date </label>
+                            <input type="date" name="date" value={formData.date} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium">Modified By </label>
+                            <input type="modifiedBy" name="modifiedBy" value={formData.modifiedBy} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium">Modified Date </label>
+                            <input type="date" name="modifiedDate" value={formData.modifiedDate} onChange={handleInputChange} className="mt-1 p-2 w-full border rounded" />
                         </div>
                     </div>
                     <div className="flex justify-end">

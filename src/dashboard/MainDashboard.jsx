@@ -89,7 +89,7 @@ const MainDashboard = () => {
     return (
         <div
             className={`flex h-screen ${darkMode ? 'bg-gray-950' : ''}`}
-            style={!darkMode ? { backgroundColor: "rgb(8, 54, 100)" } : {}}
+
         >
             <Navigator />
         </div>

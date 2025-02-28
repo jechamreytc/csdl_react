@@ -82,12 +82,12 @@ const ScholarList = () => {
     };
 
     return (
-        <div className="flex h-screen" style={{ backgroundColor: "rgb(8, 54, 100)" }}>
+        <div className="flex h-screen">
 
             <Navigator />
 
-            <div className="container mx-auto p-8 bg-blue-900 min-h-screen">
-                <div className="bg-white text-blue-900 p-6 rounded-t-lg shadow-lg">
+            <div className="container mx-auto p-8 bg-white min-h-screen">
+                <div className="bg-white text-green-900 p-6 rounded-t-lg shadow-lg">
                     <h2 className="text-4xl font-bold mb-2">Scholar List</h2>
                     <p className="text-sm">Compile and maintain a comprehensive Scholar List</p>
                 </div>
@@ -100,7 +100,7 @@ const ScholarList = () => {
                                 placeholder="Search scholar"
                                 value={formData.search}
                                 onChange={e => setFormData({ ...formData, search: e.target.value })}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
 
@@ -108,7 +108,7 @@ const ScholarList = () => {
                             <select
                                 value={formData.scholarshipType}
                                 onChange={e => setFormData({ ...formData, scholarshipType: e.target.value })}
-                                className="w-full px-4 py-2 rounded-lg border border-blue-900 bg-blue-900 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-4 py-2 rounded-lg border border-green-900 bg-green-900 text-white focus:outline-none focus:ring-2 focus:ring-white"
                             >
                                 <option value="">HK 25</option>
                                 {scholarshipType.map((type) => (
@@ -123,7 +123,7 @@ const ScholarList = () => {
                             <select
                                 value={formData.yearLevels}
                                 onChange={e => setFormData({ ...formData, yearLevels: e.target.value })}
-                                className="w-full px-4 py-2 rounded-lg border border-blue-900 bg-blue-900 text-white focus:outline-none focus:ring-2 focus:ring-white"
+                                className="w-full px-4 py-2 rounded-lg border border-green-900 bg-green-900 text-white focus:outline-none focus:ring-2 focus:ring-white"
                             >
                                 <option value="">First Year</option>
                                 {yearLevel.map((level) => (
@@ -138,12 +138,12 @@ const ScholarList = () => {
                             <select
                                 value={formData.course}
                                 onChange={e => setFormData({ ...formData, course: e.target.value })}
-                                className="w-full px-4 py-2 rounded-lg border border-blue-500 bg-blue-900 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-4 py-2 rounded-lg border border-green-900 bg-green-900 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                                 <option value="">Select Course</option>
                                 {courses.map((course) => (
-                                    <option key={course.crs_id} value={course.crs_id}>
-                                        {course.crs_name}
+                                    <option key={course.course_id} value={course.course_id}>
+                                        {course.course_name}
                                     </option>
                                 ))}
                             </select>
@@ -152,7 +152,7 @@ const ScholarList = () => {
 
                     <table className="w-full border-collapse bg-white shadow-lg rounded-lg overflow-hidden">
                         <thead>
-                            <tr className="bg-blue-600 text-white">
+                            <tr className="bg-green-900 text-white">
                                 <th className="px-4 py-2 text-left">Name</th>
                                 <th className="px-4 py-2 text-left">Scholarship</th>
                                 <th className="px-4 py-2 text-left">Status</th>

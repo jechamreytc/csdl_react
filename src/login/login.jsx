@@ -19,6 +19,7 @@ const PuzzleAuth = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [captcha, setCaptcha] = useState(generateCaptcha());
+    const [isChecked, setIsChecked] = useState(false);
     const [userInput, setUserInput] = useState("");
     const [captchaColors, setCaptchaColors] = useState(Array.from({ length: 5 }, getRandomColor));
     const [showSecurityCheck, setShowSecurityCheck] = useState(false);
@@ -80,6 +81,10 @@ const PuzzleAuth = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        if (!isChecked) {
+            toast.error("Please verify security first.");
+            return;
+        }
         if (verificationCode !== generatedCode) {
             toast.error("Invalid Verification Code. Please try again.");
             return;
@@ -145,19 +150,18 @@ const PuzzleAuth = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         className="w-full p-3 border border-gray-300 rounded-lg mb-3"
                     />
-                    <button
-                        onClick={() => setShowSecurityCheck(true)}
-                        className={`w-full py-3 text-white text-lg rounded-lg font-semibold transition mt-4 ${isFormComplete() ? "bg-gray-700 hover:bg-gray-600" : "bg-gray-400 cursor-not-allowed"
-                            }`}
-                        disabled={!isFormComplete()}
-                    >
-                        Verify Security
-                    </button>
-
-                    {/* Captcha Verification */}
-                    {showSecurityCheck && (
+                    <div className="flex items-center mb-4">
+                        <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={() => setIsChecked(!isChecked)}
+                            className="mr-2"
+                        />
+                        <label className="text-sm">Verify Security</label>
+                    </div>
+                    {isChecked && (
                         <div className="mt-4 bg-gray-100 p-5 rounded-lg text-center">
-                            <h3 className="text-xl font-semibold text-green-900 mb-3">Captcha Verification</h3>
+                            <h3 className="text-xl font-semibold mb-3">Captcha Verification</h3>
                             <div className="mb-4 text-2xl">
                                 {captcha.map((num, index) => (
                                     <span key={index} style={{ color: captchaColors[index], margin: "0 5px" }}>
@@ -174,7 +178,7 @@ const PuzzleAuth = () => {
                             />
                             <button
                                 onClick={handleSubmitCaptcha}
-                                className="w-full mt-2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 transition"
+                                className="w-full mt-2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500"
                             >
                                 Submit Captcha
                             </button>

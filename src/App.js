@@ -31,6 +31,7 @@ import GetScholarLists from './modal/GetScholar';
 import GetSubject from './modal/GetSubject';
 
 
+
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = secureLocalStorage.getItem("adminLogin") === "true";
   return isAuthenticated ? children : <Navigate to="/" />;
@@ -49,6 +50,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/AddAdministrator" element={<AddAdministrator />} />
+
           <Route path="/OfficeMaster" element={<AddOfficeMaster />} />
           <Route path="/addSupervisor" element={<AddSupervisor />} />
           <Route path="/AddScholar" element={<AddScholar />} />

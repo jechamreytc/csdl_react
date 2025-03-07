@@ -11,25 +11,6 @@ function AddRoom() {
     // const [buildings, setBuildings] = useState([]);
     const [rooms, setRooms] = useState([]);
 
-    // useEffect(() => {
-    //     const getBuildings = async () => {
-    //         try {
-    //             const url = secureLocalStorage.getItem("url") + "CSDL.php";
-    //             const formData = new FormData();
-    //             formData.append("operation", "getBuilding");
-    //             const res = await axios.post(url, formData);
-    //             setBuildings(res.data);
-    //             toast.success("Buildings loaded successfully");
-    //             console.log('Buildings:', res.data);
-    //         } catch (error) {
-    //             console.log('Failed to load buildings:', error);
-    //             toast.error("Failed to load buildings");
-    //         }
-    //     };
-
-    //     getBuildings();
-    // }, []);
-
     const getRooms = async () => {
         try {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";

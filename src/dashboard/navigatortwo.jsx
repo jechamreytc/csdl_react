@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { CircleUser, LogOutIcon, PanelsRightBottom, QrCodeIcon, User, List, Mail, Calendar, Search, ChevronLeft, ChevronRight, FolderClosed } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
 
-function Navigator() {
+function Navigatortwo() {
     const navigateTo = useNavigate();
-    const [adminLevel, setAdminLevel] = useState();
     const handleLogOut = () => {
         console.log("logout");
         navigateTo("/");
@@ -16,9 +15,6 @@ function Navigator() {
     useEffect(() => {
         if (secureLocalStorage.getItem("adminLogin") !== "true") {
             handleLogOut();
-        }
-        else {
-            setAdminLevel(secureLocalStorage.getItem("adminLevel"))
         }
     }, []);
     return (
@@ -83,17 +79,15 @@ function Navigator() {
                                 <span className="text-sm">Assign Student Facilitator</span>
                             </button>
                         </li>
-                        {adminLevel == 3 &&
-                            <li>
-                                <button
-                                    className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                    onClick={() => navigateTo("/AdminDashboard")}
-                                >
-                                    <FolderClosed className="mr-2" />
-                                    <span className="text-sm">Master Files</span>
-                                </button>
-                            </li>
-                        }
+                        <li>
+                            {/* <button
+                                className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                onClick={() => navigateTo("/AdminDashboard")}
+                            >
+                                <FolderClosed className="mr-2" />
+                                <span className="text-sm">Master Files</span>
+                            </button> */}
+                        </li>
                         <h2 className="text-lg font-semibold mt-6 mb-2">Account</h2>
                         <li>
                             <button
@@ -104,28 +98,24 @@ function Navigator() {
                                 <span className="text-sm">Account</span>
                             </button>
                         </li>
-                        {adminLevel == 3 &&
-                            <div>
-                                <li>
-                                    <button
-                                        className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                        onClick={() => navigateTo("/Batch")}
-                                    >
-                                        <CircleUser className="mr-2" />
-                                        <span className="text-sm">Batch Scholar</span>
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
-                                        onClick={() => navigateTo("/BatchSubject")}
-                                    >
-                                        <CircleUser className="mr-2" />
-                                        <span className="text-sm">Batch Subject</span>
-                                    </button>
-                                </li>
-                            </div>
-                        }
+                        <li>
+                            <button
+                                className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                onClick={() => navigateTo("/Batch")}
+                            >
+                                <CircleUser className="mr-2" />
+                                <span className="text-sm">Batch Scholar</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className="flex items-center p-3 hover:bg-green-700 rounded-md w-full transition-all duration-200"
+                                onClick={() => navigateTo("/BatchSubject")}
+                            >
+                                <CircleUser className="mr-2" />
+                                <span className="text-sm">Batch Subject</span>
+                            </button>
+                        </li>
                         <li className="mt-4">
                             <button
                                 className="flex items-center p-3 bg-red-600 hover:bg-red-700 rounded-md w-full transition-all duration-200"
@@ -143,4 +133,4 @@ function Navigator() {
     )
 }
 
-export default Navigator
+export default Navigatortwo

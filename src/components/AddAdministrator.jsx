@@ -9,7 +9,6 @@ const AddAdministrator = ({ onClose = () => { } }) => {
         name: "",
         email: "",
     });
-
     const [loading, setLoading] = useState(false);
     const [administrators, setAdministrators] = useState([]);
 
@@ -30,7 +29,6 @@ const AddAdministrator = ({ onClose = () => { } }) => {
             const url = secureLocalStorage.getItem("url") + "CSDL.php";
             const formData = new FormData();
             formData.append("operation", "getAdmin");
-
             const res = await axios.post(url, formData);
             setAdministrators(res.data);
         } catch (error) {
@@ -83,8 +81,8 @@ const AddAdministrator = ({ onClose = () => { } }) => {
             if (res.data !== 0) {
                 toast.success("Administrator added successfully");
                 setFormData({ idNumber: "", name: "", email: "" });
-                getAdministrators();
-                onClose(); // Close modal after successful submission
+                await getAdministrators();
+                onClose();
             } else {
                 toast.error("Failed to add administrator");
             }
@@ -96,87 +94,44 @@ const AddAdministrator = ({ onClose = () => { } }) => {
         }
     };
 
-    const handleClose = () => {
-        console.log("Closing modal...");
-        if (typeof onClose === "function") {
-            onClose(); // Ensure onClose is a function before calling it
-        }
-    };
-
-    const handleBackgroundClick = (e) => {
-        if (e.target === e.currentTarget) {
-            handleClose();
-        }
-    };
-
     return (
-        <div
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4"
-            onClick={handleBackgroundClick}
-        >
-            <div
-                className="bg-white shadow-xl rounded-lg p-6 w-full max-w-lg relative"
-                onClick={(e) => e.stopPropagation()}
+        <div className="flex flex-col items-center bg-blue-100 p-6 rounded-lg max-w-md mx-auto shadow-md">
+            <h2 className="mb-4 text-2xl text-blue-900">Add Administrator</h2>
+
+            <input
+                type="text"
+                name="idNumber"
+                placeholder="Enter ID Number"
+                value={formData.idNumber}
+                onChange={handleInputChange}
+                className="p-2 text-lg w-full mb-2 border border-blue-900 rounded"
+            />
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Enter Name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="p-2 text-lg w-full mb-2 border border-blue-900 rounded"
+            />
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Enter Email Address"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="p-2 text-lg w-full mb-2 border border-blue-900 rounded"
+            />
+
+            <button
+                onClick={signup}
+                className="p-2 text-lg bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300"
+                disabled={loading}
             >
-                {/* Close Button */}
-                <button
-                    type="button"
-                    onClick={handleClose}
-                    className="absolute top-2 right-2 bg-gray-200 rounded-full text-gray-600 p-2 hover:bg-gray-300 transition-colors"
-                >
-                    X
-                </button>
-
-                <h2 className="text-2xl font-semibold text-center text-green-700 mb-4">Add Administrator</h2>
-
-                <form className="space-y-4" onSubmit={signup}>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">ID Number*</label>
-                        <input
-                            type="text"
-                            name="idNumber"
-                            value={formData.idNumber}
-                            onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                            placeholder="Enter ID Number"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">Name*</label>
-                        <input
-                            type="text"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                            placeholder="Enter Name"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">Email Address*</label>
-                        <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
-                            placeholder="Enter Email Address"
-                            required
-                        />
-                    </div>
-                    <div className="text-center">
-                        <button
-                            type="submit"
-                            className="bg-green-600 text-white py-2 px-6 rounded-md hover:bg-green-700 transition duration-300"
-                            disabled={loading}
-                        >
-                            {loading ? "Adding..." : "Add Administrator"}
-                        </button>
-                    </div>
-                </form>
-            </div>
+                {loading ? "Adding..." : "Add Administrator"}
+            </button>
         </div>
     );
 };

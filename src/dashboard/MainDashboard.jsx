@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import secureLocalStorage from 'react-secure-storage';
 import axios from 'axios';
 import Navigator from './navigator';
+import Navigatortwo from './navigatortwo';
 
 const MainDashboard = () => {
     const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ const MainDashboard = () => {
     const [assignments, setAssignments] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [darkMode, setDarkMode] = useState(false);
+    const [adminLevel, setAdminLevel] = useState(secureLocalStorage.getItem("adminLevel"));
     const itemsPerPage = 4;
     const navigateTo = useNavigate();
 
@@ -72,6 +74,7 @@ const MainDashboard = () => {
             }
         };
         getAssignmentList();
+        // setAdminLevel(secureLocalStorage.getItem("adminLevel"));
     }, []);
 
     const handleInputChange = (e) => {
@@ -92,6 +95,9 @@ const MainDashboard = () => {
 
         >
             <Navigator />
+
+
+
         </div>
     );
 };

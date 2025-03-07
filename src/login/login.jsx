@@ -4,9 +4,7 @@ import { useNavigate } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
 import axios from "axios";
 
-const generateCaptcha = () => {
-    return Array.from({ length: 5 }, () => Math.floor(Math.random() * 10));
-};
+const generateCaptcha = () => Array.from({ length: 5 }, () => Math.floor(Math.random() * 10));
 
 const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
@@ -24,6 +22,11 @@ const PuzzleAuth = () => {
     const [userInput, setUserInput] = useState("");
     const [captchaColors, setCaptchaColors] = useState(Array.from({ length: 5 }, getRandomColor));
     const [showSecurityCheck, setShowSecurityCheck] = useState(false);
+    const [show2FA, setShow2FA] = useState(false);
+    const [verificationCode, setVerificationCode] = useState("");
+    const [generatedCode, setGeneratedCode] = useState(null);
+    const [timestamp, setTimestamp] = useState("");
+    const [timeLeft, setTimeLeft] = useState(20); // 2FA countdown timer
 
     const navigate = useNavigate();
 
@@ -33,6 +36,18 @@ const PuzzleAuth = () => {
         }
     }, [navigate]);
 
+    useEffect(() => {
+        if (show2FA && timeLeft > 0) {
+            const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+            return () => clearTimeout(timer);
+        }
+        if (timeLeft === 0) {
+            setShow2FA(false);
+            setVerificationCode("");
+            toast.error("Time expired! Please retry Captcha.");
+        }
+    }, [show2FA, timeLeft]);
+
     const handleEmailChange = (e) => {
         const emailRegex = /^[a-zA-Z.@0-9-]+$/;
         if (emailRegex.test(e.target.value) || e.target.value === "") {
@@ -40,13 +55,14 @@ const PuzzleAuth = () => {
         }
     };
 
-    const isFormComplete = () => {
-        return username.trim() !== "" && password.trim() !== "";
-    };
+    const isFormComplete = () => username.trim() !== "" && password.trim() !== "";
 
     const handleSubmitCaptcha = () => {
         if (userInput === captcha.join("")) {
             toast.success("Captcha Correct!");
+            setShow2FA(true);
+            sendVerificationCode();
+            setTimeLeft(20); // Reset timer when 2FA starts
         } else {
             toast.error("Captcha Incorrect, try again.");
             setCaptcha(generateCaptcha());
@@ -55,28 +71,19 @@ const PuzzleAuth = () => {
         }
     };
 
+    const sendVerificationCode = () => {
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
+        setGeneratedCode(code);
+        const now = new Date();
+        setTimestamp(now.toLocaleTimeString() + ":" + now.getSeconds());
+    };
+
     const handleLogin = async (e) => {
         e.preventDefault();
-
-        if (!username.trim() || !password.trim()) {
-            toast.error("Please fill in both Username and Password.");
+        if (verificationCode !== generatedCode) {
+            toast.error("Invalid Verification Code. Please try again.");
             return;
         }
-        if (userInput !== captcha.join("")) {
-            toast.error("Captcha Incorrect, try again.");
-            setCaptcha(generateCaptcha());
-            setCaptchaColors(Array.from({ length: 5 }, getRandomColor));
-            setUserInput("");
-            return;
-        }
-
-        // if (userInput !== captcha.join("")) {
-        //     toast.error("Incorrect Captcha. Try again.");
-        //     setCaptcha(generateCaptcha());
-        //     setCaptchaColors(Array.from({ length: 5 }, getRandomColor));
-        //     setUserInput("");
-        //     return;
-        // }
 
         try {
             const url = secureLocalStorage.getItem("url") + "user.php";
@@ -86,9 +93,7 @@ const PuzzleAuth = () => {
             formData.append("operation", "adminLogin");
 
             const res = await axios.post(url, formData);
-            console.log("hahaha", res.data);
-
-
+            console.log("Login response:", res.data);
             if (res.data === 0) {
                 toast.error("Invalid Credentials");
                 setUsername("");
@@ -96,6 +101,8 @@ const PuzzleAuth = () => {
             } else {
                 toast.success("Login successful!");
                 secureLocalStorage.setItem("adminLogin", "true");
+                secureLocalStorage.setItem("adminLevel", res.data.adm_user_level);
+
                 navigate("/MainDashboard");
             }
         } catch (error) {
@@ -105,12 +112,24 @@ const PuzzleAuth = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-green-900 px-4">
-            <div className="w-full max-w-4xl shadow-lg rounded-xl bg-white p-8 flex">
-                <div className="w-1/2 flex items-center justify-center">
-                    <h1 className="text-5xl font-extrabold text-green-800">HK SMS</h1>
-                </div>
-                <div className="w-1/2">
+        <div
+            className="flex flex-col md:flex-row min-h-screen items-center justify-center px-4"
+            style={{
+                backgroundImage: 'url("images/background.jpg")',
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+            }}
+        >
+            {/* Left Section (Text Content) */}
+            <div className="w-full md:w-1/2 flex flex-col justify-center items-center text-green-900 p-12 text-center">
+                <h1 className="text-9xl font-semibold">HK SMS</h1>
+                <p className="mt-4 text-lg">HK Scholars Management System</p>
+            </div>
+
+            {/* Right Section (Login Form) */}
+            <div className="w-full md:w-1/2 flex items-center justify-center p-8">
+                <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-8">
                     <h2 className="text-3xl font-semibold text-green-900 text-center mb-6">Sign in</h2>
                     <input
                         type="text"
@@ -128,11 +147,14 @@ const PuzzleAuth = () => {
                     />
                     <button
                         onClick={() => setShowSecurityCheck(true)}
-                        className={`w-full py-3 text-white text-lg rounded-lg font-semibold transition mt-4 ${isFormComplete() ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-400 cursor-not-allowed'}`}
+                        className={`w-full py-3 text-white text-lg rounded-lg font-semibold transition mt-4 ${isFormComplete() ? "bg-gray-700 hover:bg-gray-600" : "bg-gray-400 cursor-not-allowed"
+                            }`}
                         disabled={!isFormComplete()}
                     >
                         Verify Security
                     </button>
+
+                    {/* Captcha Verification */}
                     {showSecurityCheck && (
                         <div className="mt-4 bg-gray-100 p-5 rounded-lg text-center">
                             <h3 className="text-xl font-semibold text-green-900 mb-3">Captcha Verification</h3>
@@ -150,25 +172,42 @@ const PuzzleAuth = () => {
                                 onChange={(e) => setUserInput(e.target.value)}
                                 className="w-full p-2 border border-gray-400 rounded-md"
                             />
-                            {/* <button
+                            <button
                                 onClick={handleSubmitCaptcha}
                                 className="w-full mt-2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 transition"
                             >
                                 Submit Captcha
-                            </button> */}
+                            </button>
                         </div>
                     )}
-                    {showSecurityCheck && (
-                        <button
-                            onClick={handleLogin}
-                            className="w-full py-3 bg-green-900 text-white text-lg rounded-lg font-semibold hover:bg-green-600 transition mt-4"
-                        >
+
+                    {show2FA && (
+                        <div className="mt-4 bg-gray-100 p-5 rounded-lg text-center">
+                            <h3 className="text-xl font-semibold text-green-900 mb-3">Enter Verification Code</h3>
+                            <p className="text-sm text-gray-600">
+                                Verification Code: {generatedCode} (Generated at {timestamp})
+                            </p>
+                            <p className="text-red-500 font-bold">{timeLeft} seconds remaining</p>
+                            <input
+                                type="text"
+                                placeholder="Enter Code"
+                                value={verificationCode}
+                                onChange={(e) => setVerificationCode(e.target.value)}
+                                className="w-full p-2 border border-gray-400 rounded-md"
+                            />
+                        </div>
+                    )}
+
+                    {show2FA && (
+                        <button onClick={handleLogin} className="w-full py-3 bg-green-900 text-white text-lg rounded-lg font-semibold hover:bg-green-600 transition mt-4">
                             Login
                         </button>
                     )}
                 </div>
             </div>
         </div>
+
+
     );
 };
 

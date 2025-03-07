@@ -123,7 +123,7 @@ const MasterFiles = () => {
                                     { title: 'Course', buttonText: 'Add Course', route: '/addCourse', content: <AddCourse />, buttonText2: 'Course List', contentlist: "/CourseList" },
                                     { title: 'Scholarship Type', buttonText: 'Add Scholarship Type', route: '/addScholarshipType', content: <AddScholarshipType />, buttonText2: 'Scholarship Type   List', contentlist: "/ScholarshipType" },
 
-                                    { title: 'Scholar', buttonText: 'Add Scholar', route: "/AddScholar", content: <AddScholar />, buttonText: 'Scholar List', contentlist: "/ScholarList" },
+                                    { title: 'Scholar', buttonText: 'Add Scholar', route: <AddScholar />, content: <AddScholar />, buttonText: 'Scholar List', contentlist: "/ScholarList" },
                                     { title: 'Supervisor Master', buttonText: 'Add Supervisor Master', route: '/addSupervisor', content: <AddSupervisor />, buttonText2: 'Supervisor List', contentlist: <GetSupervisor /> },
                                     // { title: 'Scholarship Sub Type', buttonText: 'Add Scholarship Sub Type', route: '/addScholarshipSubType', content: <AddScholarshipSubType />, buttonText2: 'Scholarship Sub Type List', contentlist: <GetScholarshipSubType /> },
                                     { title: 'Building', buttonText: 'Add Building', route: '/addBuilding', content: <AddBuilding />, buttonText2: 'Building List', contentlist: "/BuildingList" },

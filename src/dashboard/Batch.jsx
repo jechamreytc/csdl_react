@@ -217,7 +217,7 @@ const App = () => {
             console.log("API Request Add Scholar:", jsonData);
 
             const response = await axios.post(url, formDataToSend);
-            console.log("RESPONSE from backend:", response.data);
+            console.log("RESPONSEfrom backend:", response.data);
 
             if (response.data === 1) {
                 alert("Data saved successfully!");

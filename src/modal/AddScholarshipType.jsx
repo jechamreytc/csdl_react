@@ -49,12 +49,6 @@ function AddScholarshipType() {
             return;
         }
 
-        // Validation: Ensure percent is even
-        if (selectedPercent % 2 !== 0) {
-            toast.error("Percent must be an even number");
-            return;
-        }
-
         // Validation: Check if the scholarship type already exists
         const isDuplicate = scholarshipTypes.some(
             (stype) => stype.type_name.toLowerCase() === trimmedType.toLowerCase()

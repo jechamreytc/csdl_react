@@ -159,7 +159,7 @@ const MasterFiles = () => {
                 {
                     isOpenModal && (
                         <div className='fixed inset-0  bg-black bg-opacity-50 flex justify-center items-center w-full'>
-                            <div className='bg-blue-800 p-8 rounded-lg shadow-lg relative max-w-md w-full'>
+                            <div className='bg-white p-8 rounded-lg shadow-lg relative max-w-md w-full'>
                                 <div className='grid grid-cols-3 text-xl font-bold md-4 text-black'>
                                     <div className=''>
                                         <ArrowLeftCircle className='cursor-pointer h-7 w-7 text-white' onClick={closeModal} />
@@ -181,9 +181,9 @@ const MasterFiles = () => {
                             <div className='bg-blue-800 p-8 rounded-lg shadow-lg relative max-w-md w-full'>
                                 <div className='grid grid-cols-3 text-xl font-bold md-4 text-black'>
                                     <div className=''>
-                                        <ArrowLeftCircle className='cursor-pointer h-7 w-7 text-white' onClick={closeListModal} />
+                                        <ArrowLeftCircle className='cursor-pointer h-7 w-7 text-green-900' onClick={closeListModal} />
                                     </div>
-                                    <p className='text-center text-white'>{modalTitle}</p>
+                                    <p className='text-center text-green-900'>{modalTitle}</p>
                                 </div>
                                 <div>
                                     {modalContent}

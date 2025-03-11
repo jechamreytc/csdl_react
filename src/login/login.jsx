@@ -19,7 +19,7 @@ const PuzzleAuth = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [captcha, setCaptcha] = useState(generateCaptcha());
-    const [isChecked, setIsChecked] = useState(false);
+    const [isChecked, setIsChecked] = useState(false)
     const [userInput, setUserInput] = useState("");
     const [captchaColors, setCaptchaColors] = useState(Array.from({ length: 5 }, getRandomColor));
     const [showSecurityCheck, setShowSecurityCheck] = useState(false);
@@ -105,6 +105,8 @@ const PuzzleAuth = () => {
                 setPassword("");
             } else {
                 toast.success("Login successful!");
+                secureLocalStorage.setItem("userId", res.data.adm_id);
+                secureLocalStorage.setItem("userImage", res.data.adm_image_filename);
                 secureLocalStorage.setItem("adminLogin", "true");
                 secureLocalStorage.setItem("adminLevel", res.data.adm_user_level);
 

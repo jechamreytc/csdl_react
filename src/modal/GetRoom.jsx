@@ -87,11 +87,11 @@ const GetRoom = () => {
                         <div key={room.room_id}>
                             <div
                                 className="flex items-center justify-between bg-blue-800 rounded-md py-3 px-5 text-white cursor-pointer hover:bg-blue-900 hover:scale-105 transition-transform duration-300"
-                                onClick={() => handleRoomClick(room.room_number)}
+                                onClick={() => handleRoomClick(room.room_name )}
                             >
-                                <span className="text-lg">{expandedRoom === room.room_number ? '▼' : '▲ '}</span>
-                                <span className="text-lg font-medium flex-1">{room.room_number}</span>
-                                {expandedRoom === room.room_number && (
+                                <span className="text-lg">{expandedRoom === room.room_name ? '▼' : '▲ '}</span>
+                                <span className="text-lg font-medium flex-1">{room.room_name }</span>
+                                {expandedRoom === room.room_name  && (
                                     <div className="flex space-x-2">
                                         <button
                                             className="text-red-500 hover:bg-red-600 hover:text-white p-1 rounded-md"

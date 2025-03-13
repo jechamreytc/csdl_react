@@ -178,38 +178,7 @@ const MainDashboard = () => {
                     </div>
                 </header>
 
-                <div className="relative z-10 bg-white p-6 rounded-lg">
-                    <table className="w-full table-auto text-left">
-                        <thead>
-                            <tr className="border-b">
-                                <th className="p-4">Date</th>
-                                <th className="p-4">Name</th>
-                                <th className="p-4">Supervisor</th>
-                                <th className="p-4">Duty Hours</th>
-                                <th className="p-4">Starting Time</th>
-                                <th className="p-4">End Time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr className="border-b">
-                                <td className="p-4">Dec. 15, 2023</td>
-                                <td className="p-4">Ralph Jan Gallegos</td>
-                                <td className="p-4">Ralph Jan Gallegos</td>
-                                <td className="p-4">180 Hours</td>
-                                <td className="p-4">9:30 AM</td>
-                                <td className="p-4">3:30 PM</td>
-                            </tr>
-                            <tr className="border-b">
-                                <td className="p-4">Dec. 15, 2023</td>
-                                <td className="p-4">Mel Angelo Macario</td>
-                                <td className="p-4">Mel Angelo Macario</td>
-                                <td className="p-4">180 Hours</td>
-                                <td className="p-4">10:30 AM</td>
-                                <td className="p-4">5:30 PM</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+
             </main>
 
         </div >

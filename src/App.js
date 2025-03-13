@@ -29,6 +29,8 @@ import GetCourse from './modal/GetCourse';
 import GetScholarshipType from './modal/GetScholarType';
 import GetScholarLists from './modal/GetScholar';
 import GetSubject from './modal/GetSubject';
+import GetSupervisorMaster from './modal/GetSupervisor';
+import GetRoom from './modal/GetRoom';
 
 
 
@@ -72,6 +74,8 @@ function App() {
           <Route path='/ScholarshipType' element={<GetScholarshipType />} />
           <Route path='/ScholarList' element={<GetScholarLists />} />
           <Route path='/Subjectlist' element={<GetSubject />} />
+          <Route path='/SupervisorMaster' element={<GetSupervisorMaster />} />
+          <Route path='/GetRoom' element={<GetRoom />} />
 
           <Route
             path="/MainDashboard"

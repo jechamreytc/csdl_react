@@ -16,6 +16,7 @@ const GetSupervisorMaster = () => {
                 const formData = new FormData();
                 formData.append("operation", "getSupervisorMaster");
                 const res = await axios.post(url, formData);
+                console.log("happy birthday",res.data);
                 setSupervisors(res.data);
                 toast.success("Supervisors loaded successfully");
             } catch (error) {
@@ -77,15 +78,15 @@ const GetSupervisorMaster = () => {
                     {supervisors.length > 0 ? (
                         supervisors.map((supervisor) => (
                             <div
-                                key={supervisor.supervisor_id}
+                                key={supervisor.supM_id}
                                 className="bg-white shadow-lg rounded-lg p-6 transform transition-transform hover:scale-105 w-80"
                             >
                                 <div className="flex flex-col items-start space-y-3">
                                     <div className="w-full">
                                         <h2 className="text-2xl font-semibold text-gray-700">
-                                            {supervisor.supM_first_name} {supervisor.supM_last_name}
+                                            {supervisor.supM_name}
                                         </h2>
-                                        <p className="text-gray-600 text-sm">Employee ID: {supervisor.supM_employee_id}</p>
+                                        <p className="text-gray-600 text-sm">Employee ID: {supervisor.supM_id}</p>
                                     </div>
 
                                     <div className="w-full border-t border-gray-300 mt-4 pt-4">
